@@ -1,0 +1,22 @@
+{
+	"name": "demo",
+	"version": "1.0.0",
+	"description": "Base app for future usage",
+	"license": "UNLICENSED",
+	"private": true,
+	"workspaces": [
+		"app",
+		"api",
+		"core"
+	],
+	"scripts": {
+		"app": "yarn workspace app run local",
+		"api": "yarn workspace api run local"
+	},
+	"dependencies": {
+		"cross-env": "^7.0.3",
+		"expo": "^48.0.7",
+		"ts-node-dev": "^2.0.0",
+		"typescript": "^5.0.2"
+	}
+}
