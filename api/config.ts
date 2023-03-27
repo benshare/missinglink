@@ -5,6 +5,7 @@ type Config = {
 	postgresInfo: any
 	tables: {
 		// These are alphabetical
+		usersTable: string
 	}
 	// stripe: {
 	// 	secretKey: string
@@ -39,7 +40,9 @@ function loadConfig() {
 			// database: "postgres",
 			// connectionTimeoutMillis: 10000,
 		},
-		tables: {},
+		tables: {
+			usersTable: "users",
+		},
 		// stripe: {
 		// 	secretKey: env.STRIPE_SK!,
 		// 	enpointSecret: env.STRIPE_ENDPOINT_SECRET!,

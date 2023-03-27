@@ -2,6 +2,7 @@ import * as express from "express"
 import * as pg from "pg"
 
 import getConfig from "./config"
+import initUsersRouter from "./routes/routers/users"
 
 const { local, postgresInfo } = getConfig()
 
@@ -27,12 +28,6 @@ export default async function startServer() {
 		console.log(`API server listening on port ${apiPort}!`)
 	}
 
-	// const id = await StripeService.createConnectedAccount({
-	// 	email: "bentshare@gmail.com",
-	// })
-	// const cardholder = await StripeService.createCardholder({
-	// 	connectedAccount: "acct_1MlzTOQqkaOYOStD",
-	// 	users: ["Ben", "Aaron"],
-	// })
+	initUsersRouter()
 }
 export let pool = new pg.Pool(postgresInfo)
