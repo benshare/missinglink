@@ -6,12 +6,10 @@
 	"private": true,
 	"workspaces": [
 		"app",
-		"api",
 		"core"
 	],
 	"scripts": {
-		"app": "yarn workspace app run local",
-		"api": "yarn workspace api run local"
+		"app": "yarn workspace app run local"
 	},
 	"dependencies": {
 		"cross-env": "^7.0.3",
