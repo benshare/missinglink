@@ -10,6 +10,8 @@ export type PuzzleData = {
 }
 
 export type Puzzle = {
+	id: string
+	title: string
 	type: PuzzleType
 	data: PuzzleData
 }

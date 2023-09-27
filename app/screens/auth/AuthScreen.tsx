@@ -1,11 +1,7 @@
-import {
-	NativeStackScreenProps,
-	createNativeStackNavigator,
-} from "@react-navigation/native-stack"
-
 import PhoneNumberScreen from "./PhoneNumberScreen"
 import { StackScreenProps } from "@react-navigation/stack"
 import VerifyCodeScreen from "./VerifyCodeScreen"
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
 
 export type AuthScreenParamList = {
 	PhoneNumberScreen: undefined

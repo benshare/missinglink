@@ -4,7 +4,7 @@ import { DefaultTheme, NavigationContainer } from "@react-navigation/native"
 import { StackScreenProps, createStackNavigator } from "@react-navigation/stack"
 
 import AuthScreen from "../screens/auth/AuthScreen"
-import LoggedInScreen from "../screens/LoggedInScreen"
+import LoggedInScreen from "../screens/loggedIn/LoggedInScreen"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import Theme from "../style/Theme"
 import { selectCurrentUser } from "../store"
@@ -22,7 +22,8 @@ export type RootScreenProps<Screen extends keyof RootParamList> =
 const RootStack = createStackNavigator<RootParamList>()
 
 function RootScreen() {
-	const { signedIn } = useSelector(selectCurrentUser)
+	const signedIn = true
+	// const { signedIn } = useSelector(selectCurrentUser)
 
 	return (
 		<RootStack.Navigator
