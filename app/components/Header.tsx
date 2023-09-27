@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 
 import { FontAwesome } from "@expo/vector-icons"
-import Theme from "../style/Theme"
+import Theme from "../style/theme"
 import useColorScheme from "../hooks/useColorScheme"
 import { useNavigation } from "@react-navigation/native"
 
@@ -42,9 +42,9 @@ export default function Header({
 const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 	StyleSheet.create({
 		wrapper: {
-			position: "relative",
 			paddingTop: 30,
 			paddingBottom: 50,
+			width: "100%",
 		},
 		backArrowWrapper: {
 			alignSelf: "flex-start",

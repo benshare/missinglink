@@ -2,7 +2,7 @@ import { StyleSheet, View } from "react-native"
 
 import Header from "../../../../components/Header"
 import { PackScreenProps } from "../PackScreen"
-import Theme from "../../../../style/Theme"
+import Theme from "../../../../style/theme"
 import useColorScheme from "../../../../hooks/useColorScheme"
 
 export default function PuzzleScreen({

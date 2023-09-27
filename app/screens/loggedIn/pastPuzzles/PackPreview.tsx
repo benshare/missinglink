@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity } from "react-native"
 
 import { LoggedInScreenParamList } from "../LoggedInScreen"
 import { StackNavigationProp } from "@react-navigation/stack"
-import Theme from "../../../style/Theme"
+import Theme from "../../../style/theme"
 import useColorScheme from "../../../hooks/useColorScheme"
 import { useNavigation } from "@react-navigation/native"
 

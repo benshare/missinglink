@@ -15,7 +15,6 @@ export type RootState = {
 const baseData: RootState = {
 	currentUser: {
 		signedIn: false,
-		userAccessToken: undefined,
 	},
 	dailyPuzzles: {},
 }
@@ -28,11 +27,22 @@ const rootReducer = (state: any, action: AnyAction) => {
 export const store = configureStore<RootState>({
 	reducer: rootReducer,
 })
-// export enum RootStoreActions {
-// 	logout = "LOGOUT",
-// }
 
-export const selectCurrentUser = (state: RootState) => state.currentUser
+export function signOut() {
+	store.dispatch({ type: "LOGOUT" })
+}
+
+export const selectIsSignedIn = ({ currentUser: { signedIn } }: RootState) =>
+	signedIn
+// This should be called from screens accessible only when signed in
+export const selectCurrentUser = ({
+	currentUser: { phoneNumber, accessToken },
+}: RootState) => ({
+	signedIn: true,
+	phoneNumber: phoneNumber!,
+	accessToken: accessToken!,
+})
+
 export const selectPuzzlesDates = (state: RootState) =>
 	Object.keys(state.dailyPuzzles)
 export const selectDailyPuzzle = (state: RootState, date: string) =>

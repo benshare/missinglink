@@ -5,7 +5,7 @@ import { LoggedInScreenProps } from "../LoggedInScreen"
 import PuzzlePreview from "./PuzzlePreview"
 import PuzzleScreen from "./puzzle/PuzzleScreen"
 import { StackScreenProps } from "@react-navigation/stack"
-import Theme from "../../../style/Theme"
+import Theme from "../../../style/theme"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import useColorScheme from "../../../hooks/useColorScheme"
 

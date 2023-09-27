@@ -9,7 +9,7 @@ import { useRef, useState } from "react"
 
 import { AuthScreenProps } from "./AuthScreen"
 import PhoneInput from "react-native-phone-number-input"
-import Theme from "../../style/Theme"
+import Theme from "../../style/theme"
 import { supabase } from "../../supabase"
 import useColorScheme from "../../hooks/useColorScheme"
 

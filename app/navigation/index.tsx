@@ -6,7 +6,7 @@ import { StackScreenProps, createStackNavigator } from "@react-navigation/stack"
 import AuthScreen from "../screens/auth/AuthScreen"
 import LoggedInScreen from "../screens/loggedIn/LoggedInScreen"
 import { SafeAreaProvider } from "react-native-safe-area-context"
-import Theme from "../style/Theme"
+import Theme from "../style/theme"
 import { selectCurrentUser } from "../store"
 import useCachedResources from "../hooks/useCachedResources"
 import { useCallback } from "react"
@@ -22,8 +22,7 @@ export type RootScreenProps<Screen extends keyof RootParamList> =
 const RootStack = createStackNavigator<RootParamList>()
 
 function RootScreen() {
-	const signedIn = true
-	// const { signedIn } = useSelector(selectCurrentUser)
+	const { signedIn } = useSelector(selectCurrentUser)
 
 	return (
 		<RootStack.Navigator

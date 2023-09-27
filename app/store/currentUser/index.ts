@@ -1,11 +1,12 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 
 type ActionPayload = {
-	signIn: string
+	signIn: { accessToken: string; phoneNumber: string }
 }
 export type CurrentUserState = {
 	signedIn: boolean
-	userAccessToken: string | undefined
+	accessToken?: string
+	phoneNumber?: string
 }
 
 export const currentUserSlice = createSlice({
@@ -14,16 +15,13 @@ export const currentUserSlice = createSlice({
 		signedIn: false,
 	} as CurrentUserState,
 	reducers: {
-		tokenRestored: (
-			_,
-			{ payload: token }: PayloadAction<ActionPayload["signIn"]>
-		) => {
+		signedIn: (_, { payload }: PayloadAction<ActionPayload["signIn"]>) => {
 			return {
 				signedIn: true,
-				userAccessToken: token,
+				...payload,
 			}
 		},
 	},
 })
 
-export const { tokenRestored } = currentUserSlice.actions
+export const { signedIn } = currentUserSlice.actions

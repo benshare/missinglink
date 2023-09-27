@@ -1,11 +1,11 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 
-import AccountScreen from "./account/PastPuzzlesScreen"
+import AccountScreen from "./account/AccountScreen"
 import Header from "../../components/Header"
 import PackScreen from "./pack/PackScreen"
 import PastPuzzlesScreen from "./pastPuzzles/PastPuzzlesScreen"
 import { StackScreenProps } from "@react-navigation/stack"
-import Theme from "../../style/Theme"
+import Theme from "../../style/theme"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import useColorScheme from "../../hooks/useColorScheme"
 

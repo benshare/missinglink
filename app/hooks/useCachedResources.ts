@@ -3,10 +3,10 @@ import * as Network from "expo-network"
 import { LocalStoreKey, LocalStoreService } from "../localStore"
 import { useEffect, useState } from "react"
 
-import { tokenRestored } from "../store/currentUser"
+import { signedIn } from "../store/currentUser"
 import { useDispatch } from "react-redux"
 
-// TODO: convert to a backend check
+// TODO: convert to a real check
 async function authorizeToken(token: string) {
 	return null
 }
@@ -23,26 +23,25 @@ export default function useCachedResources() {
 	}
 
 	const restoreToken = async () => {
-		let userToken: string | null
 		try {
-			userToken = await LocalStoreService.getKey(LocalStoreKey.userToken)
-			if (!userToken) {
+			var accessToken = await LocalStoreService.getKey(
+				LocalStoreKey.userToken
+			)
+			if (!accessToken) {
+				throw null
+			}
+			await authorizeToken(accessToken)
+			var phoneNumber = await LocalStoreService.getKey(
+				LocalStoreKey.phoneNumber
+			)
+			if (!phoneNumber) {
 				throw null
 			}
 		} catch {
 			setIsRestoring(false)
 			return
 		}
-		try {
-			await authorizeToken(userToken)
-		} catch {
-			setIsRestoring(false)
-			if (!__DEV__) {
-				LocalStoreService.clearKey(LocalStoreKey.userToken)
-			}
-			return
-		}
-		dispatch(tokenRestored(userToken))
+		dispatch(signedIn({ accessToken, phoneNumber }))
 	}
 
 	const isLoadingComplete = !isRestoring && networkConnected

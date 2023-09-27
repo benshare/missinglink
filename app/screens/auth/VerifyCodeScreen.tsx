@@ -3,20 +3,23 @@ import {
 	Keyboard,
 	StyleSheet,
 	Text,
+	TextInput,
 	TouchableOpacity,
 	View,
 } from "react-native"
+import { LocalStoreKey, LocalStoreService } from "../../localStore"
 import { useEffect, useRef, useState } from "react"
 
 import { AuthScreenProps } from "./AuthScreen"
 import { Input } from "react-native-elements"
 import { RootParamList } from "../../navigation"
 import { StackNavigationProp } from "@react-navigation/stack"
-import { TextInput } from "react-native-gesture-handler"
-import Theme from "../../style/Theme"
+import Theme from "../../style/theme"
 import _ from "lodash"
+import { signedIn } from "../../store/currentUser"
 import { supabase } from "../../supabase"
 import useColorScheme from "../../hooks/useColorScheme"
+import { useDispatch } from "react-redux"
 import { useNavigation } from "@react-navigation/native"
 
 export default function VerifyCodeScreen({
@@ -35,6 +38,8 @@ export default function VerifyCodeScreen({
 
 	const parentNavigator = useNavigation<StackNavigationProp<RootParamList>>()
 
+	const dispatch = useDispatch()
+
 	async function resendCode() {
 		setCode("")
 		setLoading(true)
@@ -52,19 +57,25 @@ export default function VerifyCodeScreen({
 	async function verifyCode() {
 		setLoading(true)
 		Keyboard.dismiss()
-		const { error } = await supabase.auth.verifyOtp({
+		const {
+			data: { session },
+			error,
+		} = await supabase.auth.verifyOtp({
 			phone: phoneNumber,
 			token: code,
 			type: "sms",
 		})
 		setLoading(false)
-		if (error) {
+		if (error || !session) {
 			console.log({ error })
 			inputRef.current?.focus()
 			setCode("")
 			return
 		}
+		LocalStoreService.setKey(LocalStoreKey.userToken, session.access_token)
+		dispatch(signedIn({ accessToken: session.access_token, phoneNumber }))
 		parentNavigator.push("LoggedInScreen")
+		navigation.pop()
 	}
 	useEffect(() => {
 		if (code.length === 6) {

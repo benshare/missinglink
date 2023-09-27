@@ -2,7 +2,7 @@ import { FlatList, StyleSheet } from "react-native"
 
 import Header from "../../../components/Header"
 import PackPreview from "./PackPreview"
-import Theme from "../../../style/Theme"
+import Theme from "../../../style/theme"
 import useColorScheme from "../../../hooks/useColorScheme"
 
 export default function PastPuzzlesScreen() {
