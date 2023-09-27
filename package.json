@@ -1,7 +1,7 @@
 {
-	"name": "demo",
+	"name": "missinglink",
 	"version": "1.0.0",
-	"description": "Base app for future usage",
+	"description": "Missing link word game",
 	"license": "UNLICENSED",
 	"private": true,
 	"workspaces": [

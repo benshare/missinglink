@@ -21,7 +21,7 @@ export default function LoggedInScreen({
 			<TouchableOpacity
 				onPress={() => {
 					dispatch({ type: "LOGOUT" })
-					navigation.navigate("CreateAccountScreen")
+					navigation.navigate("AuthScreen")
 					LocalStoreService.clearKey(LocalStoreKey.userToken)
 				}}
 			>

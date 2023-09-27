@@ -3,7 +3,7 @@ import * as SplashScreen from "expo-splash-screen"
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native"
 import { StackScreenProps, createStackNavigator } from "@react-navigation/stack"
 
-import CreateAccountScreen from "../screens/CreateAccountScreen"
+import AuthScreen from "../screens/AuthScreen"
 import LoggedInScreen from "../screens/LoggedInScreen"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import Theme from "../style/Theme"
@@ -14,7 +14,7 @@ import useColorScheme from "../hooks/useColorScheme"
 import { useSelector } from "react-redux"
 
 export type RootParamList = {
-	CreateAccountScreen: undefined
+	AuthScreen: undefined
 	LoggedInScreen: undefined
 }
 export type RootScreenProps<Screen extends keyof RootParamList> =
@@ -30,14 +30,9 @@ function RootScreen() {
 				animationEnabled: false,
 				headerShown: false,
 			}}
-			initialRouteName={
-				signedIn ? "LoggedInScreen" : "CreateAccountScreen"
-			}
+			initialRouteName={signedIn ? "LoggedInScreen" : "AuthScreen"}
 		>
-			<RootStack.Screen
-				name="CreateAccountScreen"
-				component={CreateAccountScreen}
-			/>
+			<RootStack.Screen name="AuthScreen" component={AuthScreen} />
 			<RootStack.Screen
 				name="LoggedInScreen"
 				component={LoggedInScreen}

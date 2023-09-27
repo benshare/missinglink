@@ -1,23 +1,23 @@
 import { AnyAction, combineReducers, configureStore } from "@reduxjs/toolkit"
-
-import { currentUserSlice } from "./currentUser"
+import { CurrentUserState, currentUserSlice } from "./currentUser"
+import { DailyPuzzlesState, dailyPuzzlesSlice } from "./puzzles"
 
 const reducers = {
 	currentUser: currentUserSlice.reducer,
+	dailyPuzzles: dailyPuzzlesSlice.reducer,
 }
 const appReducer = combineReducers(reducers)
 
 export type RootState = {
-	currentUser: {
-		signedIn: boolean
-		userAccessToken: string | undefined
-	}
+	currentUser: CurrentUserState
+	dailyPuzzles: DailyPuzzlesState
 }
 const baseData: RootState = {
 	currentUser: {
 		signedIn: false,
 		userAccessToken: undefined,
 	},
+	dailyPuzzles: {},
 }
 const rootReducer = (state: any, action: AnyAction) => {
 	if (action.type === "LOGOUT") {
@@ -33,3 +33,7 @@ export const store = configureStore<RootState>({
 // }
 
 export const selectCurrentUser = (state: RootState) => state.currentUser
+export const selectPuzzlesDates = (state: RootState) =>
+	Object.keys(state.dailyPuzzles)
+export const selectDailyPuzzle = (state: RootState, date: string) =>
+	state.dailyPuzzles[date]

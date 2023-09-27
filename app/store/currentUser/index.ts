@@ -3,7 +3,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 type ActionPayload = {
 	signIn: string
 }
-type CurrentUserState = {
+export type CurrentUserState = {
 	signedIn: boolean
 	userAccessToken: string | undefined
 }

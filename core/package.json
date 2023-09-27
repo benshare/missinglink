@@ -1,0 +1,11 @@
+{
+	"name": "core",
+	"version": "1.0.0",
+	"main": "index.ts",
+	"scripts": {
+		"build": "tsc -p tsconfig.json",
+		"copy": "copyfiles './**/*' -e '**/*.ts' -e 'node_modules/**/*' -e 'build/**/*' build"
+	},
+	"license": "UNLICENSED",
+	"dependencies": {}
+}
