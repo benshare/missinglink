@@ -3,7 +3,7 @@ import * as SplashScreen from "expo-splash-screen"
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native"
 import { StackScreenProps, createStackNavigator } from "@react-navigation/stack"
 
-import AuthScreen from "../screens/AuthScreen"
+import AuthScreen from "../screens/auth/AuthScreen"
 import LoggedInScreen from "../screens/LoggedInScreen"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import Theme from "../style/Theme"

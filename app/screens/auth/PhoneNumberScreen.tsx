@@ -7,32 +7,35 @@ import {
 } from "react-native"
 import { useRef, useState } from "react"
 
-import { Input } from "react-native-elements"
+import { AuthScreenProps } from "./AuthScreen"
 import PhoneInput from "react-native-phone-number-input"
-import { RootScreenProps } from "../navigation"
-import Theme from "../style/Theme"
-import { supabase } from "../supabase"
-import useColorScheme from "../hooks/useColorScheme"
+import Theme from "../../style/Theme"
+import { supabase } from "../../supabase"
+import useColorScheme from "../../hooks/useColorScheme"
 
-export default function AuthScreen({
+export default function PhoneNumberScreen({
 	navigation,
-}: RootScreenProps<"AuthScreen">) {
+}: AuthScreenProps<"PhoneNumberScreen">) {
 	const theme = useColorScheme()
 	const style = styles(Theme[theme])
 
 	const phoneInputRef = useRef<PhoneInput>(null)
-	const [numberRaw, setNumberRaw] = useState("4155426323")
-	const [numberFormatted, setNumberFormatted] = useState("4155426323")
+	const [numberFormatted, setNumberFormatted] = useState("")
 	const [isValid, setIsValid] = useState(false)
 
 	const [loading, setLoading] = useState(false)
 
 	async function signIn() {
 		setLoading(true)
-		const { error, data } = await supabase.auth.signInWithOtp({
+		const { error } = await supabase.auth.signInWithOtp({
 			phone: numberFormatted!,
 		})
-		console.log({ data, error })
+		setLoading(false)
+		if (error) {
+			console.log({ error })
+			return
+		}
+		navigation.push("VerifyCodeScreen", { phoneNumber: numberFormatted })
 	}
 
 	return (
@@ -50,7 +53,6 @@ export default function AuthScreen({
 				defaultCode="US"
 				layout="second"
 				onChangeText={(newValue) => {
-					setNumberRaw(newValue)
 					setIsValid(phoneInputRef.current!.isValidNumber(newValue))
 				}}
 				onChangeFormattedText={(newValue) => {
