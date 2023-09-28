@@ -5,8 +5,7 @@
 	"license": "UNLICENSED",
 	"private": true,
 	"workspaces": [
-		"app",
-		"core"
+		"app"
 	],
 	"scripts": {
 		"app": "yarn workspace app run local",

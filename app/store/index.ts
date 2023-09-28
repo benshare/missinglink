@@ -1,22 +1,26 @@
 import { AnyAction, combineReducers, configureStore } from "@reduxjs/toolkit"
 import { CurrentUserState, currentUserSlice } from "./currentUser"
-import { DailyPuzzlesState, dailyPuzzlesSlice } from "./puzzles"
+import { PacksState, packsSlice } from "./packs"
+import { PuzzlesState, puzzlesSlice } from "./puzzles"
 
 const reducers = {
 	currentUser: currentUserSlice.reducer,
-	dailyPuzzles: dailyPuzzlesSlice.reducer,
+	puzzles: puzzlesSlice.reducer,
+	packs: packsSlice.reducer,
 }
 const appReducer = combineReducers(reducers)
 
 export type RootState = {
 	currentUser: CurrentUserState
-	dailyPuzzles: DailyPuzzlesState
+	puzzles: PuzzlesState
+	packs: PacksState
 }
 const baseData: RootState = {
 	currentUser: {
 		signedIn: false,
 	},
-	dailyPuzzles: {},
+	puzzles: {},
+	packs: [],
 }
 const rootReducer = (state: any, action: AnyAction) => {
 	if (action.type === "LOGOUT") {
@@ -43,7 +47,15 @@ export const selectCurrentUser = ({
 	accessToken: accessToken!,
 })
 
-export const selectPuzzlesDates = (state: RootState) =>
-	Object.keys(state.dailyPuzzles)
-export const selectDailyPuzzle = (state: RootState, date: string) =>
-	state.dailyPuzzles[date]
+export const selectPacks = ({ packs }: RootState) => packs
+export const selectPack =
+	(id: number) =>
+	({ packs }: RootState) =>
+		packs.find(({ id: packId }) => id === packId)!
+export const selectCurrentPackId = ({ packs }: RootState) =>
+	packs.length > 0 ? packs[packs.length - 1].id : null
+
+export const selectPuzzle =
+	(id: number) =>
+	({ puzzles }: RootState) =>
+		puzzles[id]

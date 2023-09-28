@@ -7,11 +7,14 @@ import PastPuzzlesScreen from "./pastPuzzles/PastPuzzlesScreen"
 import { StackScreenProps } from "@react-navigation/stack"
 import Theme from "../../style/theme"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { selectCurrentPackId } from "../../store"
 import useColorScheme from "../../hooks/useColorScheme"
+import { useInitialLoad } from "../../api/initialLoad"
+import { useSelector } from "react-redux"
 
 export type LoggedInScreenParamList = {
 	Home: undefined
-	PackScreen: { id: string }
+	PackScreen: { id: number }
 	PastPuzzlesScreen: undefined
 	AccountScreen: undefined
 }
@@ -24,12 +27,16 @@ function Home({ navigation }: LoggedInScreenProps<"Home">) {
 	const theme = useColorScheme()
 	const style = styles(Theme[theme])
 
+	const currentId = useSelector(selectCurrentPackId)
+
 	return (
 		<View style={style.wrapper}>
 			<Header title="Missing Link" />
 			<TouchableOpacity
 				style={style.button}
-				onPress={() => navigation.push("PackScreen", { id: "Week 12" })}
+				onPress={() =>
+					navigation.push("PackScreen", { id: currentId! })
+				}
 			>
 				<Text style={style.buttonText}>Play</Text>
 			</TouchableOpacity>
@@ -50,6 +57,8 @@ function Home({ navigation }: LoggedInScreenProps<"Home">) {
 }
 
 export default function LoggedInScreen() {
+	useInitialLoad()
+
 	return (
 		<Stack.Navigator
 			screenOptions={{

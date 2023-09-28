@@ -3,28 +3,23 @@ import { FlatList, StyleSheet } from "react-native"
 import Header from "../../../components/Header"
 import PackPreview from "./PackPreview"
 import Theme from "../../../style/theme"
+import { selectPacks } from "../../../store"
 import useColorScheme from "../../../hooks/useColorScheme"
+import { useSelector } from "react-redux"
 
 export default function PastPuzzlesScreen() {
 	const theme = useColorScheme()
 	const style = styles(Theme[theme])
 
-	const puzzleTitles = [
-		"Week 1",
-		"Week 2",
-		"Week 3",
-		"Week 4",
-		"Week 5",
-		"Week 6",
-	]
+	const packs = useSelector(selectPacks)
 	return (
 		<FlatList
 			style={style.wrapper}
 			ListHeaderComponent={
 				<Header title="Weekly challenges" titleSize={30} backIcon />
 			}
-			data={puzzleTitles}
-			renderItem={({ item: title }) => <PackPreview {...{ title }} />}
+			data={packs}
+			renderItem={({ item: pack }) => <PackPreview {...pack} />}
 			numColumns={2}
 			columnWrapperStyle={{
 				justifyContent: "space-between",

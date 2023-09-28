@@ -1,12 +1,18 @@
 import { StyleSheet, Text, TouchableOpacity } from "react-native"
 
 import { LoggedInScreenParamList } from "../LoggedInScreen"
+import { PuzzlePack } from "../../../types/puzzle"
 import { StackNavigationProp } from "@react-navigation/stack"
 import Theme from "../../../style/theme"
 import useColorScheme from "../../../hooks/useColorScheme"
 import { useNavigation } from "@react-navigation/native"
 
-export default function PackPreview({ title }: { title: string }) {
+export default function PackPreview({
+	id,
+	title,
+	progress,
+	puzzles,
+}: PuzzlePack) {
 	const theme = useColorScheme()
 	const style = styles(Theme[theme])
 
@@ -16,9 +22,11 @@ export default function PackPreview({ title }: { title: string }) {
 	return (
 		<TouchableOpacity
 			style={style.wrapper}
-			onPress={() => navigation.push("PackScreen", { id: title })}
+			onPress={() => navigation.push("PackScreen", { id })}
 		>
 			<Text style={style.text}>{title}</Text>
+			<Text style={style.text}>Status: {progress.status}</Text>
+			<Text style={style.text}>Num puzzles: {puzzles.length}</Text>
 		</TouchableOpacity>
 	)
 }

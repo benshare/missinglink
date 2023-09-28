@@ -7,7 +7,7 @@ import AuthScreen from "../screens/auth/AuthScreen"
 import LoggedInScreen from "../screens/loggedIn/LoggedInScreen"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import Theme from "../style/theme"
-import { selectCurrentUser } from "../store"
+import { selectIsSignedIn } from "../store"
 import useCachedResources from "../hooks/useCachedResources"
 import { useCallback } from "react"
 import useColorScheme from "../hooks/useColorScheme"
@@ -22,7 +22,7 @@ export type RootScreenProps<Screen extends keyof RootParamList> =
 const RootStack = createStackNavigator<RootParamList>()
 
 function RootScreen() {
-	const { signedIn } = useSelector(selectCurrentUser)
+	const signedIn = useSelector(selectIsSignedIn)
 
 	return (
 		<RootStack.Navigator

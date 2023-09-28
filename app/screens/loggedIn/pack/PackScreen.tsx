@@ -7,11 +7,13 @@ import PuzzleScreen from "./puzzle/PuzzleScreen"
 import { StackScreenProps } from "@react-navigation/stack"
 import Theme from "../../../style/theme"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { selectPack } from "../../../store"
 import useColorScheme from "../../../hooks/useColorScheme"
+import { useSelector } from "react-redux"
 
 export type PackParamList = {
-	Pack: { id: string }
-	PuzzleScreen: { id: string }
+	Pack: { id: number }
+	PuzzleScreen: { id: number }
 }
 
 const Stack = createNativeStackNavigator<PackParamList>()
@@ -23,22 +25,14 @@ function Pack({ route }: PackScreenProps<"Pack">) {
 	const style = styles(Theme[theme])
 
 	const { id } = route.params
+	const { title, puzzles } = useSelector(selectPack(id))
 
-	const puzzleTitles = [
-		"Monday",
-		"Tuesday",
-		"Wednesday",
-		"Thursday",
-		"Friday",
-		"Saturday",
-		"Sunday",
-	]
 	return (
 		<FlatList
 			style={style.wrapper}
-			ListHeaderComponent={<Header title={id} backIcon />}
-			data={puzzleTitles}
-			renderItem={({ item: title }) => <PuzzlePreview {...{ title }} />}
+			ListHeaderComponent={<Header title={title} backIcon />}
+			data={puzzles}
+			renderItem={({ item: id }) => <PuzzlePreview {...{ id }} />}
 			numColumns={2}
 			columnWrapperStyle={{
 				justifyContent: "space-between",

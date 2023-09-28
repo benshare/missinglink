@@ -1,23 +1,28 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { StyleSheet, Text, TouchableOpacity } from "react-native"
 
 import { PackParamList } from "./PackScreen"
 import { StackNavigationProp } from "@react-navigation/stack"
 import Theme from "../../../style/theme"
+import { selectPuzzle } from "../../../store"
 import useColorScheme from "../../../hooks/useColorScheme"
 import { useNavigation } from "@react-navigation/native"
+import { useSelector } from "react-redux"
 
-export default function PuzzlePreview({ title }: { title: string }) {
+export default function PuzzlePreview({ id }: { id: number }) {
 	const theme = useColorScheme()
 	const style = styles(Theme[theme])
+
+	const { title, data } = useSelector(selectPuzzle(id))
 
 	const navigation = useNavigation<StackNavigationProp<PackParamList>>()
 
 	return (
 		<TouchableOpacity
 			style={style.wrapper}
-			onPress={() => navigation.push("PuzzleScreen", { id: title })}
+			onPress={() => navigation.push("PuzzleScreen", { id })}
 		>
 			<Text style={style.text}>{title}</Text>
+			<Text style={style.text}>{JSON.stringify(data)}</Text>
 		</TouchableOpacity>
 	)
 }

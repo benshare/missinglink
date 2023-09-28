@@ -9,9 +9,9 @@ import { useRef, useState } from "react"
 
 import { AuthScreenProps } from "./AuthScreen"
 import PhoneInput from "react-native-phone-number-input"
-import Theme from "../../style/theme"
-import { supabase } from "../../api/supabase/supabase"
-import useColorScheme from "../../hooks/useColorScheme"
+import Theme from "app/style/theme"
+import { supabase } from "app/api/supabase"
+import useColorScheme from "app/hooks/useColorScheme"
 
 export default function PhoneNumberScreen({
 	navigation,

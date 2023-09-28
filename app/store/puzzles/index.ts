@@ -1,19 +1,19 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 
-import { PuzzlePack } from "core"
+import { Puzzle } from "../../types/puzzle"
 
-export type DailyPuzzlesState = {
-	[key in string]: PuzzlePack
+export type PuzzlesState = {
+	[key in number]: Puzzle
 }
 type ActionPayload = {
-	batchAdd: DailyPuzzlesState
+	batchAdd: PuzzlesState
 }
 
-export const dailyPuzzlesSlice = createSlice({
-	name: "dailyPuzzle",
-	initialState: {} as DailyPuzzlesState,
+export const puzzlesSlice = createSlice({
+	name: "puzzles",
+	initialState: {} as PuzzlesState,
 	reducers: {
-		initialLoad: (
+		batchAdd: (
 			_,
 			{ payload: packs }: PayloadAction<ActionPayload["batchAdd"]>
 		) => {
@@ -22,4 +22,4 @@ export const dailyPuzzlesSlice = createSlice({
 	},
 })
 
-export const { initialLoad } = dailyPuzzlesSlice.actions
+export const { batchAdd } = puzzlesSlice.actions

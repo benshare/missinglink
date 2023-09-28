@@ -8,24 +8,22 @@ export type PuzzleData = {
 		solution: string
 	}
 }
-
 export type Puzzle = {
-	id: string
+	id: number
 	title: string
 	type: PuzzleType
 	data: PuzzleData
 }
 
 export enum PackStatus {
-	locked,
-	inProgress,
-	complete,
+	locked = "locked",
+	inProgress = "inProgress",
+	complete = "complete",
 }
-
 export type PuzzlePack = {
-	id: string
+	id: number
 	title: string
-	puzzles: Puzzle[]
+	puzzles: number[]
 	progress: {
 		status: PackStatus
 		nextPuzzle: number
