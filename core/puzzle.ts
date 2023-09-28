@@ -1,5 +1,5 @@
 export enum PuzzleType {
-	standard,
+	standard = "standard",
 }
 export type PuzzleData = {
 	[PuzzleType.standard]: {

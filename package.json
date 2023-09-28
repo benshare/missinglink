@@ -9,7 +9,8 @@
 		"core"
 	],
 	"scripts": {
-		"app": "yarn workspace app run local"
+		"app": "yarn workspace app run local",
+		"update-types": "npx supabase gen types typescript --project-id \"dkkentcrclzlonjnsunx\" > app/supabase/types.ts"
 	},
 	"dependencies": {
 		"cross-env": "^7.0.3",
