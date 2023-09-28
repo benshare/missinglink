@@ -39,13 +39,10 @@ export function signOut() {
 export const selectIsSignedIn = ({ currentUser: { signedIn } }: RootState) =>
 	signedIn
 // This should be called from screens accessible only when signed in
-export const selectCurrentUser = ({
-	currentUser: { phoneNumber, accessToken },
-}: RootState) => ({
-	signedIn: true,
-	phoneNumber: phoneNumber!,
-	accessToken: accessToken!,
-})
+export const selectCurrentUser = {
+	accessToken: ({ currentUser: { accessToken } }: RootState) => accessToken,
+	phoneNumber: ({ currentUser: { phoneNumber } }: RootState) => phoneNumber,
+}
 
 export const selectPacks = ({ packs }: RootState) => packs
 export const selectPack =

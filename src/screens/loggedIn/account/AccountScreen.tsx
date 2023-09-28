@@ -13,7 +13,7 @@ export default function AccountScreen() {
 	const theme = useColorScheme()
 	const style = styles(Theme[theme])
 
-	const { phoneNumber } = useSelector(selectCurrentUser)
+	const phoneNumber = useSelector(selectCurrentUser.phoneNumber)
 
 	const parentNavigator = useNavigation<StackNavigationProp<RootParamList>>()
 

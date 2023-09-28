@@ -1,7 +1,7 @@
-import { PacksState, batchAdd as batchAddPacks } from "app/store/packs"
-import { PuzzlesState, batchAdd as batchAddPuzzles } from "app/store/puzzles"
+import { PacksState, batchAdd as batchAddPacks } from "../store/packs"
+import { PuzzlesState, batchAdd as batchAddPuzzles } from "../store/puzzles"
 
-import { PackStatus } from "app/types/puzzle"
+import { PackStatus } from "../types/puzzle"
 import { supabase } from "./supabase"
 import { useDispatch } from "react-redux"
 
@@ -24,7 +24,7 @@ export async function useInitialLoad() {
 		.select("*")
 
 	if (packsError || puzzlesError) {
-		console.log(packsError?.message ?? puzzlesError?.message)
+		console.error(packsError?.message ?? puzzlesError?.message)
 		return
 	}
 

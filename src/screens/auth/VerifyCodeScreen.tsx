@@ -50,7 +50,7 @@ export default function VerifyCodeScreen({
 		setLoading(false)
 		inputRef.current?.focus()
 		if (error) {
-			console.log({ error })
+			console.error({ error })
 			return
 		}
 	}
@@ -67,12 +67,13 @@ export default function VerifyCodeScreen({
 		})
 		setLoading(false)
 		if (error || !session) {
-			console.log({ error })
+			console.error({ error })
 			inputRef.current?.focus()
 			setCode("")
 			return
 		}
 		LocalStoreService.setKey(LocalStoreKey.userToken, session.access_token)
+		LocalStoreService.setKey(LocalStoreKey.phoneNumber, phoneNumber)
 		dispatch(signedIn({ accessToken: session.access_token, phoneNumber }))
 		parentNavigator.push("LoggedInScreen")
 		navigation.pop()

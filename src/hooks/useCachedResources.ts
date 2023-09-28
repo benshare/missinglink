@@ -15,7 +15,7 @@ export default function useCachedResources() {
 	const dispatch = useDispatch()
 
 	const [networkConnected, setNetworkConnected] = useState(false)
-	const [isRestoring, setIsRestoring] = useState(false)
+	const [isRestoring, setIsRestoring] = useState(true)
 
 	async function getNetworkState() {
 		const { isInternetReachable } = await Network.getNetworkStateAsync()
@@ -24,24 +24,24 @@ export default function useCachedResources() {
 
 	const restoreToken = async () => {
 		try {
-			var accessToken = await LocalStoreService.getKey(
+			const accessToken = await LocalStoreService.getKey(
 				LocalStoreKey.userToken
 			)
 			if (!accessToken) {
 				throw null
 			}
 			await authorizeToken(accessToken)
-			var phoneNumber = await LocalStoreService.getKey(
+			const phoneNumber = await LocalStoreService.getKey(
 				LocalStoreKey.phoneNumber
 			)
 			if (!phoneNumber) {
 				throw null
 			}
+			dispatch(signedIn({ accessToken, phoneNumber }))
 		} catch {
+		} finally {
 			setIsRestoring(false)
-			return
 		}
-		dispatch(signedIn({ accessToken, phoneNumber }))
 	}
 
 	const isLoadingComplete = !isRestoring && networkConnected
