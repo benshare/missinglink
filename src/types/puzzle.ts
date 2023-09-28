@@ -29,3 +29,29 @@ export type PuzzlePack = {
 		nextPuzzle: number
 	}
 }
+
+export enum DayOfWeek {
+	monday,
+	tuesday,
+	wednesday,
+	thursday,
+	friday,
+	saturday,
+	sunday,
+}
+export const DayOfWeekText = {
+	[DayOfWeek.monday]: "Monday",
+	[DayOfWeek.tuesday]: "Tuesday",
+	[DayOfWeek.wednesday]: "Wednesday",
+	[DayOfWeek.thursday]: "Thursday",
+	[DayOfWeek.friday]: "Friday",
+	[DayOfWeek.saturday]: "Saturday",
+	[DayOfWeek.sunday]: "Sunday",
+}
+
+export type WeeklyChallenge = {
+	id: number
+	title: string
+	packs: { day: DayOfWeek; pack: number }[]
+	status: PackStatus
+}

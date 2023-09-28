@@ -1,21 +1,23 @@
 import { StyleSheet, View } from "react-native"
 
 import Header from "../../../../components/Header"
-import { PackScreenProps } from "../PackScreen"
 import Theme from "../../../../style/theme"
+import { WeekScreenProps } from "../WeekScreen"
+import { selectPack } from "../../../../store"
 import useColorScheme from "../../../../hooks/useColorScheme"
+import { useSelector } from "react-redux"
 
-export default function PuzzleScreen({
-	route,
-}: PackScreenProps<"PuzzleScreen">) {
+export default function PackScreen({ route }: WeekScreenProps<"PackScreen">) {
 	const theme = useColorScheme()
 	const style = styles(Theme[theme])
 
 	const { id } = route.params
+	const { title, puzzles } = useSelector(selectPack(id))
 
 	return (
 		<View style={style.wrapper}>
-			<Header title={`Puzzle ${id}`} backIcon />
+			<Header title={`Pack ${title}`} backIcon />
+			<Header title={`Puzzles: ${puzzles.length}`} backIcon />
 		</View>
 	)
 }

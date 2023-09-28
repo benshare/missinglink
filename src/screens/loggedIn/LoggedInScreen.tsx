@@ -1,21 +1,21 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 
 import AccountScreen from "./account/AccountScreen"
+import AllWeeksScreen from "./allWeeks/AllWeeksScreen"
 import Header from "../../components/Header"
-import PackScreen from "./pack/PackScreen"
-import PastPuzzlesScreen from "./pastPuzzles/PastPuzzlesScreen"
 import { StackScreenProps } from "@react-navigation/stack"
 import Theme from "../../style/theme"
+import WeekScreen from "./week/WeekScreen"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { selectCurrentPackId } from "../../store"
+import { selectCurrentWeek } from "../../store"
 import useColorScheme from "../../hooks/useColorScheme"
 import { useInitialLoad } from "../../api/initialLoad"
 import { useSelector } from "react-redux"
 
 export type LoggedInScreenParamList = {
 	Home: undefined
-	PackScreen: { id: number }
-	PastPuzzlesScreen: undefined
+	WeekScreen: { id: number }
+	AllWeeksScreen: undefined
 	AccountScreen: undefined
 }
 
@@ -27,7 +27,7 @@ function Home({ navigation }: LoggedInScreenProps<"Home">) {
 	const theme = useColorScheme()
 	const style = styles(Theme[theme])
 
-	const currentId = useSelector(selectCurrentPackId)
+	const currentId = useSelector(selectCurrentWeek)
 
 	return (
 		<View style={style.wrapper}>
@@ -35,14 +35,14 @@ function Home({ navigation }: LoggedInScreenProps<"Home">) {
 			<TouchableOpacity
 				style={style.button}
 				onPress={() =>
-					navigation.push("PackScreen", { id: currentId! })
+					navigation.push("WeekScreen", { id: currentId! })
 				}
 			>
 				<Text style={style.buttonText}>Play</Text>
 			</TouchableOpacity>
 			<TouchableOpacity
 				style={style.button}
-				onPress={() => navigation.push("PastPuzzlesScreen")}
+				onPress={() => navigation.push("AllWeeksScreen")}
 			>
 				<Text style={style.buttonText}>Past Puzzles</Text>
 			</TouchableOpacity>
@@ -67,11 +67,8 @@ export default function LoggedInScreen() {
 			}}
 		>
 			<Stack.Screen name="Home" component={Home} />
-			<Stack.Screen name="PackScreen" component={PackScreen} />
-			<Stack.Screen
-				name="PastPuzzlesScreen"
-				component={PastPuzzlesScreen}
-			/>
+			<Stack.Screen name="WeekScreen" component={WeekScreen} />
+			<Stack.Screen name="AllWeeksScreen" component={AllWeeksScreen} />
 			<Stack.Screen name="AccountScreen" component={AccountScreen} />
 		</Stack.Navigator>
 	)

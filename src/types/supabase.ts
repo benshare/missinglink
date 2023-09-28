@@ -14,18 +14,28 @@ export interface Database {
 					created_at: string
 					id: number
 					title: string
+					week: number | null
 				}
 				Insert: {
 					created_at?: string
 					id?: number
 					title: string
+					week?: number | null
 				}
 				Update: {
 					created_at?: string
 					id?: number
 					title?: string
+					week?: number | null
 				}
-				Relationships: []
+				Relationships: [
+					{
+						foreignKeyName: "packs_week_fkey"
+						columns: ["week"]
+						referencedRelation: "weekly_challenges"
+						referencedColumns: ["id"]
+					}
+				]
 			}
 			profiles: {
 				Row: {
@@ -138,18 +148,41 @@ export interface Database {
 					}
 				]
 			}
+			weekly_challenges: {
+				Row: {
+					id: number
+					week_number: number
+				}
+				Insert: {
+					id?: number
+					week_number: number
+				}
+				Update: {
+					id?: number
+					week_number?: number
+				}
+				Relationships: []
+			}
 		}
 		Views: {
 			[_ in never]: never
 		}
 		Functions: {
-			[_ in never]: never
+			get_weekly_challenges: {
+				Args: Record<PropertyKey, never>
+				Returns: Database["public"]["CompositeTypes"]["week_return_type"][]
+			}
 		}
 		Enums: {
 			[_ in never]: never
 		}
 		CompositeTypes: {
-			[_ in never]: never
+			week_return_type: {
+				id: number
+				week_number: number
+				packs: number[]
+				statuses: string[]
+			}
 		}
 	}
 }

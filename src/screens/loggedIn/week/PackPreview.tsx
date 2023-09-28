@@ -1,28 +1,30 @@
+import { DayOfWeek, DayOfWeekText } from "../../../types/puzzle"
 import { StyleSheet, Text, TouchableOpacity } from "react-native"
 
-import { PackParamList } from "./PackScreen"
 import { StackNavigationProp } from "@react-navigation/stack"
 import Theme from "../../../style/theme"
-import { selectPuzzle } from "../../../store"
+import { WeekParamList } from "./WeekScreen"
 import useColorScheme from "../../../hooks/useColorScheme"
 import { useNavigation } from "@react-navigation/native"
-import { useSelector } from "react-redux"
 
-export default function PuzzlePreview({ id }: { id: number }) {
+export default function PackPreview({
+	id,
+	day,
+}: {
+	id: number
+	day: DayOfWeek
+}) {
 	const theme = useColorScheme()
 	const style = styles(Theme[theme])
 
-	const { title, data } = useSelector(selectPuzzle(id))
-
-	const navigation = useNavigation<StackNavigationProp<PackParamList>>()
+	const navigation = useNavigation<StackNavigationProp<WeekParamList>>()
 
 	return (
 		<TouchableOpacity
 			style={style.wrapper}
-			onPress={() => navigation.push("PuzzleScreen", { id })}
+			onPress={() => navigation.push("PackScreen", { id })}
 		>
-			<Text style={style.text}>{title}</Text>
-			<Text style={style.text}>{JSON.stringify(data)}</Text>
+			<Text style={style.text}>{DayOfWeekText[day]}</Text>
 		</TouchableOpacity>
 	)
 }

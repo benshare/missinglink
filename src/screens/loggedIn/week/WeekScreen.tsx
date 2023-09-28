@@ -2,37 +2,39 @@ import { FlatList, StyleSheet } from "react-native"
 
 import Header from "../../../components/Header"
 import { LoggedInScreenProps } from "../LoggedInScreen"
-import PuzzlePreview from "./PuzzlePreview"
-import PuzzleScreen from "./puzzle/PuzzleScreen"
+import PackPreview from "./PackPreview"
+import PackScreen from "./pack/PackScreen"
 import { StackScreenProps } from "@react-navigation/stack"
 import Theme from "../../../style/theme"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { selectPack } from "../../../store"
+import { selectWeek } from "../../../store"
 import useColorScheme from "../../../hooks/useColorScheme"
 import { useSelector } from "react-redux"
 
-export type PackParamList = {
-	Pack: { id: number }
-	PuzzleScreen: { id: number }
+export type WeekParamList = {
+	Week: { id: number }
+	PackScreen: { id: number }
 }
 
-const Stack = createNativeStackNavigator<PackParamList>()
-export type PackScreenProps<Screen extends keyof PackParamList> =
-	StackScreenProps<PackParamList, Screen>
+const Stack = createNativeStackNavigator<WeekParamList>()
+export type WeekScreenProps<Screen extends keyof WeekParamList> =
+	StackScreenProps<WeekParamList, Screen>
 
-function Pack({ route }: PackScreenProps<"Pack">) {
+function Week({ route }: WeekScreenProps<"Week">) {
 	const theme = useColorScheme()
 	const style = styles(Theme[theme])
 
 	const { id } = route.params
-	const { title, puzzles } = useSelector(selectPack(id))
+	const { title, packs } = useSelector(selectWeek(id))
 
 	return (
 		<FlatList
 			style={style.wrapper}
 			ListHeaderComponent={<Header title={title} backIcon />}
-			data={puzzles}
-			renderItem={({ item: id }) => <PuzzlePreview {...{ id }} />}
+			data={packs}
+			renderItem={({ item: { day, pack } }) => (
+				<PackPreview {...{ day, id: pack }} />
+			)}
 			numColumns={2}
 			columnWrapperStyle={{
 				justifyContent: "space-between",
@@ -42,9 +44,9 @@ function Pack({ route }: PackScreenProps<"Pack">) {
 	)
 }
 
-export default function PackScreen({
+export default function WeekScreen({
 	route,
-}: LoggedInScreenProps<"PackScreen">) {
+}: LoggedInScreenProps<"WeekScreen">) {
 	const { id } = route.params
 	return (
 		<Stack.Navigator
@@ -53,8 +55,8 @@ export default function PackScreen({
 				gestureEnabled: true,
 			}}
 		>
-			<Stack.Screen name="Pack" component={Pack} initialParams={{ id }} />
-			<Stack.Screen name="PuzzleScreen" component={PuzzleScreen} />
+			<Stack.Screen name="Week" component={Week} initialParams={{ id }} />
+			<Stack.Screen name="PackScreen" component={PackScreen} />
 		</Stack.Navigator>
 	)
 }
