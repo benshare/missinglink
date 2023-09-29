@@ -1,3 +1,4 @@
+import { LocalStoreKey, LocalStoreService } from "../../../localStore"
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { selectCurrentUser, signOut } from "../../../store"
 
@@ -19,6 +20,8 @@ export default function AccountScreen() {
 
 	const handleSignOut = () => {
 		signOut()
+		LocalStoreService.clearKey(LocalStoreKey.userToken)
+		LocalStoreService.clearKey(LocalStoreKey.phoneNumber)
 		parentNavigator.navigate("AuthScreen")
 	}
 

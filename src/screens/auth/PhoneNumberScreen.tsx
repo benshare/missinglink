@@ -5,13 +5,13 @@ import {
 	TouchableOpacity,
 	View,
 } from "react-native"
-import { useRef, useState } from "react"
 
 import { AuthScreenProps } from "./AuthScreen"
-import PhoneInput from "react-native-phone-number-input"
+import PhoneNumberInput from "../../components/PhoneNumberInput"
 import Theme from "../../style/theme"
 import { supabase } from "../../api/supabase"
 import useColorScheme from "../../hooks/useColorScheme"
+import { useState } from "react"
 
 export default function PhoneNumberScreen({
 	navigation,
@@ -19,23 +19,23 @@ export default function PhoneNumberScreen({
 	const theme = useColorScheme()
 	const style = styles(Theme[theme])
 
-	const phoneInputRef = useRef<PhoneInput>(null)
-	const [numberFormatted, setNumberFormatted] = useState("")
+	const [number, setNumber] = useState("")
 	const [isValid, setIsValid] = useState(false)
 
 	const [loading, setLoading] = useState(false)
 
 	async function signIn() {
 		setLoading(true)
+		const formatted = `+1${number}`
 		const { error } = await supabase.auth.signInWithOtp({
-			phone: numberFormatted!,
+			phone: formatted!,
 		})
 		setLoading(false)
 		if (error) {
 			console.error({ error })
 			return
 		}
-		navigation.push("VerifyCodeScreen", { phoneNumber: numberFormatted })
+		navigation.push("VerifyCodeScreen", { phoneNumber: formatted })
 	}
 
 	return (
@@ -47,20 +47,13 @@ export default function PhoneNumberScreen({
 				alignItems: "center",
 			}}
 		>
-			<PhoneInput
-				ref={phoneInputRef}
-				defaultValue={numberFormatted}
-				defaultCode="US"
-				layout="second"
-				onChangeText={(newValue) => {
-					setIsValid(phoneInputRef.current!.isValidNumber(newValue))
-				}}
-				onChangeFormattedText={(newValue) => {
-					setNumberFormatted(newValue)
-				}}
-				withShadow
+			<PhoneNumberInput
+				value={number}
+				onChangeText={setNumber}
 				autoFocus
-				disabled={loading}
+				style={[style.input, number.length === 0 && { color: "gray" }]}
+				setIsValid={setIsValid}
+				editable={!loading}
 			/>
 			<TouchableOpacity
 				onPress={signIn}
@@ -83,6 +76,11 @@ export default function PhoneNumberScreen({
 
 const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 	StyleSheet.create({
+		input: {
+			minWidth: 100,
+			textAlign: "center",
+			fontSize: 38,
+		},
 		button: {
 			marginTop: 50,
 			borderColor: theme.colors.primary.lighter,
