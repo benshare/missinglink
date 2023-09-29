@@ -9,10 +9,12 @@ export default function Header({
 	title,
 	titleSize = 40,
 	backIcon = false,
+	RightElement,
 }: {
 	title: string
 	titleSize?: number
 	backIcon?: boolean
+	RightElement?: () => React.JSX.Element
 }) {
 	const theme = useColorScheme()
 	const style = styles(Theme[theme])
@@ -21,20 +23,25 @@ export default function Header({
 
 	return (
 		<View style={style.wrapper}>
-			{backIcon && (
-				<TouchableOpacity
-					style={style.backArrowWrapper}
-					hitSlop={20}
-					onPress={() => navigation.pop()}
-				>
-					<FontAwesome
-						name="long-arrow-left"
-						size={25}
-						color="gray"
-					/>
-				</TouchableOpacity>
-			)}
+			<View style={style.leftWrapper}>
+				{backIcon && (
+					<TouchableOpacity
+						hitSlop={20}
+						onPress={() => navigation.pop()}
+					>
+						<FontAwesome
+							name="long-arrow-left"
+							size={25}
+							color="gray"
+						/>
+					</TouchableOpacity>
+				)}
+			</View>
 			<Text style={[style.title, { fontSize: titleSize }]}>{title}</Text>
+
+			<View style={style.rightWrapper}>
+				{RightElement && <RightElement />}
+			</View>
 		</View>
 	)
 }
@@ -44,13 +51,22 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 		wrapper: {
 			paddingTop: 30,
 			paddingBottom: 50,
+			flexDirection: "row",
 			width: "100%",
 		},
-		backArrowWrapper: {
-			alignSelf: "flex-start",
-			marginLeft: 20,
+		leftWrapper: {
+			flex: 1,
+			justifyContent: "center",
+			alignItems: "flex-start",
 		},
 		title: {
+			flex: 5,
 			alignSelf: "center",
+			textAlign: "center",
+		},
+		rightWrapper: {
+			flex: 1,
+			justifyContent: "center",
+			alignItems: "flex-end",
 		},
 	})

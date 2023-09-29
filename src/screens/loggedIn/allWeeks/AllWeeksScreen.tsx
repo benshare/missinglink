@@ -16,7 +16,7 @@ export default function AllWeeksScreen() {
 		<FlatList
 			style={style.wrapper}
 			ListHeaderComponent={
-				<Header title="Weekly challenges" titleSize={30} backIcon />
+				<Header title="Weekly challenges" titleSize={25} backIcon />
 			}
 			data={weeks}
 			renderItem={({ item: week }) => <WeekPreview {...week} />}

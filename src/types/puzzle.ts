@@ -8,11 +8,11 @@ export type PuzzleData = {
 		solution: string
 	}
 }
-export type Puzzle = {
+export type Puzzle<T extends PuzzleType> = {
 	id: number
 	title: string
 	type: PuzzleType
-	data: PuzzleData
+	data: PuzzleData[T]
 }
 
 export enum PackStatus {

@@ -66,7 +66,7 @@ export const selectPack =
 	({ packs }: RootState) =>
 		packs.find(({ id: packId }) => id === packId)!
 
-// export const selectPuzzle =
-// 	(id: number) =>
-// 	({ puzzles }: RootState) =>
-// 		puzzles[id]
+export const selectPuzzle =
+	(id: number) =>
+	({ puzzles }: RootState) =>
+		puzzles[id]

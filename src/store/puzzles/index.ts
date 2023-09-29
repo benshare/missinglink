@@ -1,9 +1,8 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
-
-import { Puzzle } from "../../types/puzzle"
+import { Puzzle, PuzzleType } from "../../types/puzzle"
 
 export type PuzzlesState = {
-	[key in number]: Puzzle
+	[key in number]: Puzzle<PuzzleType>
 }
 type ActionPayload = {
 	batchAdd: PuzzlesState
