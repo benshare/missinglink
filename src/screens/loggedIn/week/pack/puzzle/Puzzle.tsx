@@ -10,9 +10,11 @@ import { useSelector } from "react-redux"
 
 export default function Puzzle({
 	id,
+	alreadyComplete,
 	onCorrect,
 }: {
 	id: number
+	alreadyComplete: boolean
 	onCorrect: () => void
 }) {
 	const theme = useColorScheme()
@@ -21,15 +23,16 @@ export default function Puzzle({
 	const { data } = useSelector(selectPuzzle(id))
 	const { before, after, solution } = data as PuzzleData[PuzzleType.standard]
 
-	const [guess, setGuess] = useState("")
+	const initialText = alreadyComplete ? sentenceCase(solution) : ""
+	const [guess, setGuess] = useState(initialText)
 	const isCorrect = guess.toLowerCase() === solution.toLowerCase()
 
 	const inputRef = useRef<TextInput>(null)
-	const [inputFocused, setInputFocused] = useState(true)
+	const [inputFocused, setInputFocused] = useState(false)
 
 	// TODO: not sure why this is needed
 	useEffect(() => {
-		setGuess("")
+		setGuess(initialText)
 	}, [id])
 
 	return (
@@ -67,10 +70,10 @@ export default function Puzzle({
 						onCorrect()
 					}
 				}}
-				autoFocus
+				autoFocus={!alreadyComplete}
 				onFocus={() => setInputFocused(true)}
 				onBlur={() => setInputFocused(false)}
-				editable={!isCorrect}
+				editable={!alreadyComplete && !isCorrect}
 			/>
 			<Text style={style.clue}>{sentenceCase(after)}</Text>
 		</View>

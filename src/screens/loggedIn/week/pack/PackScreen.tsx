@@ -18,18 +18,33 @@ import useColorScheme from "../../../../hooks/useColorScheme"
 import { useSelector } from "react-redux"
 import { useState } from "react"
 
-export default function PackScreen({ route }: WeekScreenProps<"PackScreen">) {
+export default function PackScreen({
+	navigation,
+	route,
+}: WeekScreenProps<"PackScreen">) {
 	const theme = useColorScheme()
 	const style = styles(Theme[theme])
 
 	const { id } = route.params
 	const { puzzles } = useSelector(selectPack(id))
 
-	const [index, setIndex] = useState(0)
+	function nextIncompleteIndex(fromIndex: number) {
+		for (let offset = 0; offset < puzzles.length; offset++) {
+			const newIndex = (fromIndex + offset) % puzzles.length
+			if (!puzzles[newIndex].complete) {
+				return newIndex
+			}
+		}
+		return 0
+	}
+
+	const [index, setIndex] = useState(nextIncompleteIndex(0))
 	const currentPuzzle = puzzles[index]
 	const previousComplete = puzzles.map(({ complete }) => complete)
 
 	const goToNextPuzzle = () => setIndex((index + 1) % puzzles.length)
+	const goToNextIncompletePuzzle = () =>
+		setIndex(nextIncompleteIndex(index + 1))
 
 	const NextPuzzle = () => (
 		<TouchableOpacity hitSlop={20} onPress={goToNextPuzzle}>
@@ -48,10 +63,24 @@ export default function PackScreen({ route }: WeekScreenProps<"PackScreen">) {
 					/>
 					<Puzzle
 						id={currentPuzzle.id}
+						alreadyComplete={puzzles[index].complete}
 						onCorrect={() => {
 							Keyboard.dismiss()
 							Updates.puzzleComplete(id, index, previousComplete)
-							setTimeout(goToNextPuzzle, 1000)
+							const packComplete =
+								previousComplete.reduce(
+									(before, current) =>
+										before + (current ? 1 : 0),
+									0
+								) +
+									1 ===
+								puzzles.length
+							setTimeout(
+								packComplete
+									? () => navigation.pop()
+									: goToNextIncompletePuzzle,
+								1000
+							)
 						}}
 					/>
 				</View>

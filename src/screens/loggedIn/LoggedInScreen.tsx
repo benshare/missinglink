@@ -12,6 +12,7 @@ import useColorScheme from "../../hooks/useColorScheme"
 import { useEffect } from "react"
 import { useInitialLoad } from "../../api/initialLoad"
 import { useSelector } from "react-redux"
+import useSubscribeToUpdates from "../../api/subscriptions"
 
 export type LoggedInScreenParamList = {
 	Home: undefined
@@ -63,6 +64,8 @@ export default function LoggedInScreen() {
 	useEffect(() => {
 		doInitialLoad()
 	}, [])
+
+	useSubscribeToUpdates()
 
 	return (
 		<Stack.Navigator

@@ -17,7 +17,7 @@ namespace Updates {
 		)
 			? PackStatus.complete
 			: PackStatus.inProgress
-		const { error } = await supabase.from("progress").upsert({
+		await supabase.from("progress").upsert({
 			pack_id: packId,
 			puzzles_completed: newComplete,
 			status: newStatus,
