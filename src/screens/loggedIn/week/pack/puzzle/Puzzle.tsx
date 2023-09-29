@@ -1,13 +1,20 @@
-import { Keyboard, StyleSheet, Text, TextInput, View } from "react-native"
 import { PuzzleData, PuzzleType } from "../../../../../types/puzzle"
+import { StyleSheet, Text, TextInput, View } from "react-native"
 import { useEffect, useRef, useState } from "react"
 
 import Theme from "../../../../../style/theme"
 import { selectPuzzle } from "../../../../../store"
+import { sentenceCase } from "../../../../../utils"
 import useColorScheme from "../../../../../hooks/useColorScheme"
 import { useSelector } from "react-redux"
 
-export default function Puzzle({ id }: { id: number }) {
+export default function Puzzle({
+	id,
+	onCorrect,
+}: {
+	id: number
+	onCorrect: () => void
+}) {
 	const theme = useColorScheme()
 	const style = styles(Theme[theme])
 
@@ -15,10 +22,7 @@ export default function Puzzle({ id }: { id: number }) {
 	const { before, after, solution } = data as PuzzleData[PuzzleType.standard]
 
 	const [guess, setGuess] = useState("")
-	const isCorrect = guess === solution
-	function handleCorrect() {
-		Keyboard.dismiss()
-	}
+	const isCorrect = guess.toLowerCase() === solution.toLowerCase()
 
 	const inputRef = useRef<TextInput>(null)
 	const [inputFocused, setInputFocused] = useState(true)
@@ -43,7 +47,7 @@ export default function Puzzle({ id }: { id: number }) {
 					  },
 			]}
 		>
-			<Text style={style.clue}>{before}</Text>
+			<Text style={style.clue}>{sentenceCase(before)}</Text>
 			<TextInput
 				ref={inputRef}
 				style={[
@@ -58,16 +62,17 @@ export default function Puzzle({ id }: { id: number }) {
 				]}
 				value={guess}
 				onChangeText={(newValue) => {
-					setGuess(newValue)
-					if (newValue === solution) {
-						handleCorrect()
+					setGuess(sentenceCase(newValue))
+					if (newValue.toLowerCase() === solution.toLowerCase()) {
+						onCorrect()
 					}
 				}}
 				autoFocus
 				onFocus={() => setInputFocused(true)}
 				onBlur={() => setInputFocused(false)}
+				editable={!isCorrect}
 			/>
-			<Text style={style.clue}>{after}</Text>
+			<Text style={style.clue}>{sentenceCase(after)}</Text>
 		</View>
 	)
 }

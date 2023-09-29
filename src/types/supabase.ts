@@ -73,23 +73,20 @@ export interface Database {
 			}
 			progress: {
 				Row: {
-					id: number
-					next_puzzle: number
 					pack_id: number
+					puzzles_completed: boolean[]
 					status: string
 					user_id: string
 				}
 				Insert: {
-					id?: number
-					next_puzzle?: number
 					pack_id: number
+					puzzles_completed: boolean[]
 					status: string
-					user_id: string
+					user_id?: string
 				}
 				Update: {
-					id?: number
-					next_puzzle?: number
 					pack_id?: number
+					puzzles_completed?: boolean[]
 					status?: string
 					user_id?: string
 				}

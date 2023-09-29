@@ -13,10 +13,8 @@ export const weeklyChallengesSlice = createSlice({
 	reducers: {
 		batchAdd: (
 			_,
-			{ payload: packs }: PayloadAction<ActionPayload["batchAdd"]>
-		) => {
-			return packs
-		},
+			{ payload: weeks }: PayloadAction<ActionPayload["batchAdd"]>
+		) => weeks,
 	},
 })
 

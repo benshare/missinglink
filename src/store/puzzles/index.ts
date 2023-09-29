@@ -14,10 +14,8 @@ export const puzzlesSlice = createSlice({
 	reducers: {
 		batchAdd: (
 			_,
-			{ payload: packs }: PayloadAction<ActionPayload["batchAdd"]>
-		) => {
-			return packs
-		},
+			{ payload: puzzles }: PayloadAction<ActionPayload["batchAdd"]>
+		) => puzzles,
 	},
 })
 

@@ -11,6 +11,7 @@ import { FontAwesome } from "@expo/vector-icons"
 import Header from "../../../../components/Header"
 import Puzzle from "./puzzle/Puzzle"
 import Theme from "../../../../style/theme"
+import Updates from "../../../../api/updates"
 import { WeekScreenProps } from "../WeekScreen"
 import { selectPack } from "../../../../store"
 import useColorScheme from "../../../../hooks/useColorScheme"
@@ -25,11 +26,13 @@ export default function PackScreen({ route }: WeekScreenProps<"PackScreen">) {
 	const { puzzles } = useSelector(selectPack(id))
 
 	const [index, setIndex] = useState(0)
+	const currentPuzzle = puzzles[index]
+	const previousComplete = puzzles.map(({ complete }) => complete)
+
+	const goToNextPuzzle = () => setIndex((index + 1) % puzzles.length)
+
 	const NextPuzzle = () => (
-		<TouchableOpacity
-			hitSlop={20}
-			onPress={() => setIndex((index + 1) % puzzles.length)}
-		>
+		<TouchableOpacity hitSlop={20} onPress={goToNextPuzzle}>
 			<FontAwesome name="long-arrow-right" size={25} color="gray" />
 		</TouchableOpacity>
 	)
@@ -43,7 +46,14 @@ export default function PackScreen({ route }: WeekScreenProps<"PackScreen">) {
 						backIcon
 						RightElement={NextPuzzle}
 					/>
-					<Puzzle id={puzzles[index]} />
+					<Puzzle
+						id={currentPuzzle.id}
+						onCorrect={() => {
+							Keyboard.dismiss()
+							Updates.puzzleComplete(id, index, previousComplete)
+							setTimeout(goToNextPuzzle, 1000)
+						}}
+					/>
 				</View>
 			</KeyboardAvoidingView>
 		</TouchableWithoutFeedback>

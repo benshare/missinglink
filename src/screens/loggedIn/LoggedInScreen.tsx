@@ -9,6 +9,7 @@ import WeekScreen from "./week/WeekScreen"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { selectCurrentWeek } from "../../store"
 import useColorScheme from "../../hooks/useColorScheme"
+import { useEffect } from "react"
 import { useInitialLoad } from "../../api/initialLoad"
 import { useSelector } from "react-redux"
 
@@ -57,7 +58,11 @@ function Home({ navigation }: LoggedInScreenProps<"Home">) {
 }
 
 export default function LoggedInScreen() {
-	useInitialLoad()
+	const doInitialLoad = useInitialLoad()
+
+	useEffect(() => {
+		doInitialLoad()
+	}, [])
 
 	return (
 		<Stack.Navigator

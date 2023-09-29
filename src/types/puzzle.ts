@@ -23,11 +23,8 @@ export enum PackStatus {
 export type PuzzlePack = {
 	id: number
 	title: string
-	puzzles: number[]
-	progress: {
-		status: PackStatus
-		nextPuzzle: number
-	}
+	puzzles: { id: number; complete: boolean }[]
+	status: PackStatus
 }
 
 export enum DayOfWeek {

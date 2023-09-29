@@ -15,9 +15,7 @@ export const packsSlice = createSlice({
 		batchAdd: (
 			_,
 			{ payload: packs }: PayloadAction<ActionPayload["batchAdd"]>
-		) => {
-			return packs
-		},
+		) => packs,
 	},
 })
 
