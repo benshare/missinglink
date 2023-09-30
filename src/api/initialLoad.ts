@@ -37,7 +37,7 @@ export function useInitialLoad() {
 		}
 
 		const weeks: WeeklyChallengesState = weeklyChallengeData!.map(
-			({ id, week_number, packs: packIds, statuses }) => {
+			({ id, title, packs: packIds, statuses }) => {
 				const packs = packIds.map((pack, index) => ({
 					day: index,
 					pack,
@@ -60,7 +60,7 @@ export function useInitialLoad() {
 				}
 				return {
 					id,
-					title: `Week ${week_number}`,
+					title,
 					packs,
 					status,
 				}

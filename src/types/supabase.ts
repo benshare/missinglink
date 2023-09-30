@@ -113,7 +113,7 @@ export interface Database {
 					id: number
 					pack_id: number
 					solution: string
-					title: string
+					title: string | null
 					type: string
 				}
 				Insert: {
@@ -123,8 +123,8 @@ export interface Database {
 					id?: number
 					pack_id: number
 					solution: string
-					title: string
-					type: string
+					title?: string | null
+					type?: string
 				}
 				Update: {
 					after?: string
@@ -133,7 +133,7 @@ export interface Database {
 					id?: number
 					pack_id?: number
 					solution?: string
-					title?: string
+					title?: string | null
 					type?: string
 				}
 				Relationships: [
@@ -148,15 +148,18 @@ export interface Database {
 			weekly_challenges: {
 				Row: {
 					id: number
-					week_number: number
+					start_date: string
+					title: string
 				}
 				Insert: {
 					id?: number
-					week_number: number
+					start_date: string
+					title: string
 				}
 				Update: {
 					id?: number
-					week_number?: number
+					start_date?: string
+					title?: string
 				}
 				Relationships: []
 			}
@@ -176,7 +179,8 @@ export interface Database {
 		CompositeTypes: {
 			week_return_type: {
 				id: number
-				week_number: number
+				start_date: string
+				title: string
 				packs: number[]
 				statuses: string[]
 			}
