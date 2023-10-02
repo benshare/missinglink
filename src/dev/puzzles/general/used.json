@@ -1,0 +1,17 @@
+[
+	{ "before": "fur", "after": "tails", "solution": "coat" },
+	{ "before": "humming", "after": "bath", "solution": "bird" },
+	{ "before": "Pod", "after": "away", "solution": "cast" },
+	{ "before": "crunch", "after": "card", "solution": "time" },
+	{ "before": "Pot", "after": "glass", "solution": "shot" },
+	{ "before": "candy", "after": "made", "solution": "man" },
+	{ "before": "Race", "after": "radish", "solution": "horse" },
+	{ "before": "Sun", "after": "play", "solution": "screen" },
+	{ "before": "air", "after": "top", "solution": "drop" },
+	{ "before": "holy", "after": "reference", "solution": "cross" },
+	{ "before": "cap", "after": "cold", "solution": "stone" },
+	{ "before": "screen", "after": "warp", "solution": "time" },
+	{ "before": "yellow", "after": "ache", "solution": "belly" },
+	{ "before": "Blue", "after": "shine", "solution": "moon" },
+	{ "before": "laid", "after": "foot", "solution": "bare" }
+]
