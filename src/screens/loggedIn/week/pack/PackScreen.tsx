@@ -2,6 +2,7 @@ import {
 	Keyboard,
 	KeyboardAvoidingView,
 	StyleSheet,
+	Text,
 	TextInput,
 	TouchableOpacity,
 	TouchableWithoutFeedback,
@@ -56,7 +57,7 @@ export default function PackScreen({
 
 	const NextPuzzle = () => (
 		<TouchableOpacity hitSlop={20} onPress={goToNextPuzzle}>
-			<FontAwesome name="long-arrow-right" size={25} color="gray" />
+			<Text style={style.skip}>Skip</Text>
 		</TouchableOpacity>
 	)
 
@@ -121,5 +122,9 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 			flexDirection: "column",
 			justifyContent: "space-between",
 			height: "100%",
+		},
+		skip: {
+			fontSize: 20,
+			color: "gray",
 		},
 	})
