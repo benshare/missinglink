@@ -1,6 +1,6 @@
 import { Keyboard, StyleSheet, Text, TextInput, View } from "react-native"
 import { PuzzleData, PuzzleType } from "../../../../../types/puzzle"
-import { useEffect, useRef, useState } from "react"
+import { Ref, useEffect, useRef, useState } from "react"
 
 import Theme from "../../../../../style/theme"
 import { selectPuzzle } from "../../../../../store"
@@ -12,10 +12,12 @@ export default function Puzzle({
 	id,
 	alreadyComplete,
 	onCorrect,
+	inputRef,
 }: {
 	id: number
 	alreadyComplete: boolean
 	onCorrect: () => void
+	inputRef: Ref<TextInput>
 }) {
 	const theme = useColorScheme()
 	const style = styles(Theme[theme])
@@ -27,7 +29,6 @@ export default function Puzzle({
 	const [guess, setGuess] = useState(initialText)
 	const isCorrect = guess.toLowerCase() === solution.toLowerCase()
 
-	const inputRef = useRef<TextInput>(null)
 	const [inputFocused, setInputFocused] = useState(false)
 	// TODO: not sure why this is needed
 	useEffect(() => {

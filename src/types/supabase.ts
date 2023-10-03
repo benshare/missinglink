@@ -9,24 +9,58 @@ export type Json =
 export interface Database {
 	public: {
 		Tables: {
+			pack_progress: {
+				Row: {
+					pack_id: number
+					puzzles_completed: boolean[]
+					status: string
+					user_id: string
+				}
+				Insert: {
+					pack_id: number
+					puzzles_completed: boolean[]
+					status: string
+					user_id?: string
+				}
+				Update: {
+					pack_id?: number
+					puzzles_completed?: boolean[]
+					status?: string
+					user_id?: string
+				}
+				Relationships: [
+					{
+						foreignKeyName: "pack_progress_pack_id_fkey"
+						columns: ["pack_id"]
+						referencedRelation: "packs"
+						referencedColumns: ["id"]
+					},
+					{
+						foreignKeyName: "pack_progress_user_id_fkey"
+						columns: ["user_id"]
+						referencedRelation: "users"
+						referencedColumns: ["id"]
+					}
+				]
+			}
 			packs: {
 				Row: {
 					created_at: string
 					id: number
 					title: string
-					week: number | null
+					week: number
 				}
 				Insert: {
 					created_at?: string
 					id?: number
 					title: string
-					week?: number | null
+					week: number
 				}
 				Update: {
 					created_at?: string
 					id?: number
 					title?: string
-					week?: number | null
+					week?: number
 				}
 				Relationships: [
 					{
@@ -66,40 +100,6 @@ export interface Database {
 					{
 						foreignKeyName: "profiles_id_fkey"
 						columns: ["id"]
-						referencedRelation: "users"
-						referencedColumns: ["id"]
-					}
-				]
-			}
-			progress: {
-				Row: {
-					pack_id: number
-					puzzles_completed: boolean[]
-					status: string
-					user_id: string
-				}
-				Insert: {
-					pack_id: number
-					puzzles_completed: boolean[]
-					status: string
-					user_id?: string
-				}
-				Update: {
-					pack_id?: number
-					puzzles_completed?: boolean[]
-					status?: string
-					user_id?: string
-				}
-				Relationships: [
-					{
-						foreignKeyName: "progress_pack_id_fkey"
-						columns: ["pack_id"]
-						referencedRelation: "packs"
-						referencedColumns: ["id"]
-					},
-					{
-						foreignKeyName: "progress_user_id_fkey"
-						columns: ["user_id"]
 						referencedRelation: "users"
 						referencedColumns: ["id"]
 					}
@@ -163,6 +163,37 @@ export interface Database {
 				}
 				Relationships: []
 			}
+			weeks_completed: {
+				Row: {
+					on_time: boolean
+					user_id: string
+					week_id: number
+				}
+				Insert: {
+					on_time: boolean
+					user_id?: string
+					week_id: number
+				}
+				Update: {
+					on_time?: boolean
+					user_id?: string
+					week_id?: number
+				}
+				Relationships: [
+					{
+						foreignKeyName: "weeks_completed_user_id_fkey"
+						columns: ["user_id"]
+						referencedRelation: "users"
+						referencedColumns: ["id"]
+					},
+					{
+						foreignKeyName: "weeks_completed_week_id_fkey"
+						columns: ["week_id"]
+						referencedRelation: "weekly_challenges"
+						referencedColumns: ["id"]
+					}
+				]
+			}
 		}
 		Views: {
 			[_ in never]: never
@@ -181,6 +212,7 @@ export interface Database {
 				id: number
 				start_date: string
 				title: string
+				completed_on_time: boolean
 				packs: number[]
 				statuses: string[]
 			}

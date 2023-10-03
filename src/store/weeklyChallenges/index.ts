@@ -2,9 +2,9 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import { WeekStatus, WeeklyChallenge } from "../../types/puzzle"
 
 export type WeeklyChallengesState = WeeklyChallenge[]
-type ActionPayload = {
+export type ActionPayload = {
 	batchAdd: WeeklyChallenge[]
-	weekComplete: number
+	weekComplete: { week_id: number; on_time: boolean }
 }
 
 export const weeklyChallengesSlice = createSlice({
@@ -17,29 +17,19 @@ export const weeklyChallengesSlice = createSlice({
 		) => weeks,
 		weekComplete: (
 			store,
-			{ payload: weekId }: PayloadAction<ActionPayload["weekComplete"]>
+			{
+				payload: { week_id, on_time },
+			}: PayloadAction<ActionPayload["weekComplete"]>
 		) => {
-			const weekIndex = store.findIndex(({ id }) => id === weekId)!
-			const { status, ...rest } = store[weekIndex]
-
-			if (status === WeekStatus.inProgress) {
-				var newStatus = WeekStatus.complete
-			} else if (status === WeekStatus.pastIncomplete) {
-				newStatus = WeekStatus.pastComplete
-			} else {
-				console.error(
-					"Received 'week completed' update for an invalid week"
-				)
-				return store
-			}
-			return [
-				...store.slice(0, weekIndex),
-				{
-					...rest,
-					status: newStatus,
+			return {
+				...store,
+				[week_id]: {
+					...store[week_id],
+					status: on_time
+						? WeekStatus.complete
+						: WeekStatus.pastComplete,
 				},
-				...store.slice(weekIndex + 1),
-			]
+			}
 		},
 	},
 })

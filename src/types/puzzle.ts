@@ -55,10 +55,15 @@ export enum WeekStatus {
 	pastIncomplete,
 	pastComplete,
 }
+export type DateObj = {
+	year: number
+	month: number
+	day: number
+}
 export type WeeklyChallenge = {
 	id: number
 	title: string
-	startDate: string
+	startDate: DateObj
 	packs: { day: DayOfWeek; pack: number }[]
 	status: WeekStatus
 }

@@ -1,4 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { selectCurrentWeek, selectStreaks } from "../../store"
 
 import AccountScreen from "./account/AccountScreen"
 import AllWeeksScreen from "./allWeeks/AllWeeksScreen"
@@ -7,7 +8,6 @@ import { StackScreenProps } from "@react-navigation/stack"
 import Theme from "../../style/theme"
 import WeekScreen from "./week/WeekScreen"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { selectCurrentWeek } from "../../store"
 import useColorScheme from "../../hooks/useColorScheme"
 import { useEffect } from "react"
 import { useInitialLoad } from "../../api/initialLoad"
@@ -30,6 +30,7 @@ function Home({ navigation }: LoggedInScreenProps<"Home">) {
 	const style = styles(Theme[theme])
 
 	const currentId = useSelector(selectCurrentWeek)
+	const streak = useSelector(selectStreaks)
 
 	return (
 		<View style={style.wrapper}>
@@ -46,7 +47,7 @@ function Home({ navigation }: LoggedInScreenProps<"Home">) {
 				style={style.button}
 				onPress={() => navigation.push("AllWeeksScreen")}
 			>
-				<Text style={style.buttonText}>Past Puzzles</Text>
+				<Text style={style.buttonText}>All Puzzles</Text>
 			</TouchableOpacity>
 			<TouchableOpacity
 				style={style.button}

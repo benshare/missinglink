@@ -1,4 +1,4 @@
-import { PackStatus, WeekStatus } from "../types/puzzle"
+import { DateObj, PackStatus, WeekStatus } from "../types/puzzle"
 import { PacksState, batchAdd as batchAddPacks } from "../store/packs"
 import { PuzzlesState, batchAdd as batchAddPuzzles } from "../store/puzzles"
 import {
@@ -27,7 +27,7 @@ export function useInitialLoad() {
 				`
                 *,
                 puzzles (id),
-                progress (status, puzzles_completed)
+                pack_progress (status, puzzles_completed)
             `
 			)
 			.in("week", weeksToFetch)
@@ -44,12 +44,25 @@ export function useInitialLoad() {
 
 		const packsLocked: { [key in number]: boolean } = {}
 		const weeks: WeeklyChallengesState = weeklyChallengeData!.map(
-			({ id, title, packs: packIds, statuses, start_date }) => {
+			({
+				id,
+				title,
+				completed_on_time,
+				packs: packIds,
+				statuses,
+				start_date,
+			}) => {
 				const packs = packIds.map((pack, index) => ({
 					day: index,
 					pack,
 				}))
 
+				const [year, month, day] = start_date.split("-")
+				const startDateObj: DateObj = {
+					year: parseInt(year),
+					month: parseInt(month),
+					day: parseInt(day),
+				}
 				const startDate = new Date(start_date)
 				const endDate = addDays(startDate, packs.length)
 				if (startDate > today) {
@@ -68,7 +81,9 @@ export function useInitialLoad() {
 						}
 					} else {
 						if (packsComplete === packs.length) {
-							status = WeekStatus.pastComplete
+							status = completed_on_time
+								? WeekStatus.complete
+								: WeekStatus.pastComplete
 						} else {
 							status = WeekStatus.pastIncomplete
 						}
@@ -85,14 +100,14 @@ export function useInitialLoad() {
 						packIndex < packIds.length;
 						packIndex++
 					) {
-						packsLocked[packIds[packIndex]] = packIndex >= offset
+						packsLocked[packIds[packIndex]] = packIndex > offset
 					}
 				}
 
 				return {
 					id,
 					title,
-					startDate: startDate.toLocaleDateString(),
+					startDate: startDateObj,
 					packs,
 					status,
 				}
@@ -105,7 +120,7 @@ export function useInitialLoad() {
 			id,
 			title,
 			puzzles,
-			progress: progressRaw,
+			pack_progress: progressRaw,
 			week,
 		} of packsData!) {
 			const progress: {

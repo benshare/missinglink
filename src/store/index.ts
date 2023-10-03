@@ -1,14 +1,18 @@
-import { AnyAction, combineReducers, configureStore } from "@reduxjs/toolkit"
+import {
+	AnyAction,
+	combineReducers,
+	configureStore,
+	createSelector,
+} from "@reduxjs/toolkit"
 import { CurrentUserState, currentUserSlice } from "./currentUser"
+import { PackStatus, WeekStatus } from "../types/puzzle"
 import { PacksState, packsSlice } from "./packs"
 import { PuzzlesState, puzzlesSlice } from "./puzzles"
 import {
 	WeeklyChallengesState,
 	weeklyChallengesSlice,
 } from "./weeklyChallenges"
-import { addDays, dateFromLocaleString } from "../utils"
-
-import { PackStatus } from "../types/puzzle"
+import { addDays, dateDiffInDays } from "../utils"
 
 const today = new Date()
 
@@ -63,8 +67,8 @@ export const selectWeek =
 		weeklyChallenges.find(({ id: weekId }) => id === weekId)!
 export const selectCurrentWeek = ({ weeklyChallenges }: RootState) => {
 	return weeklyChallenges.length > 0
-		? weeklyChallenges.find(({ startDate }) => {
-				const startDay = dateFromLocaleString(startDate)
+		? weeklyChallenges.find(({ startDate: { year, month, day } }) => {
+				const startDay = new Date(Date.UTC(year, month - 1, day))
 				const endDay = addDays(startDay, 7)
 				return startDay <= today && endDay > today
 		  })!.id
@@ -95,3 +99,55 @@ export const selectPuzzle =
 	(id: number) =>
 	({ puzzles }: RootState) =>
 		puzzles[id]
+
+export const selectStreaks = createSelector(
+	[selectWeeks, selectPacks],
+	(weeks, packs) => {
+		if (weeks.length === 0 || Object.keys(packs).length === 0) {
+			return null
+		}
+		let foundStartDay: Date = null as any
+		let currentWeekIndex: number = null as any
+		for (const index in weeks) {
+			const {
+				startDate: { year, month, day },
+			} = weeks[index]
+			const startDay = new Date(Date.UTC(year, month - 1, day))
+			const endDay = addDays(startDay, 7)
+			if (startDay <= today && endDay > today) {
+				foundStartDay = startDay
+				currentWeekIndex = parseInt(index)
+				break
+			}
+		}
+		let offset = dateDiffInDays(today, foundStartDay)
+
+		let week = weeks[currentWeekIndex]
+		let streak = 0
+		for (let weekIndex = currentWeekIndex; weekIndex >= 0; weekIndex--) {
+			week = weeks[weekIndex]
+			const { status, packs: packsForWeek } = week
+			if (
+				weekIndex !== currentWeekIndex &&
+				status !== WeekStatus.complete
+			) {
+				break
+			}
+			let allComplete = true
+			while (offset >= 0) {
+				const { status } = packs[packsForWeek[offset].pack]
+				if (status !== PackStatus.complete) {
+					allComplete = false
+					break
+				}
+				streak++
+				offset--
+			}
+			if (!allComplete) {
+				break
+			}
+			offset = week.packs.length - 1
+		}
+		return streak
+	}
+)

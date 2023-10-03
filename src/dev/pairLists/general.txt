@@ -1680,7 +1680,6 @@ ray gun
 bee string
 sting operation
 bumble bee
-tinder date
 date line
 date night
 holly wood
@@ -1787,3 +1786,6 @@ wise crack
 crack pot
 full house
 house call
+tinder box
+fine wine
+wine cellar

@@ -2,11 +2,17 @@ import {
 	Keyboard,
 	KeyboardAvoidingView,
 	StyleSheet,
+	TextInput,
 	TouchableOpacity,
 	TouchableWithoutFeedback,
 	View,
 } from "react-native"
-import { selectIsLastPackForWeek, selectPack } from "../../../../store"
+import {
+	selectIsLastPackForWeek,
+	selectPack,
+	selectWeek,
+} from "../../../../store"
+import { useRef, useState } from "react"
 
 import { FontAwesome } from "@expo/vector-icons"
 import Header from "../../../../components/Header"
@@ -16,7 +22,6 @@ import Updates from "../../../../api/updates"
 import { WeekScreenProps } from "../WeekScreen"
 import useColorScheme from "../../../../hooks/useColorScheme"
 import { useSelector } from "react-redux"
-import { useState } from "react"
 
 export default function PackScreen({
 	navigation,
@@ -26,8 +31,11 @@ export default function PackScreen({
 	const style = styles(Theme[theme])
 
 	const { id } = route.params
-	const { puzzles } = useSelector(selectPack(id))
+	const { puzzles, weekId } = useSelector(selectPack(id))
 	const isLastPack = useSelector(selectIsLastPackForWeek(id))
+	const { status: weekStatus } = useSelector(selectWeek(weekId))
+
+	const previousPuzzlesComplete = puzzles.map(({ complete }) => complete)
 
 	function nextIncompleteIndex(fromIndex: number) {
 		for (let offset = 0; offset < puzzles.length; offset++) {
@@ -41,7 +49,6 @@ export default function PackScreen({
 
 	const [index, setIndex] = useState(nextIncompleteIndex(0))
 	const currentPuzzle = puzzles[index]
-	const previousComplete = puzzles.map(({ complete }) => complete)
 
 	const goToNextPuzzle = () => setIndex((index + 1) % puzzles.length)
 	const goToNextIncompletePuzzle = () =>
@@ -52,6 +59,8 @@ export default function PackScreen({
 			<FontAwesome name="long-arrow-right" size={25} color="gray" />
 		</TouchableOpacity>
 	)
+
+	const inputRef = useRef<TextInput>(null)
 
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -67,9 +76,16 @@ export default function PackScreen({
 						alreadyComplete={puzzles[index].complete}
 						onCorrect={() => {
 							Keyboard.dismiss()
-							Updates.puzzleComplete(id, index, previousComplete)
+							Updates.puzzleComplete(
+								id,
+								index,
+								previousPuzzlesComplete,
+								isLastPack,
+								weekId,
+								weekStatus
+							)
 							const packComplete =
-								previousComplete.reduce(
+								previousPuzzlesComplete.reduce(
 									(before, current) =>
 										before + (current ? 1 : 0),
 									0
@@ -83,8 +99,13 @@ export default function PackScreen({
 								}
 							} else {
 								setTimeout(goToNextIncompletePuzzle, 1000)
+								setTimeout(
+									() => inputRef.current?.focus(),
+									1500
+								)
 							}
 						}}
+						inputRef={inputRef}
 					/>
 				</View>
 			</KeyboardAvoidingView>
