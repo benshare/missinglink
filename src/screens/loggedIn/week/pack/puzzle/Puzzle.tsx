@@ -1,5 +1,5 @@
+import { Keyboard, StyleSheet, Text, TextInput, View } from "react-native"
 import { PuzzleData, PuzzleType } from "../../../../../types/puzzle"
-import { StyleSheet, Text, TextInput, View } from "react-native"
 import { useEffect, useRef, useState } from "react"
 
 import Theme from "../../../../../style/theme"
@@ -23,13 +23,12 @@ export default function Puzzle({
 	const { data } = useSelector(selectPuzzle(id))
 	const { before, after, solution } = data as PuzzleData[PuzzleType.standard]
 
-	const initialText = alreadyComplete ? sentenceCase(solution) : ""
+	const initialText = alreadyComplete ? solution : ""
 	const [guess, setGuess] = useState(initialText)
 	const isCorrect = guess.toLowerCase() === solution.toLowerCase()
 
 	const inputRef = useRef<TextInput>(null)
 	const [inputFocused, setInputFocused] = useState(false)
-
 	// TODO: not sure why this is needed
 	useEffect(() => {
 		setGuess(initialText)
@@ -50,7 +49,7 @@ export default function Puzzle({
 					  },
 			]}
 		>
-			<Text style={style.clue}>{sentenceCase(before)}</Text>
+			<Text style={style.clue}>{before}</Text>
 			<TextInput
 				ref={inputRef}
 				style={[
@@ -63,9 +62,9 @@ export default function Puzzle({
 						},
 					isCorrect && { color: "green" },
 				]}
-				value={guess}
+				value={guess.toLocaleUpperCase()}
 				onChangeText={(newValue) => {
-					setGuess(sentenceCase(newValue))
+					setGuess(newValue)
 					if (newValue.toLowerCase() === solution.toLowerCase()) {
 						onCorrect()
 					}
@@ -75,7 +74,7 @@ export default function Puzzle({
 				onBlur={() => setInputFocused(false)}
 				editable={!alreadyComplete && !isCorrect}
 			/>
-			<Text style={style.clue}>{sentenceCase(after)}</Text>
+			<Text style={style.clue}>{after}</Text>
 		</View>
 	)
 }
@@ -91,6 +90,7 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 		},
 		clue: {
 			fontSize: 40,
+			textTransform: "uppercase",
 		},
 		solution: {
 			fontSize: 40,

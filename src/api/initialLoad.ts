@@ -1,16 +1,18 @@
+import { PackStatus, WeekStatus } from "../types/puzzle"
 import { PacksState, batchAdd as batchAddPacks } from "../store/packs"
 import { PuzzlesState, batchAdd as batchAddPuzzles } from "../store/puzzles"
 import {
 	WeeklyChallengesState,
 	batchAdd as batchAddWeeks,
 } from "../store/weeklyChallenges"
+import { addDays, dateDiffInDays } from "../utils"
 
-import { PackStatus } from "../types/puzzle"
 import { supabase } from "./supabase"
 import { useDispatch } from "react-redux"
 
 export function useInitialLoad() {
 	const dispatch = useDispatch()
+	const today = new Date()
 
 	return async function doInitialLoad() {
 		let { data: weeklyChallengeData, error: weeksError } =
@@ -22,7 +24,8 @@ export function useInitialLoad() {
 				`
                 *,
                 puzzles (id),
-                progress (status, puzzles_completed)
+                progress (status, puzzles_completed),
+                weekly_challenges (id)
             `
 			)
 			.order("id")
@@ -36,31 +39,57 @@ export function useInitialLoad() {
 			return
 		}
 
+		const packsLocked: { [key in number]: boolean } = {}
 		const weeks: WeeklyChallengesState = weeklyChallengeData!.map(
-			({ id, title, packs: packIds, statuses }) => {
+			({ id, title, packs: packIds, statuses, start_date }) => {
 				const packs = packIds.map((pack, index) => ({
 					day: index,
 					pack,
 				}))
 
-				const packsComplete = statuses.reduce(
-					(before, current) =>
-						before + current === PackStatus.complete ? 1 : 0,
-					0
-				)
-				switch (packsComplete) {
-					case 0:
-						var status = PackStatus.locked
-						break
-					case packs.length:
-						status = PackStatus.complete
-						break
-					default:
-						status = PackStatus.inProgress
+				const startDate = new Date(start_date)
+				const endDate = addDays(startDate, packs.length)
+				if (startDate > today) {
+					var status = WeekStatus.locked
+				} else {
+					const packsComplete = statuses.reduce(
+						(before, current) =>
+							before + (current === PackStatus.complete ? 1 : 0),
+						0
+					)
+					if (endDate > today) {
+						if (packsComplete === packs.length) {
+							status = WeekStatus.complete
+						} else {
+							status = WeekStatus.inProgress
+						}
+					} else {
+						if (packsComplete === packs.length) {
+							status = WeekStatus.pastComplete
+						} else {
+							status = WeekStatus.pastIncomplete
+						}
+					}
 				}
+				if (startDate > today) {
+					for (const packId of packIds) {
+						packsLocked[packId] = true
+					}
+				} else {
+					const offset = dateDiffInDays(today, startDate)
+					for (
+						let packIndex = 0;
+						packIndex < packIds.length;
+						packIndex++
+					) {
+						packsLocked[packIds[packIndex]] = packIndex >= offset
+					}
+				}
+
 				return {
 					id,
 					title,
+					startDate: startDate.toLocaleDateString(),
 					packs,
 					status,
 				}
@@ -68,33 +97,39 @@ export function useInitialLoad() {
 		)
 		dispatch(batchAddWeeks(weeks))
 
-		const packs: PacksState = packsData!.map(
-			({ id, title, puzzles, progress: progressRaw }) => {
-				const progress: {
-					status: PackStatus
-					puzzles_completed: boolean[]
-				} =
+		const packs: PacksState = {}
+		for (const {
+			id,
+			title,
+			puzzles,
+			progress: progressRaw,
+			weekly_challenges,
+		} of packsData!) {
+			const progress: {
+				status: PackStatus
+				puzzles_completed: boolean[]
+			} = {
+				status: packsLocked[id]
+					? PackStatus.locked
+					: progressRaw.length > 0
+					? (progressRaw[0].status as PackStatus)
+					: PackStatus.notStarted,
+				puzzles_completed:
 					progressRaw.length > 0
-						? {
-								status: progressRaw[0].status as PackStatus,
-								puzzles_completed:
-									progressRaw[0].puzzles_completed,
-						  }
-						: {
-								status: PackStatus.locked,
-								puzzles_completed: puzzles.map((_) => false),
-						  }
-				return {
-					id,
-					title,
-					puzzles: puzzles.map(({ id }, index) => ({
-						id,
-						complete: progress.puzzles_completed[index],
-					})),
-					status: progress.status,
-				}
+						? progressRaw[0].puzzles_completed
+						: puzzles.map((_) => false),
 			}
-		)
+			packs[id] = {
+				id,
+				title,
+				puzzles: puzzles.map(({ id }, index) => ({
+					id,
+					complete: progress.puzzles_completed[index],
+				})),
+				status: progress.status,
+				weekId: weekly_challenges!.id,
+			}
+		}
 		dispatch(batchAddPacks(packs))
 
 		const puzzles: PuzzlesState = puzzlesData.reduce(

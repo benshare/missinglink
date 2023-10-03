@@ -1,7 +1,7 @@
 import { PackStatus, PuzzlePack } from "../../types/puzzle"
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 
-export type PacksState = PuzzlePack[]
+export type PacksState = { [key in number]: PuzzlePack }
 
 export type ActionPayload = {
 	batchAdd: PacksState
@@ -26,19 +26,17 @@ export const packsSlice = createSlice({
 				payload: { pack_id, status, puzzles_completed },
 			}: PayloadAction<ActionPayload["singleUpdate"]>
 		) => {
-			return store.map((pack) => {
-				if (pack.id !== pack_id) {
-					return pack
-				}
-				return {
-					...pack,
+			return {
+				...store,
+				[pack_id]: {
+					...store[pack_id],
 					status,
-					puzzles: pack.puzzles.map(({ id }, index) => ({
+					puzzles: store[pack_id].puzzles.map(({ id }, index) => ({
 						id,
 						complete: puzzles_completed[index],
 					})),
-				}
-			})
+				},
+			}
 		},
 	},
 })

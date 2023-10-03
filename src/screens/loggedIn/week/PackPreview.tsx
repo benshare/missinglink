@@ -1,8 +1,7 @@
-import { DayOfWeek, DayOfWeekText, PackStatus } from "../../../types/puzzle"
 import { StyleSheet, Text, TouchableOpacity } from "react-native"
 
 import { FontAwesome } from "@expo/vector-icons"
-import PackScreen from "./pack/PackScreen"
+import { PackStatus } from "../../../types/puzzle"
 import { StackNavigationProp } from "@react-navigation/stack"
 import Theme from "../../../style/theme"
 import { WeekParamList } from "./WeekScreen"
@@ -23,9 +22,28 @@ export default function PackPreview({ id }: { id: number }) {
 		<TouchableOpacity
 			style={style.wrapper}
 			onPress={() => navigation.push("PackScreen", { id })}
+			disabled={status === PackStatus.locked}
 		>
+			{status === PackStatus.locked && (
+				<FontAwesome
+					name="lock"
+					style={[style.icon, { color: "gray" }]}
+					size={60}
+				/>
+			)}
+			{status === PackStatus.inProgress && (
+				<FontAwesome
+					name="circle-o-notch"
+					style={[style.icon, { color: "gray" }]}
+					size={60}
+				/>
+			)}
 			{status === PackStatus.complete && (
-				<FontAwesome name="check" style={style.icon} size={60} />
+				<FontAwesome
+					name="check"
+					style={[style.icon, { color: "green" }]}
+					size={60}
+				/>
 			)}
 			<Text style={style.text}>{title}</Text>
 		</TouchableOpacity>
@@ -52,7 +70,6 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 		},
 		icon: {
 			position: "absolute",
-			color: "green",
 			zIndex: 1,
 			opacity: 0.8,
 		},

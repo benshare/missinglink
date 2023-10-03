@@ -6,6 +6,7 @@ import {
 	TouchableWithoutFeedback,
 	View,
 } from "react-native"
+import { selectIsLastPackForWeek, selectPack } from "../../../../store"
 
 import { FontAwesome } from "@expo/vector-icons"
 import Header from "../../../../components/Header"
@@ -13,7 +14,6 @@ import Puzzle from "./puzzle/Puzzle"
 import Theme from "../../../../style/theme"
 import Updates from "../../../../api/updates"
 import { WeekScreenProps } from "../WeekScreen"
-import { selectPack } from "../../../../store"
 import useColorScheme from "../../../../hooks/useColorScheme"
 import { useSelector } from "react-redux"
 import { useState } from "react"
@@ -27,6 +27,7 @@ export default function PackScreen({
 
 	const { id } = route.params
 	const { puzzles } = useSelector(selectPack(id))
+	const isLastPack = useSelector(selectIsLastPackForWeek(id))
 
 	function nextIncompleteIndex(fromIndex: number) {
 		for (let offset = 0; offset < puzzles.length; offset++) {
@@ -75,12 +76,14 @@ export default function PackScreen({
 								) +
 									1 ===
 								puzzles.length
-							setTimeout(
-								packComplete
-									? () => navigation.pop()
-									: goToNextIncompletePuzzle,
-								1000
-							)
+							if (packComplete) {
+								setTimeout(() => navigation.pop(), 1000)
+								if (isLastPack) {
+									setTimeout(() => navigation.pop(), 2000)
+								}
+							} else {
+								setTimeout(goToNextIncompletePuzzle, 1000)
+							}
 						}}
 					/>
 				</View>

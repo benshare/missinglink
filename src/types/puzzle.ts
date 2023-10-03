@@ -17,6 +17,7 @@ export type Puzzle<T extends PuzzleType> = {
 
 export enum PackStatus {
 	locked = "locked",
+	notStarted = "notStarted",
 	inProgress = "inProgress",
 	complete = "complete",
 }
@@ -25,6 +26,7 @@ export type PuzzlePack = {
 	title: string
 	puzzles: { id: number; complete: boolean }[]
 	status: PackStatus
+	weekId: number
 }
 
 export enum DayOfWeek {
@@ -46,9 +48,17 @@ export const DayOfWeekText = {
 	[DayOfWeek.sunday]: "Sunday",
 }
 
+export enum WeekStatus {
+	locked,
+	inProgress,
+	complete,
+	pastIncomplete,
+	pastComplete,
+}
 export type WeeklyChallenge = {
 	id: number
 	title: string
+	startDate: string
 	packs: { day: DayOfWeek; pack: number }[]
-	status: PackStatus
+	status: WeekStatus
 }

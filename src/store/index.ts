@@ -6,6 +6,11 @@ import {
 	WeeklyChallengesState,
 	weeklyChallengesSlice,
 } from "./weeklyChallenges"
+import { addDays, dateFromLocaleString } from "../utils"
+
+import { PackStatus } from "../types/puzzle"
+
+const today = new Date()
 
 const reducers = {
 	currentUser: currentUserSlice.reducer,
@@ -56,15 +61,35 @@ export const selectWeek =
 	(id: number) =>
 	({ weeklyChallenges }: RootState) =>
 		weeklyChallenges.find(({ id: weekId }) => id === weekId)!
-export const selectCurrentWeek = ({ weeklyChallenges }: RootState) =>
-	weeklyChallenges.length > 0
-		? weeklyChallenges[weeklyChallenges.length - 1].id
+export const selectCurrentWeek = ({ weeklyChallenges }: RootState) => {
+	return weeklyChallenges.length > 0
+		? weeklyChallenges.find(({ startDate }) => {
+				const startDay = dateFromLocaleString(startDate)
+				const endDay = addDays(startDay, 7)
+				return startDay <= today && endDay > today
+		  })!.id
 		: null
+}
 
+export const selectPacks = ({ packs }: RootState) => packs
 export const selectPack =
 	(id: number) =>
 	({ packs }: RootState) =>
-		packs.find(({ id: packId }) => id === packId)!
+		packs[id]
+export const selectIsLastPackForWeek =
+	(packId: number) =>
+	({ weeklyChallenges, packs }: RootState) => {
+		const { weekId } = packs[packId]
+		const week = weeklyChallenges.find(({ id }) => id === weekId)!
+		const allPackIds = week.packs.map(({ pack }) => pack)
+		for (const otherPackId of allPackIds) {
+			const pack = packs[otherPackId]
+			if (otherPackId !== packId && pack.status !== PackStatus.complete) {
+				return false
+			}
+		}
+		return true
+	}
 
 export const selectPuzzle =
 	(id: number) =>
