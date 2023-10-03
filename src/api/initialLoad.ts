@@ -18,16 +18,19 @@ export function useInitialLoad() {
 		let { data: weeklyChallengeData, error: weeksError } =
 			await supabase.rpc("get_weekly_challenges")
 
+		const weeksToFetch = Array.from(
+			new Set(weeklyChallengeData?.map(({ id }) => id))
+		)
 		let { data: packsData, error: packsError } = await supabase
 			.from("packs")
 			.select(
 				`
                 *,
                 puzzles (id),
-                progress (status, puzzles_completed),
-                weekly_challenges (id)
+                progress (status, puzzles_completed)
             `
 			)
+			.in("week", weeksToFetch)
 			.order("id")
 
 		const { data: puzzlesData, error: puzzlesError } = await supabase
@@ -103,7 +106,7 @@ export function useInitialLoad() {
 			title,
 			puzzles,
 			progress: progressRaw,
-			weekly_challenges,
+			week,
 		} of packsData!) {
 			const progress: {
 				status: PackStatus
@@ -127,7 +130,7 @@ export function useInitialLoad() {
 					complete: progress.puzzles_completed[index],
 				})),
 				status: progress.status,
-				weekId: weekly_challenges!.id,
+				weekId: week!,
 			}
 		}
 		dispatch(batchAddPacks(packs))
