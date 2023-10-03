@@ -6,7 +6,7 @@ const phoneUtil = PhoneNumberUtil.getInstance()
 
 function formatNumber(raw: string) {
 	if (raw.length === 0) {
-		return "Your #"
+		return "+1 "
 	}
 	if (raw.length <= 3) {
 		return `+1 ${raw}`
@@ -35,10 +35,6 @@ export default function PhoneNumberInput({
 		<TextInput
 			ref={ref}
 			{...props}
-			style={[
-				props.style,
-				(value ?? "")?.length === 0 && { color: "gray" },
-			]}
 			value={formatted}
 			textContentType="telephoneNumber"
 			onChangeText={(newValue) => {

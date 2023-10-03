@@ -39,19 +39,16 @@ export default function PhoneNumberScreen({
 	}
 
 	return (
-		<View
-			style={{
-				width: "100%",
-				height: "80%",
-				justifyContent: "center",
-				alignItems: "center",
-			}}
-		>
+		<View style={style.wrapper}>
+			<Text style={style.title1}>Welcome to</Text>
+			<Text style={style.title2}>Missing Link</Text>
+
+			<Text style={style.label}>What's your number?</Text>
 			<PhoneNumberInput
 				value={number}
 				onChangeText={setNumber}
 				autoFocus
-				style={[style.input, number.length === 0 && { color: "gray" }]}
+				style={style.input}
 				setIsValid={setIsValid}
 				editable={!loading}
 			/>
@@ -60,7 +57,7 @@ export default function PhoneNumberScreen({
 				disabled={!isValid || loading}
 				style={[
 					style.button,
-					!isValid && { opacity: 0.3 },
+					!isValid && { opacity: 0 },
 					loading && { borderWidth: 0 },
 				]}
 			>
@@ -76,10 +73,32 @@ export default function PhoneNumberScreen({
 
 const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 	StyleSheet.create({
+		wrapper: {
+			width: "100%",
+			height: "100%",
+			display: "flex",
+			alignItems: "center",
+			marginTop: 100,
+		},
+		title1: {
+			fontSize: 30,
+			fontWeight: "200",
+		},
+		title2: {
+			fontSize: 40,
+			fontWeight: "400",
+		},
+		label: {
+			marginTop: 120,
+			textAlign: "center",
+			fontSize: 25,
+			color: "gray",
+		},
 		input: {
+			marginTop: 30,
 			minWidth: 100,
 			textAlign: "center",
-			fontSize: 38,
+			fontSize: 30,
 		},
 		button: {
 			marginTop: 50,

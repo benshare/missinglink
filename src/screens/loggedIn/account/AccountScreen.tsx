@@ -28,9 +28,12 @@ export default function AccountScreen() {
 	return (
 		<View style={style.wrapper}>
 			<Header title="Account" backIcon />
-			<Text style={style.text}>Logged in as {phoneNumber}</Text>
-			<TouchableOpacity onPress={handleSignOut}>
-				<Text style={style.text}>Log out</Text>
+			<Text style={style.text}>Your number: {phoneNumber}</Text>
+			<TouchableOpacity
+				onPress={handleSignOut}
+				style={style.logoutButton}
+			>
+				<Text style={style.logoutText}>Log out</Text>
 			</TouchableOpacity>
 		</View>
 	)
@@ -42,27 +45,26 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 			width: "100%",
 			height: "100%",
 			paddingTop: 80,
-			paddingBottom: 200,
 			paddingHorizontal: 30,
-			display: "flex",
-			flexDirection: "column",
-			justifyContent: "space-between",
 			alignItems: "center",
+			position: "relative",
 		},
 		text: {
 			fontSize: 20,
 		},
-		button: {
-			padding: 20,
+		logoutButton: {
+			borderColor: "red",
 			borderWidth: 1,
 			borderStyle: "solid",
-			borderColor: "gray",
-			borderRadius: 40,
-			alignSelf: "center",
-			minWidth: "70%",
+			borderRadius: 20,
+			padding: 10,
+			paddingHorizontal: 15,
+			position: "absolute",
+			bottom: 100,
 		},
-		buttonText: {
-			fontSize: 30,
+		logoutText: {
+			fontSize: 20,
 			textAlign: "center",
+			color: "red",
 		},
 	})
