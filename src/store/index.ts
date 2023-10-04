@@ -120,7 +120,8 @@ export const selectStreaks = createSelector(
 				break
 			}
 		}
-		let offset = dateDiffInDays(today, foundStartDay)
+		const initialOffset = dateDiffInDays(today, foundStartDay)
+		let offset = initialOffset
 
 		let week = weeks[currentWeekIndex]
 		let streak = 0
@@ -136,11 +137,19 @@ export const selectStreaks = createSelector(
 			let allComplete = true
 			while (offset >= 0) {
 				const { status } = packs[packsForWeek[offset].pack]
-				if (status !== PackStatus.complete) {
-					allComplete = false
-					break
+				if (status === PackStatus.complete) {
+					streak++
+				} else {
+					if (
+						!(
+							weekIndex === currentWeekIndex &&
+							offset === initialOffset
+						)
+					) {
+						allComplete = false
+						break
+					}
 				}
-				streak++
 				offset--
 			}
 			if (!allComplete) {

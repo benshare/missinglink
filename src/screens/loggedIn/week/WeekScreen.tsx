@@ -5,6 +5,7 @@ import { LoggedInScreenProps } from "../LoggedInScreen"
 import PackPreview from "./PackPreview"
 import PackScreen from "./pack/PackScreen"
 import { StackScreenProps } from "@react-navigation/stack"
+import Streak from "../../../components/Streak"
 import Theme from "../../../style/theme"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { selectWeek } from "../../../store"
@@ -30,7 +31,9 @@ function Week({ route }: WeekScreenProps<"Week">) {
 	return (
 		<FlatList
 			style={style.wrapper}
-			ListHeaderComponent={<Header title={title} backIcon />}
+			ListHeaderComponent={
+				<Header title={title} backIcon RightElement={Streak} />
+			}
 			data={packs}
 			renderItem={({ item: { day, pack } }) => (
 				<PackPreview {...{ day, id: pack }} />

@@ -484,7 +484,6 @@ door mat
 warm welcome
 welcome home
 home warming
-fun home
 home boy
 home turf
 turf war
@@ -1789,3 +1788,7 @@ house call
 tinder box
 fine wine
 wine cellar
+news paper
+paper back
+news flash
+flash back

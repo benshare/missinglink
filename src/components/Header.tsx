@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 
 import { FontAwesome } from "@expo/vector-icons"
+import { ReactNode } from "react"
 import Theme from "../style/theme"
 import useColorScheme from "../hooks/useColorScheme"
 import { useNavigation } from "@react-navigation/native"
@@ -14,7 +15,7 @@ export default function Header({
 	title: string
 	titleSize?: number
 	backIcon?: boolean
-	RightElement?: () => React.JSX.Element
+	RightElement?: () => ReactNode
 }) {
 	const theme = useColorScheme()
 	const style = styles(Theme[theme])
