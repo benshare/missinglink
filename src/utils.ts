@@ -29,3 +29,13 @@ export function dateDiffInDays(first: Date, second: Date) {
 		Math.abs(first.getTime() - second.getTime()) / _MS_PER_DAY
 	)
 }
+
+export function setIntervalLimited(
+	effect: (index: number) => void,
+	interval: number,
+	times: number
+) {
+	for (let i = 0; i < times; i++) {
+		setTimeout(() => effect(i), i * interval)
+	}
+}

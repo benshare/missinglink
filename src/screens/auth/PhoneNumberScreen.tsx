@@ -7,6 +7,7 @@ import {
 } from "react-native"
 
 import { AuthScreenProps } from "./AuthScreen"
+import Logo from "../../components/Logo"
 import PhoneNumberInput from "../../components/PhoneNumberInput"
 import Theme from "../../style/theme"
 import { supabase } from "../../api/supabase"
@@ -40,8 +41,7 @@ export default function PhoneNumberScreen({
 
 	return (
 		<View style={style.wrapper}>
-			<Text style={style.title1}>Welcome to</Text>
-			<Text style={style.title2}>Missing Link</Text>
+			<Logo />
 
 			<Text style={style.label}>What's your number?</Text>
 			<PhoneNumberInput
@@ -79,15 +79,7 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 			height: "100%",
 			display: "flex",
 			alignItems: "center",
-			marginTop: 100,
-		},
-		title1: {
-			fontSize: 30,
-			fontWeight: "200",
-		},
-		title2: {
-			fontSize: 40,
-			fontWeight: "400",
+			marginTop: 150,
 		},
 		label: {
 			marginTop: 120,
