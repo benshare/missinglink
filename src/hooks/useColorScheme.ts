@@ -7,5 +7,5 @@ import {
 // type suggests that it can be null. This will not happen in practice, so this
 // makes it a bit easier to work with.
 export default function useColorScheme(): NonNullable<ColorSchemeName> {
-	return _useColorScheme() as NonNullable<ColorSchemeName>
+	return "light" //_useColorScheme() as NonNullable<ColorSchemeName>
 }

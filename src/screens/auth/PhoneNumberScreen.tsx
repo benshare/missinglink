@@ -74,6 +74,7 @@ export default function PhoneNumberScreen({
 const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 	StyleSheet.create({
 		wrapper: {
+			backgroundColor: theme.colors.background,
 			width: "100%",
 			height: "100%",
 			display: "flex",
