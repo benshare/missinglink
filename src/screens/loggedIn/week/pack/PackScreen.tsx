@@ -15,7 +15,6 @@ import {
 } from "../../../../store"
 import { useRef, useState } from "react"
 
-import { FontAwesome } from "@expo/vector-icons"
 import Header from "../../../../components/Header"
 import Puzzle from "./puzzle/Puzzle"
 import Theme from "../../../../style/theme"
@@ -100,10 +99,12 @@ export default function PackScreen({
 								}
 							} else {
 								setTimeout(goToNextIncompletePuzzle, 1000)
-								setTimeout(
-									() => inputRef.current?.focus(),
-									1500
-								)
+								// TODO: make this happen in a natural way
+								//
+								// setTimeout(
+								// 	() => inputRef.current?.focus(),
+								// 	1500
+								// )
 							}
 						}}
 						inputRef={inputRef}
