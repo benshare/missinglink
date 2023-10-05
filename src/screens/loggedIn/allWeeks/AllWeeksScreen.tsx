@@ -1,7 +1,7 @@
 import { FlatList, StyleSheet } from "react-native"
 
+import CurrentUserStreak from "../../../components/CurrentUserStreak"
 import Header from "../../../components/Header"
-import Streak from "../../../components/Streak"
 import Theme from "../../../style/Theme"
 import WeekPreview from "./WeekPreview"
 import { selectWeeks } from "../../../store"
@@ -17,7 +17,11 @@ export default function AllWeeksScreen() {
 		<FlatList
 			style={style.wrapper}
 			ListHeaderComponent={
-				<Header title="All weeks" backIcon RightElement={Streak} />
+				<Header
+					title="All weeks"
+					backIcon
+					RightElement={CurrentUserStreak}
+				/>
 			}
 			data={weeks}
 			renderItem={({ item: week }) => <WeekPreview {...week} />}

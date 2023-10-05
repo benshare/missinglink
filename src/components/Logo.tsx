@@ -1,7 +1,7 @@
 import { Animated, Easing, StyleSheet, View } from "react-native"
 import { useEffect, useState } from "react"
 
-import Theme from "../style/Theme.ts"
+import Theme from "../style/Theme"
 import { setIntervalLimited } from "../utils"
 import useColorScheme from "../hooks/useColorScheme"
 

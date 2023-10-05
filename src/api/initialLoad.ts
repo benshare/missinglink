@@ -7,6 +7,7 @@ import {
 } from "../store/weeklyChallenges"
 import { addDays, dateDiffInDays } from "../utils"
 
+import { batchAdd as batchAddProfiles } from "../store/leaderboard"
 import { profileLoaded } from "../store/currentUser"
 import { supabase } from "./supabase"
 import { useDispatch } from "react-redux"
@@ -19,6 +20,8 @@ export function useInitialLoad() {
 		const {
 			data: { user },
 		} = await supabase.auth.getUser()
+
+		// Supabase fetches
 
 		let { data: weeklyChallengeData, error: weeksError } =
 			await supabase.rpc("get_weekly_challenges")
@@ -42,17 +45,44 @@ export function useInitialLoad() {
 			.from("puzzles")
 			.select("*")
 
+		// TODO: these two fetches are a bit redundant, although
+		// in the future their would be private profile data
+		const { data: currentUserData, error: currentUserError } =
+			await supabase
+				.from("profiles")
+				.select(`username, current_streak`)
+				.eq("id", user!.id)
+
 		const { data: profilesData, error: profilesError } = await supabase
 			.from("profiles")
-			.select("*")
-			.eq("id", user!.id)
+			.select(
+				`
+                id,
+                username,
+                current_streak,
+                max_streak
+            `
+			)
+			.neq("username", null)
+			.gt("current_streak", 0)
+			.order("current_streak", { ascending: false })
+			.order("id", { ascending: true })
+			.limit(10)
 
-		if (weeksError || packsError || puzzlesError || profilesError) {
+		if (
+			weeksError ||
+			packsError ||
+			puzzlesError ||
+			currentUserError ||
+			profilesError
+		) {
 			console.error(
 				packsError?.message ?? puzzlesError?.message ?? profilesError
 			)
 			return
 		}
+
+		// Process and store data in redux
 
 		const packsLocked: { [key in number]: boolean } = {}
 		const weeks: WeeklyChallengesState = weeklyChallengeData!.map(
@@ -180,6 +210,16 @@ export function useInitialLoad() {
 		)
 		dispatch(batchAddPuzzles(puzzles))
 
-		dispatch(profileLoaded(profilesData[0]))
+		dispatch(profileLoaded(currentUserData[0]))
+
+		dispatch(
+			batchAddProfiles(
+				profilesData.map(({ id, username, ...rest }) => ({
+					...rest,
+					user_id: id,
+					username: username!,
+				}))
+			)
+		)
 	}
 }

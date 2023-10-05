@@ -2,19 +2,22 @@ import { Animated, Easing, StyleSheet, Text } from "react-native"
 
 import { FontAwesome5 } from "@expo/vector-icons"
 import Theme from "../style/Theme"
-import { selectStreaks } from "../store"
 import useColorScheme from "../hooks/useColorScheme"
 import { useEffect } from "react"
-import { useSelector } from "react-redux"
 
-export default function Streak() {
+export default function Streak({
+	streak,
+	pulse,
+}: {
+	streak: number | null
+	pulse?: boolean
+}) {
 	const theme = useColorScheme()
 	const style = styles(Theme[theme])
 
-	const streak = useSelector(selectStreaks)
-	const opacity = new Animated.Value(0.5)
+	const opacity = new Animated.Value(pulse ? 0.5 : 1)
 
-	const pulse = () => {
+	const setPulse = () => {
 		Animated.sequence([
 			Animated.timing(opacity, {
 				toValue: 1,
@@ -29,11 +32,13 @@ export default function Streak() {
 				useNativeDriver: false,
 			}),
 		]).start(() => {
-			pulse()
+			setPulse()
 		})
 	}
 	useEffect(() => {
-		pulse()
+		if (pulse) {
+			setPulse()
+		}
 	}, [])
 
 	return Boolean(streak) ? (

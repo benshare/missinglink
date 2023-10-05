@@ -5,6 +5,7 @@ import {
 	createSelector,
 } from "@reduxjs/toolkit"
 import { CurrentUserState, currentUserSlice } from "./currentUser"
+import { LeaderboardState, leaderboardSlice } from "./leaderboard"
 import { PackStatus, WeekStatus } from "../types/puzzle"
 import { PacksState, packsSlice } from "./packs"
 import { PuzzlesState, puzzlesSlice } from "./puzzles"
@@ -21,6 +22,7 @@ const reducers = {
 	puzzles: puzzlesSlice.reducer,
 	packs: packsSlice.reducer,
 	weeklyChallenges: weeklyChallengesSlice.reducer,
+	leaderboard: leaderboardSlice.reducer,
 }
 const appReducer = combineReducers(reducers)
 
@@ -29,6 +31,7 @@ export type RootState = {
 	puzzles: PuzzlesState
 	packs: PacksState
 	weeklyChallenges: WeeklyChallengesState
+	leaderboard: LeaderboardState
 }
 const baseData: RootState = {
 	currentUser: {
@@ -37,6 +40,7 @@ const baseData: RootState = {
 	puzzles: {},
 	packs: [],
 	weeklyChallenges: [],
+	leaderboard: [],
 }
 const rootReducer = (state: any, action: AnyAction) => {
 	if (action.type === "LOGOUT") {
@@ -59,6 +63,7 @@ export const selectCurrentUser = {
 	accessToken: ({ currentUser: { accessToken } }: RootState) => accessToken,
 	phoneNumber: ({ currentUser: { phoneNumber } }: RootState) => phoneNumber,
 	username: ({ currentUser: { profile } }: RootState) => profile?.username,
+	streak: ({ currentUser: { profile } }: RootState) => profile?.streak,
 }
 
 export const selectWeeks = ({ weeklyChallenges }: RootState) => weeklyChallenges
@@ -161,3 +166,5 @@ export const selectStreaks = createSelector(
 		return streak
 	}
 )
+
+export const selectLeaderboard = ({ leaderboard }: RootState) => leaderboard

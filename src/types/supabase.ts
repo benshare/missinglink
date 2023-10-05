@@ -73,15 +73,21 @@ export interface Database {
 			}
 			profiles: {
 				Row: {
+					current_streak: number
 					id: string
+					max_streak: number
 					username: string | null
 				}
 				Insert: {
+					current_streak?: number
 					id: string
+					max_streak?: number
 					username?: string | null
 				}
 				Update: {
+					current_streak?: number
 					id?: string
+					max_streak?: number
 					username?: string | null
 				}
 				Relationships: [

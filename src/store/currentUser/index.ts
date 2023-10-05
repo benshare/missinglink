@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 
 export type ActionPayload = {
 	signIn: { accessToken: string; phoneNumber: string }
-	profileLoaded: { username: string | null }
+	profileLoaded: { username: string | null; current_streak: number }
 }
 export type CurrentUserState = {
 	signedIn: boolean
@@ -10,6 +10,7 @@ export type CurrentUserState = {
 	phoneNumber?: string
 	profile?: {
 		username: string | null
+		streak: number
 	}
 }
 
@@ -27,11 +28,13 @@ export const currentUserSlice = createSlice({
 		},
 		profileLoaded: (
 			store,
-			{ payload: profile }: PayloadAction<ActionPayload["profileLoaded"]>
+			{
+				payload: { username, current_streak: streak },
+			}: PayloadAction<ActionPayload["profileLoaded"]>
 		) => {
 			return {
 				...store,
-				profile,
+				profile: { username, streak },
 			}
 		},
 	},
