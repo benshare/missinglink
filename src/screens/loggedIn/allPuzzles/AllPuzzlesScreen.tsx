@@ -1,6 +1,7 @@
 import { FlatList, StyleSheet } from "react-native"
 
 import CurrentUserStreak from "../../../components/CurrentUserStreak"
+import FloatersView from "../../../components/FloatersView"
 import Header from "../../../components/Header"
 import { StackScreenProps } from "@react-navigation/stack"
 import Theme from "../../../style/Theme"
@@ -25,23 +26,25 @@ function AllPuzzles() {
 
 	const weeks = useSelector(selectWeeks)
 	return (
-		<FlatList
-			style={style.wrapper}
-			ListHeaderComponent={
-				<Header
-					title="All puzzles"
-					backIcon
-					RightElement={CurrentUserStreak}
-				/>
-			}
-			data={weeks}
-			renderItem={({ item: week }) => <WeekPreview {...week} />}
-			numColumns={2}
-			columnWrapperStyle={{
-				justifyContent: "space-between",
-			}}
-			showsVerticalScrollIndicator={false}
-		/>
+		<FloatersView>
+			<FlatList
+				style={style.wrapper}
+				ListHeaderComponent={
+					<Header
+						title="All puzzles"
+						backIcon
+						RightElement={CurrentUserStreak}
+					/>
+				}
+				data={weeks}
+				renderItem={({ item: week }) => <WeekPreview {...week} />}
+				numColumns={2}
+				columnWrapperStyle={{
+					justifyContent: "space-between",
+				}}
+				showsVerticalScrollIndicator={false}
+			/>
+		</FloatersView>
 	)
 }
 

@@ -2,6 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 
 import AccountScreen from "./account/AccountScreen"
 import AllPuzzlesScreen from "./allPuzzles/AllPuzzlesScreen"
+import FloatersView from "../../components/FloatersView"
 import LeaderboardScreen from "./leaderboard/LeaderboardScreen"
 import Logo from "../../components/Logo"
 import PackScreen from "./today/pack/PackScreen"
@@ -34,7 +35,7 @@ function Home({ navigation }: LoggedInScreenProps<"Home">) {
 	const currentPackId = useSelector(selectCurrentPack)
 
 	return (
-		<View style={style.wrapper}>
+		<FloatersView style={style.wrapper}>
 			<Logo />
 			<View style={{ height: 20 }} />
 			<TouchableOpacity
@@ -63,7 +64,7 @@ function Home({ navigation }: LoggedInScreenProps<"Home">) {
 			>
 				<Text style={style.buttonText}>Account</Text>
 			</TouchableOpacity>
-		</View>
+		</FloatersView>
 	)
 }
 

@@ -1,7 +1,8 @@
 import { LocalStoreKey, LocalStoreService } from "../../../localStore"
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { StyleSheet, Text, TouchableOpacity } from "react-native"
 import { selectCurrentUser, signOut } from "../../../store"
 
+import FloatersView from "../../../components/FloatersView"
 import Header from "../../../components/Header"
 import { RootParamList } from "../../../navigation"
 import Row from "./Row"
@@ -27,7 +28,7 @@ export default function AccountScreen() {
 	}
 
 	return (
-		<View style={style.wrapper}>
+		<FloatersView style={style.wrapper}>
 			<Header title="Account" backIcon />
 			<Row
 				label="Your number:"
@@ -45,7 +46,7 @@ export default function AccountScreen() {
 			>
 				<Text style={style.logoutText}>Log out</Text>
 			</TouchableOpacity>
-		</View>
+		</FloatersView>
 	)
 }
 

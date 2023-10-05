@@ -82,9 +82,7 @@ export default function useSubscribeToUpdates() {
 						break
 					case "INSERT":
 					case "DELETE":
-						console.error(
-							"Unexpected insert or delete for table profiles"
-						)
+						break
 				}
 			}
 		)

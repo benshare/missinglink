@@ -6,7 +6,6 @@ import {
 	TextInput,
 	TouchableOpacity,
 	TouchableWithoutFeedback,
-	View,
 } from "react-native"
 import {
 	selectIsLastPackForWeek,
@@ -15,6 +14,7 @@ import {
 } from "../../../../store"
 import { useRef, useState } from "react"
 
+import FloatersView from "../../../../components/FloatersView"
 import Header from "../../../../components/Header"
 import { LoggedInScreenProps } from "../../LoggedInScreen"
 import Puzzle from "./puzzle/Puzzle"
@@ -67,7 +67,7 @@ export default function PackScreen({
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 			<KeyboardAvoidingView behavior="position" enabled>
-				<View style={style.wrapper}>
+				<FloatersView style={style.wrapper}>
 					<Header
 						title={`${index + 1} / ${puzzles.length}`}
 						backIcon
@@ -111,7 +111,7 @@ export default function PackScreen({
 						}}
 						inputRef={inputRef}
 					/>
-				</View>
+				</FloatersView>
 			</KeyboardAvoidingView>
 		</TouchableWithoutFeedback>
 	)

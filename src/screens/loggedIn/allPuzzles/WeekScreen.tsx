@@ -2,6 +2,7 @@ import { FlatList, StyleSheet } from "react-native"
 
 import { AllPuzzlesScreenProps } from "./AllPuzzlesScreen"
 import CurrentUserStreak from "../../../components/CurrentUserStreak"
+import FloatersView from "../../../components/FloatersView"
 import Header from "../../../components/Header"
 import { LoggedInScreenParamList } from "../LoggedInScreen"
 import PackPreview from "../today/PackPreview"
@@ -29,25 +30,27 @@ function Week({ route }: WeekScreenProps<"Week">) {
 	const { title, packs } = useSelector(selectWeek(id))
 
 	return (
-		<FlatList
-			style={style.wrapper}
-			ListHeaderComponent={
-				<Header
-					title={title}
-					backIcon
-					RightElement={CurrentUserStreak}
-				/>
-			}
-			data={packs}
-			renderItem={({ item: { day, pack } }) => (
-				<PackPreview {...{ day, id: pack }} />
-			)}
-			numColumns={2}
-			columnWrapperStyle={{
-				justifyContent: "space-between",
-			}}
-			showsVerticalScrollIndicator={false}
-		/>
+		<FloatersView>
+			<FlatList
+				style={style.wrapper}
+				ListHeaderComponent={
+					<Header
+						title={title}
+						backIcon
+						RightElement={CurrentUserStreak}
+					/>
+				}
+				data={packs}
+				renderItem={({ item: { day, pack } }) => (
+					<PackPreview {...{ day, id: pack }} />
+				)}
+				numColumns={2}
+				columnWrapperStyle={{
+					justifyContent: "space-between",
+				}}
+				showsVerticalScrollIndicator={false}
+			/>
+		</FloatersView>
 	)
 }
 
