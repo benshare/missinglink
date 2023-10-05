@@ -93,6 +93,8 @@ async function createWeek(startDate: Date, title: string) {
 
 export function addWeek() {
 	const date = new Date()
+	date.setDate(2)
+	createWeek(date, "Week 1")
 	date.setDate(9)
 	createWeek(date, "Week 2")
 	date.setDate(16)
