@@ -17,8 +17,8 @@ import { useState } from "react"
 export default function PhoneNumberScreen({
 	navigation,
 }: AuthScreenProps<"PhoneNumberScreen">) {
-	const theme = useColorScheme()
-	const style = styles(Theme[theme])
+	const theme = Theme[useColorScheme()]
+	const style = styles(theme)
 
 	const [number, setNumber] = useState("")
 	const [isValid, setIsValid] = useState(false)
@@ -37,12 +37,13 @@ export default function PhoneNumberScreen({
 			return
 		}
 		navigation.push("VerifyCodeScreen", { phoneNumber: formatted })
+		setNumber("")
+		setIsValid(false)
 	}
 
 	return (
 		<View style={style.wrapper}>
 			<Logo />
-
 			<Text style={style.label}>What's your number?</Text>
 			<PhoneNumberInput
 				value={number}
@@ -62,7 +63,7 @@ export default function PhoneNumberScreen({
 				]}
 			>
 				{loading ? (
-					<ActivityIndicator />
+					<ActivityIndicator color={theme.colors.primary.light} />
 				) : (
 					<Text style={style.buttonText}>Verify</Text>
 				)}
@@ -82,27 +83,32 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 			marginTop: 150,
 		},
 		label: {
-			marginTop: 120,
+			marginTop: 80,
 			textAlign: "center",
-			fontSize: 25,
-			color: "gray",
+			fontSize: 20,
+			color: theme.colors.primary.light,
 		},
 		input: {
-			marginTop: 30,
+			marginTop: 15,
 			minWidth: 100,
 			textAlign: "center",
-			fontSize: 30,
+			fontSize: 35,
+			color: theme.colors.primary.main,
 		},
 		button: {
-			marginTop: 50,
-			borderColor: theme.colors.primary.lighter,
+			marginTop: 80,
+			borderColor: theme.colors.primary.main,
 			borderWidth: 1,
 			borderStyle: "solid",
-			padding: 10,
-			paddingHorizontal: 15,
-			borderRadius: 10,
+			padding: 8,
+			paddingHorizontal: 10,
+			borderRadius: 5,
 		},
 		buttonText: {
 			fontSize: 15,
+			color: theme.colors.primary.main,
+		},
+		spinner: {
+			color: theme.colors.primary.light,
 		},
 	})

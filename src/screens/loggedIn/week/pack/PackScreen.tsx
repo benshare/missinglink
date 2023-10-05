@@ -56,7 +56,7 @@ export default function PackScreen({
 
 	const NextPuzzle = () => (
 		<TouchableOpacity hitSlop={20} onPress={goToNextPuzzle}>
-			<Text style={style.skip}>Skip</Text>
+			<Text style={style.next}>Next</Text>
 		</TouchableOpacity>
 	)
 
@@ -124,8 +124,8 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 			justifyContent: "space-between",
 			height: "100%",
 		},
-		skip: {
+		next: {
 			fontSize: 20,
-			color: "gray",
+			color: theme.colors.primary.light,
 		},
 	})

@@ -51,9 +51,10 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 		},
 		text: {
 			fontSize: 20,
+			color: theme.colors.primary.main,
 		},
 		logoutButton: {
-			borderColor: "red",
+			borderColor: theme.colors.primary.light,
 			borderWidth: 1,
 			borderStyle: "solid",
 			borderRadius: 20,
@@ -65,6 +66,6 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 		logoutText: {
 			fontSize: 20,
 			textAlign: "center",
-			color: "red",
+			color: theme.colors.primary.light,
 		},
 	})

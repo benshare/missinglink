@@ -33,7 +33,7 @@ export default function Header({
 						<FontAwesome
 							name="long-arrow-left"
 							size={25}
-							color="gray"
+							style={style.arrow}
 						/>
 					</TouchableOpacity>
 				)}
@@ -60,10 +60,14 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 			justifyContent: "center",
 			alignItems: "flex-start",
 		},
+		arrow: {
+			color: theme.colors.primary.light,
+		},
 		title: {
 			flex: 5,
 			alignSelf: "center",
 			textAlign: "center",
+			color: theme.colors.primary.main,
 		},
 		rightWrapper: {
 			flex: 1,

@@ -97,15 +97,18 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 		},
 		button: {
 			padding: 20,
-			borderWidth: 1,
+			borderWidth: 2,
 			borderStyle: "solid",
-			borderColor: "gray",
+			borderColor: theme.colors.primary.main,
 			borderRadius: 40,
 			alignSelf: "center",
 			minWidth: "70%",
+			color: theme.colors.primary.main,
 		},
 		buttonText: {
 			fontSize: 30,
+			fontWeight: "600",
 			textAlign: "center",
+			color: theme.colors.primary.main,
 		},
 	})

@@ -11,8 +11,8 @@ import { useNavigation } from "@react-navigation/native"
 import { useSelector } from "react-redux"
 
 export default function PackPreview({ id }: { id: number }) {
-	const theme = useColorScheme()
-	const style = styles(Theme[theme])
+	const theme = Theme[useColorScheme()]
+	const style = styles(theme)
 
 	const navigation = useNavigation<StackNavigationProp<WeekParamList>>()
 
@@ -27,21 +27,24 @@ export default function PackPreview({ id }: { id: number }) {
 			{status === PackStatus.locked && (
 				<FontAwesome
 					name="lock"
-					style={[style.icon, { color: "gray" }]}
+					style={[style.icon, { color: theme.colors.primary.light }]}
 					size={60}
 				/>
 			)}
 			{status === PackStatus.inProgress && (
 				<FontAwesome
 					name="circle-o-notch"
-					style={[style.icon, { color: "gray" }]}
+					style={[style.icon, { color: theme.colors.primary.light }]}
 					size={60}
 				/>
 			)}
 			{status === PackStatus.complete && (
 				<FontAwesome
 					name="check"
-					style={[style.icon, { color: "green" }]}
+					style={[
+						style.icon,
+						{ color: theme.colors.highlight.green },
+					]}
 					size={60}
 				/>
 			)}
@@ -56,7 +59,7 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 			padding: 10,
 			borderWidth: 1,
 			borderStyle: "solid",
-			borderColor: "gray",
+			borderColor: theme.colors.primary.light,
 			borderRadius: 10,
 			width: "40%",
 			aspectRatio: 1,
@@ -67,6 +70,7 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 		},
 		text: {
 			fontSize: 20,
+			color: theme.colors.primary.main,
 		},
 		icon: {
 			position: "absolute",

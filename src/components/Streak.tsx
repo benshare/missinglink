@@ -23,7 +23,7 @@ export default function Streak() {
 				useNativeDriver: false,
 			}),
 			Animated.timing(opacity, {
-				toValue: 0.5,
+				toValue: 0.2,
 				duration: 1000,
 				easing: Easing.linear,
 				useNativeDriver: false,
@@ -38,7 +38,7 @@ export default function Streak() {
 
 	return Boolean(streak) ? (
 		<Animated.View style={[style.streakWrapper, { opacity }]}>
-			<FontAwesome5 name="fire" size={22} color="red" />
+			<FontAwesome5 name="fire" size={25} color="red" />
 			<Text style={style.streakNumber}>{streak}</Text>
 		</Animated.View>
 	) : undefined
@@ -51,7 +51,7 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 		},
 		streakNumber: {
 			marginLeft: 5,
-			color: "red",
-			fontSize: 22,
+			color: theme.colors.highlight.red,
+			fontSize: 25,
 		},
 	})
