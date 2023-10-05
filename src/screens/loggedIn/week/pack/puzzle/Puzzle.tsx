@@ -2,7 +2,7 @@ import { Keyboard, StyleSheet, Text, TextInput, View } from "react-native"
 import { PuzzleData, PuzzleType } from "../../../../../types/puzzle"
 import { Ref, useEffect, useRef, useState } from "react"
 
-import Theme from "../../../../../style/theme"
+import Theme from "../../../../../style/Theme"
 import { selectPuzzle } from "../../../../../store"
 import { sentenceCase } from "../../../../../utils"
 import useColorScheme from "../../../../../hooks/useColorScheme"

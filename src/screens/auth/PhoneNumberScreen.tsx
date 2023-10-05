@@ -9,7 +9,7 @@ import {
 import { AuthScreenProps } from "./AuthScreen"
 import Logo from "../../components/Logo"
 import PhoneNumberInput from "../../components/PhoneNumberInput"
-import Theme from "../../style/theme"
+import Theme from "../../style/Theme"
 import { supabase } from "../../api/supabase"
 import useColorScheme from "../../hooks/useColorScheme"
 import { useState } from "react"

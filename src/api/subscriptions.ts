@@ -1,4 +1,8 @@
 import {
+	ActionPayload as CurrentUserActionPayload,
+	profileLoaded,
+} from "../store/currentUser"
+import {
 	ActionPayload as PacksActionPayload,
 	singleUpdate as singleUpdatePacks,
 } from "../store/packs"
@@ -55,5 +59,28 @@ export default function useSubscribeToUpdates() {
 						)
 				}
 			}
-		).subscribe
+		)
+		.subscribe()
+
+	supabase
+		.channel("profile_updates_channel")
+		.on(
+			"postgres_changes",
+			{ event: "*", schema: "public", table: "profiles" },
+			({ eventType, new: newValue }) => {
+				const profile =
+					newValue as CurrentUserActionPayload["profileLoaded"]
+				switch (eventType) {
+					case "UPDATE":
+						dispatch(profileLoaded(profile))
+						break
+					case "INSERT":
+					case "DELETE":
+						console.error(
+							"Unexpected insert or delete for table profiles"
+						)
+				}
+			}
+		)
+		.subscribe()
 }

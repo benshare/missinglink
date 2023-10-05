@@ -58,6 +58,7 @@ export const selectIsSignedIn = ({ currentUser: { signedIn } }: RootState) =>
 export const selectCurrentUser = {
 	accessToken: ({ currentUser: { accessToken } }: RootState) => accessToken,
 	phoneNumber: ({ currentUser: { phoneNumber } }: RootState) => phoneNumber,
+	username: ({ currentUser: { profile } }: RootState) => profile?.username,
 }
 
 export const selectWeeks = ({ weeklyChallenges }: RootState) => weeklyChallenges

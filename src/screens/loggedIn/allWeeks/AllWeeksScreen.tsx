@@ -2,7 +2,7 @@ import { FlatList, StyleSheet } from "react-native"
 
 import Header from "../../../components/Header"
 import Streak from "../../../components/Streak"
-import Theme from "../../../style/theme"
+import Theme from "../../../style/Theme"
 import WeekPreview from "./WeekPreview"
 import { selectWeeks } from "../../../store"
 import useColorScheme from "../../../hooks/useColorScheme"

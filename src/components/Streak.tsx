@@ -1,7 +1,7 @@
 import { Animated, Easing, StyleSheet, Text } from "react-native"
 
 import { FontAwesome5 } from "@expo/vector-icons"
-import Theme from "../style/theme"
+import Theme from "../style/Theme"
 import { selectStreaks } from "../store"
 import useColorScheme from "../hooks/useColorScheme"
 import { useEffect } from "react"

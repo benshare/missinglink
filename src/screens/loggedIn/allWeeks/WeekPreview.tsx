@@ -4,7 +4,7 @@ import { WeekStatus, WeeklyChallenge } from "../../../types/puzzle"
 import { FontAwesome } from "@expo/vector-icons"
 import { LoggedInScreenParamList } from "../LoggedInScreen"
 import { StackNavigationProp } from "@react-navigation/stack"
-import Theme from "../../../style/theme"
+import Theme from "../../../style/Theme"
 import useColorScheme from "../../../hooks/useColorScheme"
 import { useNavigation } from "@react-navigation/native"
 

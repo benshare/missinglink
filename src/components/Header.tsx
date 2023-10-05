@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 
 import { FontAwesome } from "@expo/vector-icons"
 import { ReactNode } from "react"
-import Theme from "../style/theme"
+import Theme from "../style/Theme"
 import useColorScheme from "../hooks/useColorScheme"
 import { useNavigation } from "@react-navigation/native"
 

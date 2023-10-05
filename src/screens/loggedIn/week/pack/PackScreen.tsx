@@ -17,7 +17,7 @@ import { useRef, useState } from "react"
 
 import Header from "../../../../components/Header"
 import Puzzle from "./puzzle/Puzzle"
-import Theme from "../../../../style/theme"
+import Theme from "../../../../style/Theme"
 import Updates from "../../../../api/updates"
 import { WeekScreenProps } from "../WeekScreen"
 import useColorScheme from "../../../../hooks/useColorScheme"

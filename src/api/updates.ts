@@ -35,6 +35,13 @@ namespace Updates {
 			})
 		}
 	}
+
+	export async function setUsername(username: string) {
+		const {
+			data: { user },
+		} = await supabase.auth.getUser()
+		await supabase.from("profiles").update({ username }).eq("id", user!.id)
+	}
 }
 
 export default Updates

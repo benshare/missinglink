@@ -7,6 +7,7 @@ import {
 } from "../store/weeklyChallenges"
 import { addDays, dateDiffInDays } from "../utils"
 
+import { profileLoaded } from "../store/currentUser"
 import { supabase } from "./supabase"
 import { useDispatch } from "react-redux"
 
@@ -15,6 +16,10 @@ export function useInitialLoad() {
 	const today = new Date()
 
 	return async function doInitialLoad() {
+		const {
+			data: { user },
+		} = await supabase.auth.getUser()
+
 		let { data: weeklyChallengeData, error: weeksError } =
 			await supabase.rpc("get_weekly_challenges")
 
@@ -37,8 +42,15 @@ export function useInitialLoad() {
 			.from("puzzles")
 			.select("*")
 
-		if (weeksError || packsError || puzzlesError) {
-			console.error(packsError?.message ?? puzzlesError?.message)
+		const { data: profilesData, error: profilesError } = await supabase
+			.from("profiles")
+			.select("*")
+			.eq("id", user!.id)
+
+		if (weeksError || packsError || puzzlesError || profilesError) {
+			console.error(
+				packsError?.message ?? puzzlesError?.message ?? profilesError
+			)
 			return
 		}
 
@@ -167,5 +179,7 @@ export function useInitialLoad() {
 			{}
 		)
 		dispatch(batchAddPuzzles(puzzles))
+
+		dispatch(profileLoaded(profilesData[0]))
 	}
 }
