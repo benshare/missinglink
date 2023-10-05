@@ -5,6 +5,7 @@ import {
 	TouchableOpacity,
 	View,
 } from "react-native"
+import { useEffect, useState } from "react"
 
 import { AuthScreenProps } from "./AuthScreen"
 import Logo from "../../components/Logo"
@@ -12,7 +13,6 @@ import PhoneNumberInput from "../../components/PhoneNumberInput"
 import Theme from "../../style/Theme"
 import { supabase } from "../../api/supabase"
 import useColorScheme from "../../hooks/useColorScheme"
-import { useState } from "react"
 
 export default function PhoneNumberScreen({
 	navigation,
@@ -41,18 +41,25 @@ export default function PhoneNumberScreen({
 		setIsValid(false)
 	}
 
+	const [showInput, setShowInput] = useState(false)
+	useEffect(() => {
+		setTimeout(() => setShowInput(true), 500 + 75 * "Missing Link".length)
+	}, [])
+
 	return (
 		<View style={style.wrapper}>
 			<Logo />
 			<Text style={style.label}>What's your number?</Text>
-			<PhoneNumberInput
-				value={number}
-				onChangeText={setNumber}
-				autoFocus
-				style={style.input}
-				setIsValid={setIsValid}
-				editable={!loading}
-			/>
+			{showInput && (
+				<PhoneNumberInput
+					value={number}
+					onChangeText={setNumber}
+					autoFocus
+					style={style.input}
+					setIsValid={setIsValid}
+					editable={!loading}
+				/>
+			)}
 			<TouchableOpacity
 				onPress={signIn}
 				disabled={!isValid || loading}

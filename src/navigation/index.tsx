@@ -7,6 +7,7 @@ import AuthScreen from "../screens/auth/AuthScreen"
 import LoggedInScreen from "../screens/loggedIn/LoggedInScreen"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import Theme from "../style/Theme"
+import checkForUpdates from "../api/checkForUpdates"
 import { selectIsSignedIn } from "../store"
 import useCachedResources from "../hooks/useCachedResources"
 import { useCallback } from "react"
@@ -44,6 +45,7 @@ function RootScreen() {
 export default function Navigation() {
 	const theme = useColorScheme()
 	const appIsReady = useCachedResources()
+	checkForUpdates()
 
 	// TODO: Add linking
 
