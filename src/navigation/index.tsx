@@ -49,7 +49,7 @@ export default function Navigation() {
 
 	const onLayoutRootView = useCallback(async () => {
 		if (appIsReady) {
-			await SplashScreen.hideAsync()
+			setTimeout(SplashScreen.hideAsync, 500)
 		}
 	}, [appIsReady])
 
