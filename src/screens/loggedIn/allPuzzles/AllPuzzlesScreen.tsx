@@ -8,7 +8,7 @@ import { selectWeeks } from "../../../store"
 import useColorScheme from "../../../hooks/useColorScheme"
 import { useSelector } from "react-redux"
 
-export default function AllWeeksScreen() {
+export default function AllPuzzlesScreen() {
 	const theme = useColorScheme()
 	const style = styles(Theme[theme])
 
@@ -18,7 +18,7 @@ export default function AllWeeksScreen() {
 			style={style.wrapper}
 			ListHeaderComponent={
 				<Header
-					title="All weeks"
+					title="All puzzles"
 					backIcon
 					RightElement={CurrentUserStreak}
 				/>

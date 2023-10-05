@@ -50,7 +50,7 @@ export function useInitialLoad() {
 		const { data: currentUserData, error: currentUserError } =
 			await supabase
 				.from("profiles")
-				.select(`username, current_streak`)
+				.select(`username, current_streak, max_streak`)
 				.eq("id", user!.id)
 
 		const { data: profilesData, error: profilesError } = await supabase

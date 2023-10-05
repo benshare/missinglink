@@ -35,6 +35,8 @@ export default function PackScreen({
 	const isLastPack = useSelector(selectIsLastPackForWeek(id))
 	const { status: weekStatus } = useSelector(selectWeek(weekId))
 
+	const puzzleComplete = Updates.usePuzzleComplete()
+
 	const previousPuzzlesComplete = puzzles.map(({ complete }) => complete)
 
 	function nextIncompleteIndex(fromIndex: number) {
@@ -76,7 +78,7 @@ export default function PackScreen({
 						alreadyComplete={puzzles[index].complete}
 						onCorrect={() => {
 							Keyboard.dismiss()
-							Updates.puzzleComplete(
+							puzzleComplete(
 								id,
 								index,
 								previousPuzzlesComplete,

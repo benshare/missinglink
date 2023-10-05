@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 
 import AccountScreen from "./account/AccountScreen"
-import AllWeeksScreen from "./allWeeks/AllWeeksScreen"
+import AllPuzzlesScreen from "./allPuzzles/AllPuzzlesScreen"
 import LeaderboardScreen from "./leaderboard/LeaderboardScreen"
 import Logo from "../../components/Logo"
 import { StackScreenProps } from "@react-navigation/stack"
@@ -18,7 +18,7 @@ import useSubscribeToUpdates from "../../api/subscriptions"
 export type LoggedInScreenParamList = {
 	Home: undefined
 	WeekScreen: { id: number }
-	AllWeeksScreen: undefined
+	AllPuzzlesScreen: undefined
 	LeaderboardScreen: undefined
 	AccountScreen: undefined
 }
@@ -47,7 +47,7 @@ function Home({ navigation }: LoggedInScreenProps<"Home">) {
 			</TouchableOpacity>
 			<TouchableOpacity
 				style={style.button}
-				onPress={() => navigation.push("AllWeeksScreen")}
+				onPress={() => navigation.push("AllPuzzlesScreen")}
 			>
 				<Text style={style.buttonText}>All Puzzles</Text>
 			</TouchableOpacity>
@@ -85,7 +85,10 @@ export default function LoggedInScreen() {
 		>
 			<Stack.Screen name="Home" component={Home} />
 			<Stack.Screen name="WeekScreen" component={WeekScreen} />
-			<Stack.Screen name="AllWeeksScreen" component={AllWeeksScreen} />
+			<Stack.Screen
+				name="AllPuzzlesScreen"
+				component={AllPuzzlesScreen}
+			/>
 			<Stack.Screen
 				name="LeaderboardScreen"
 				component={LeaderboardScreen}
