@@ -1,4 +1,9 @@
-import { AnyAction, combineReducers, configureStore } from "@reduxjs/toolkit"
+import {
+	AnyAction,
+	combineReducers,
+	configureStore,
+	createSelector,
+} from "@reduxjs/toolkit"
 import { CurrentUserState, currentUserSlice } from "./currentUser"
 import { LeaderboardState, leaderboardSlice } from "./leaderboard"
 import { PacksState, packsSlice } from "./packs"
@@ -7,9 +12,9 @@ import {
 	WeeklyChallengesState,
 	weeklyChallengesSlice,
 } from "./weeklyChallenges"
+import { addDays, dateDiffInDays } from "../utils"
 
 import { PackStatus } from "../types/puzzle"
-import { addDays } from "../utils"
 
 const today = new Date()
 
@@ -69,15 +74,26 @@ export const selectWeek =
 	(id: number) =>
 	({ weeklyChallenges }: RootState) =>
 		weeklyChallenges.find(({ id: weekId }) => id === weekId)!
-export const selectCurrentWeek = ({ weeklyChallenges }: RootState) => {
-	return weeklyChallenges.length > 0
-		? weeklyChallenges.find(({ startDate: { year, month, day } }) => {
-				const startDay = new Date(Date.UTC(year, month - 1, day))
-				const endDay = addDays(startDay, 7)
-				return startDay <= today && endDay > today
-		  })!.id
-		: null
-}
+
+export const selectCurrentPack = createSelector(
+	[({ weeklyChallenges }: RootState) => weeklyChallenges],
+	(weeks) => {
+		if (weeks.length === 0) {
+			return null
+		}
+		const {
+			startDate: { year, month, day },
+			packs,
+		} = weeks.find(({ startDate: { year, month, day }, packs }) => {
+			const startDay = new Date(Date.UTC(year, month - 1, day))
+			const endDay = addDays(startDay, 7)
+			return startDay <= today && endDay > today
+		})!
+		const startDay = new Date(Date.UTC(year, month - 1, day))
+		const offset = dateDiffInDays(startDay, today)
+		return packs[offset].pack
+	}
+)
 
 export const selectPacks = ({ packs }: RootState) => packs
 export const selectPack =

@@ -1,6 +1,6 @@
 import { PackStatus, WeekStatus } from "../types/puzzle"
+import { selectCurrentPack, selectCurrentUser } from "../store"
 
-import { selectCurrentUser } from "../store"
 import { supabase } from "./supabase"
 import { useSelector } from "react-redux"
 
@@ -8,6 +8,7 @@ namespace Updates {
 	export function usePuzzleComplete() {
 		const currentStreak = useSelector(selectCurrentUser.currentStreak)
 		const maxStreak = useSelector(selectCurrentUser.maxStreak)
+		const currentPackId = useSelector(selectCurrentPack)
 
 		return async (
 			packId: number,
@@ -39,23 +40,26 @@ namespace Updates {
 			})
 
 			if (newStatus === PackStatus.complete) {
-				const newStreak = currentStreak! + 1
-				await supabase
-					.from("profiles")
-					.update(
-						newStreak > maxStreak!
-							? {
-									current_streak: newStreak,
-									max_streak: newStreak,
-							  }
-							: { current_streak: newStreak }
-					)
-					.eq("id", user!.id)
 				if (isLastPack) {
 					await supabase.from("weeks_completed").upsert({
 						week_id: weekId,
 						on_time: weekStatus === WeekStatus.inProgress,
 					})
+				}
+
+				if (packId === currentPackId) {
+					const newStreak = currentStreak! + 1
+					await supabase
+						.from("profiles")
+						.update(
+							newStreak > maxStreak!
+								? {
+										current_streak: newStreak,
+										max_streak: newStreak,
+								  }
+								: { current_streak: newStreak }
+						)
+						.eq("id", user!.id)
 				}
 			}
 		}

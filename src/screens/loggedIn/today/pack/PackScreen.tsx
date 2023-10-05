@@ -16,17 +16,17 @@ import {
 import { useRef, useState } from "react"
 
 import Header from "../../../../components/Header"
+import { LoggedInScreenProps } from "../../LoggedInScreen"
 import Puzzle from "./puzzle/Puzzle"
 import Theme from "../../../../style/Theme"
 import Updates from "../../../../api/updates"
-import { WeekScreenProps } from "../WeekScreen"
 import useColorScheme from "../../../../hooks/useColorScheme"
 import { useSelector } from "react-redux"
 
 export default function PackScreen({
 	navigation,
 	route,
-}: WeekScreenProps<"PackScreen">) {
+}: LoggedInScreenProps<"PackScreen">) {
 	const theme = useColorScheme()
 	const style = styles(Theme[theme])
 

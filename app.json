@@ -16,7 +16,7 @@
 		"ios": {
 			"supportsTablet": false,
 			"bundleIdentifier": "Missing-Link",
-			"buildNumber": "1"
+			"buildNumber": "2"
 		},
 		"android": {
 			"adaptiveIcon": {

@@ -3,6 +3,10 @@ import {
 	profileLoaded,
 } from "../store/currentUser"
 import {
+	ActionPayload as LeaderboardActionPayload,
+	userUpdated,
+} from "../store/leaderboard"
+import {
 	ActionPayload as PacksActionPayload,
 	singleUpdate as singleUpdatePacks,
 } from "../store/packs"
@@ -69,10 +73,12 @@ export default function useSubscribeToUpdates() {
 			{ event: "*", schema: "public", table: "profiles" },
 			({ eventType, new: newValue }) => {
 				const profile =
-					newValue as CurrentUserActionPayload["profileLoaded"]
+					newValue as CurrentUserActionPayload["profileLoaded"] &
+						LeaderboardActionPayload["userUpdated"]
 				switch (eventType) {
 					case "UPDATE":
 						dispatch(profileLoaded(profile))
+						dispatch(userUpdated(profile))
 						break
 					case "INSERT":
 					case "DELETE":
