@@ -2,7 +2,7 @@ import { Keyboard, StyleSheet, Text, TextInput, View } from "react-native"
 import { PuzzleData, PuzzleType } from "../../../../../types/puzzle"
 import { Ref, useEffect, useRef, useState } from "react"
 
-import Theme from "../../../../../style/theme"
+import Theme from "../../../../../style/Theme"
 import { selectPuzzle } from "../../../../../store"
 import { sentenceCase } from "../../../../../utils"
 import useColorScheme from "../../../../../hooks/useColorScheme"
@@ -53,16 +53,7 @@ export default function Puzzle({
 			<Text style={style.clue}>{before}</Text>
 			<TextInput
 				ref={inputRef}
-				style={[
-					style.solution,
-					!inputFocused &&
-						guess.length === 0 && {
-							minWidth: 100,
-							borderBottomWidth: 2,
-							borderBottomColor: "gray",
-						},
-					isCorrect && { color: "green" },
-				]}
+				style={[style.solution, isCorrect && style.correct]}
 				value={guess.toLocaleUpperCase()}
 				onChangeText={(newValue) => {
 					setGuess(newValue)
@@ -74,6 +65,7 @@ export default function Puzzle({
 				onFocus={() => setInputFocused(true)}
 				onBlur={() => setInputFocused(false)}
 				editable={!alreadyComplete && !isCorrect}
+				placeholder={inputFocused ? "" : "LINK"}
 			/>
 			<Text style={style.clue}>{after}</Text>
 		</View>
@@ -92,9 +84,13 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 		clue: {
 			fontSize: 40,
 			textTransform: "uppercase",
+			color: theme.colors.primary.main,
 		},
 		solution: {
 			fontSize: 40,
-			color: "gray",
+			color: theme.colors.primary.light,
+		},
+		correct: {
+			color: theme.colors.highlight.green,
 		},
 	})

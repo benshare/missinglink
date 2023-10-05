@@ -17,7 +17,7 @@ import { useRef, useState } from "react"
 
 import Header from "../../../../components/Header"
 import Puzzle from "./puzzle/Puzzle"
-import Theme from "../../../../style/theme"
+import Theme from "../../../../style/Theme"
 import Updates from "../../../../api/updates"
 import { WeekScreenProps } from "../WeekScreen"
 import useColorScheme from "../../../../hooks/useColorScheme"
@@ -34,6 +34,8 @@ export default function PackScreen({
 	const { puzzles, weekId } = useSelector(selectPack(id))
 	const isLastPack = useSelector(selectIsLastPackForWeek(id))
 	const { status: weekStatus } = useSelector(selectWeek(weekId))
+
+	const puzzleComplete = Updates.usePuzzleComplete()
 
 	const previousPuzzlesComplete = puzzles.map(({ complete }) => complete)
 
@@ -56,7 +58,7 @@ export default function PackScreen({
 
 	const NextPuzzle = () => (
 		<TouchableOpacity hitSlop={20} onPress={goToNextPuzzle}>
-			<Text style={style.skip}>Skip</Text>
+			<Text style={style.next}>Next</Text>
 		</TouchableOpacity>
 	)
 
@@ -76,7 +78,7 @@ export default function PackScreen({
 						alreadyComplete={puzzles[index].complete}
 						onCorrect={() => {
 							Keyboard.dismiss()
-							Updates.puzzleComplete(
+							puzzleComplete(
 								id,
 								index,
 								previousPuzzlesComplete,
@@ -124,8 +126,8 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 			justifyContent: "space-between",
 			height: "100%",
 		},
-		skip: {
+		next: {
 			fontSize: 20,
-			color: "gray",
+			color: theme.colors.primary.light,
 		},
 	})

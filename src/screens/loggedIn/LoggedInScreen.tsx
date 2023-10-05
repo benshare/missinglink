@@ -1,10 +1,11 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 
 import AccountScreen from "./account/AccountScreen"
-import AllWeeksScreen from "./allWeeks/AllWeeksScreen"
+import AllPuzzlesScreen from "./allPuzzles/AllPuzzlesScreen"
+import LeaderboardScreen from "./leaderboard/LeaderboardScreen"
 import Logo from "../../components/Logo"
 import { StackScreenProps } from "@react-navigation/stack"
-import Theme from "../../style/theme"
+import Theme from "../../style/Theme"
 import WeekScreen from "./week/WeekScreen"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { selectCurrentWeek } from "../../store"
@@ -17,7 +18,8 @@ import useSubscribeToUpdates from "../../api/subscriptions"
 export type LoggedInScreenParamList = {
 	Home: undefined
 	WeekScreen: { id: number }
-	AllWeeksScreen: undefined
+	AllPuzzlesScreen: undefined
+	LeaderboardScreen: undefined
 	AccountScreen: undefined
 }
 
@@ -34,7 +36,7 @@ function Home({ navigation }: LoggedInScreenProps<"Home">) {
 	return (
 		<View style={style.wrapper}>
 			<Logo />
-			<View style={{ height: 50 }} />
+			<View style={{ height: 20 }} />
 			<TouchableOpacity
 				style={style.button}
 				onPress={() =>
@@ -45,9 +47,15 @@ function Home({ navigation }: LoggedInScreenProps<"Home">) {
 			</TouchableOpacity>
 			<TouchableOpacity
 				style={style.button}
-				onPress={() => navigation.push("AllWeeksScreen")}
+				onPress={() => navigation.push("AllPuzzlesScreen")}
 			>
 				<Text style={style.buttonText}>All Puzzles</Text>
+			</TouchableOpacity>
+			<TouchableOpacity
+				style={style.button}
+				onPress={() => navigation.push("LeaderboardScreen")}
+			>
+				<Text style={style.buttonText}>Leaderboard</Text>
 			</TouchableOpacity>
 			<TouchableOpacity
 				style={style.button}
@@ -77,7 +85,14 @@ export default function LoggedInScreen() {
 		>
 			<Stack.Screen name="Home" component={Home} />
 			<Stack.Screen name="WeekScreen" component={WeekScreen} />
-			<Stack.Screen name="AllWeeksScreen" component={AllWeeksScreen} />
+			<Stack.Screen
+				name="AllPuzzlesScreen"
+				component={AllPuzzlesScreen}
+			/>
+			<Stack.Screen
+				name="LeaderboardScreen"
+				component={LeaderboardScreen}
+			/>
 			<Stack.Screen name="AccountScreen" component={AccountScreen} />
 		</Stack.Navigator>
 	)
@@ -89,23 +104,26 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 			width: "100%",
 			height: "100%",
 			paddingTop: 150,
-			paddingBottom: 200,
+			paddingBottom: 120,
 			paddingHorizontal: 30,
 			display: "flex",
 			flexDirection: "column",
 			justifyContent: "space-between",
 		},
 		button: {
-			padding: 20,
-			borderWidth: 1,
+			padding: 18,
+			borderWidth: 2,
 			borderStyle: "solid",
-			borderColor: "gray",
+			borderColor: theme.colors.primary.main,
 			borderRadius: 40,
 			alignSelf: "center",
 			minWidth: "70%",
+			color: theme.colors.primary.main,
 		},
 		buttonText: {
 			fontSize: 30,
+			fontWeight: "600",
 			textAlign: "center",
+			color: theme.colors.primary.main,
 		},
 	})

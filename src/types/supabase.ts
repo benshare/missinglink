@@ -73,28 +73,22 @@ export interface Database {
 			}
 			profiles: {
 				Row: {
-					avatar_url: string | null
-					full_name: string | null
+					current_streak: number
 					id: string
-					updated_at: string | null
+					max_streak: number
 					username: string | null
-					website: string | null
 				}
 				Insert: {
-					avatar_url?: string | null
-					full_name?: string | null
+					current_streak?: number
 					id: string
-					updated_at?: string | null
+					max_streak?: number
 					username?: string | null
-					website?: string | null
 				}
 				Update: {
-					avatar_url?: string | null
-					full_name?: string | null
+					current_streak?: number
 					id?: string
-					updated_at?: string | null
+					max_streak?: number
 					username?: string | null
-					website?: string | null
 				}
 				Relationships: [
 					{

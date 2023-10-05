@@ -6,7 +6,7 @@ import { StackScreenProps, createStackNavigator } from "@react-navigation/stack"
 import AuthScreen from "../screens/auth/AuthScreen"
 import LoggedInScreen from "../screens/loggedIn/LoggedInScreen"
 import { SafeAreaProvider } from "react-native-safe-area-context"
-import Theme from "../style/theme"
+import Theme from "../style/Theme"
 import { selectIsSignedIn } from "../store"
 import useCachedResources from "../hooks/useCachedResources"
 import { useCallback } from "react"
@@ -49,7 +49,7 @@ export default function Navigation() {
 
 	const onLayoutRootView = useCallback(async () => {
 		if (appIsReady) {
-			await SplashScreen.hideAsync()
+			setTimeout(SplashScreen.hideAsync, 500)
 		}
 	}, [appIsReady])
 

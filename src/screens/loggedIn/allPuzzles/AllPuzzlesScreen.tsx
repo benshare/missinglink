@@ -1,14 +1,14 @@
 import { FlatList, StyleSheet } from "react-native"
 
+import CurrentUserStreak from "../../../components/CurrentUserStreak"
 import Header from "../../../components/Header"
-import Streak from "../../../components/Streak"
-import Theme from "../../../style/theme"
+import Theme from "../../../style/Theme"
 import WeekPreview from "./WeekPreview"
 import { selectWeeks } from "../../../store"
 import useColorScheme from "../../../hooks/useColorScheme"
 import { useSelector } from "react-redux"
 
-export default function AllWeeksScreen() {
+export default function AllPuzzlesScreen() {
 	const theme = useColorScheme()
 	const style = styles(Theme[theme])
 
@@ -18,10 +18,9 @@ export default function AllWeeksScreen() {
 			style={style.wrapper}
 			ListHeaderComponent={
 				<Header
-					title="Weekly challenges"
-					titleSize={25}
+					title="All puzzles"
 					backIcon
-					RightElement={Streak}
+					RightElement={CurrentUserStreak}
 				/>
 			}
 			data={weeks}

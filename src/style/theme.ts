@@ -2,13 +2,13 @@ export default {
 	light: {
 		colors: {
 			primary: {
-				main: "#000000",
-				light: "#525252",
+				main: "white",
+				light: "#d5ccec",
 				lighter: "#a9a9a9",
 			},
 			secondary: {
 				main: "#FFFFFF",
-				light: "#F0F0F0",
+				light: "#CCCCCC",
 				lighter: "#e6e6e6",
 			},
 			highlight: {
@@ -16,7 +16,7 @@ export default {
 				blue: "#7DB9FF",
 				orange: "#FD705E",
 				yellow: "#E3A300",
-				green: "#5B9241",
+				green: "#008822",
 				red: "#D54460",
 				brown: "#955A53",
 				navy: "#49698F",
@@ -29,7 +29,7 @@ export default {
 				lighter: "#7bc97f",
 			},
 			tasteMaker: "#0095f6",
-			background: "#FFFFFF",
+			background: "#aa98d8",
 			modalBackground: "#FFFFFF",
 			navbar: "#FFFFFF",
 			star: {

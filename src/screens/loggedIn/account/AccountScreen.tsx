@@ -4,8 +4,10 @@ import { selectCurrentUser, signOut } from "../../../store"
 
 import Header from "../../../components/Header"
 import { RootParamList } from "../../../navigation"
+import Row from "./Row"
 import { StackNavigationProp } from "@react-navigation/stack"
-import Theme from "../../../style/theme"
+import Theme from "../../../style/Theme"
+import Username from "./Username"
 import useColorScheme from "../../../hooks/useColorScheme"
 import { useNavigation } from "@react-navigation/native"
 import { useSelector } from "react-redux"
@@ -15,7 +17,6 @@ export default function AccountScreen() {
 	const style = styles(Theme[theme])
 
 	const phoneNumber = useSelector(selectCurrentUser.phoneNumber)
-
 	const parentNavigator = useNavigation<StackNavigationProp<RootParamList>>()
 
 	const handleSignOut = () => {
@@ -28,7 +29,16 @@ export default function AccountScreen() {
 	return (
 		<View style={style.wrapper}>
 			<Header title="Account" backIcon />
-			<Text style={style.text}>Your number: {phoneNumber}</Text>
+			<Row
+				label="Your number:"
+				RightItem={() => (
+					<Text style={style.text}>
+						****{""}
+						{phoneNumber?.slice(phoneNumber.length - 4)}
+					</Text>
+				)}
+			/>
+			<Row label="Username:" RightItem={Username} />
 			<TouchableOpacity
 				onPress={handleSignOut}
 				style={style.logoutButton}
@@ -46,14 +56,14 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 			height: "100%",
 			paddingTop: 80,
 			paddingHorizontal: 30,
-			alignItems: "center",
 			position: "relative",
 		},
 		text: {
 			fontSize: 20,
+			color: theme.colors.primary.main,
 		},
 		logoutButton: {
-			borderColor: "red",
+			borderColor: theme.colors.primary.light,
 			borderWidth: 1,
 			borderStyle: "solid",
 			borderRadius: 20,
@@ -61,10 +71,11 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 			paddingHorizontal: 15,
 			position: "absolute",
 			bottom: 100,
+			alignSelf: "center",
 		},
 		logoutText: {
 			fontSize: 20,
 			textAlign: "center",
-			color: "red",
+			color: theme.colors.primary.light,
 		},
 	})

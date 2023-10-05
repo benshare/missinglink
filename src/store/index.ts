@@ -1,18 +1,15 @@
-import {
-	AnyAction,
-	combineReducers,
-	configureStore,
-	createSelector,
-} from "@reduxjs/toolkit"
+import { AnyAction, combineReducers, configureStore } from "@reduxjs/toolkit"
 import { CurrentUserState, currentUserSlice } from "./currentUser"
-import { PackStatus, WeekStatus } from "../types/puzzle"
+import { LeaderboardState, leaderboardSlice } from "./leaderboard"
 import { PacksState, packsSlice } from "./packs"
 import { PuzzlesState, puzzlesSlice } from "./puzzles"
 import {
 	WeeklyChallengesState,
 	weeklyChallengesSlice,
 } from "./weeklyChallenges"
-import { addDays, dateDiffInDays } from "../utils"
+
+import { PackStatus } from "../types/puzzle"
+import { addDays } from "../utils"
 
 const today = new Date()
 
@@ -21,6 +18,7 @@ const reducers = {
 	puzzles: puzzlesSlice.reducer,
 	packs: packsSlice.reducer,
 	weeklyChallenges: weeklyChallengesSlice.reducer,
+	leaderboard: leaderboardSlice.reducer,
 }
 const appReducer = combineReducers(reducers)
 
@@ -29,6 +27,7 @@ export type RootState = {
 	puzzles: PuzzlesState
 	packs: PacksState
 	weeklyChallenges: WeeklyChallengesState
+	leaderboard: LeaderboardState
 }
 const baseData: RootState = {
 	currentUser: {
@@ -37,6 +36,7 @@ const baseData: RootState = {
 	puzzles: {},
 	packs: [],
 	weeklyChallenges: [],
+	leaderboard: [],
 }
 const rootReducer = (state: any, action: AnyAction) => {
 	if (action.type === "LOGOUT") {
@@ -58,6 +58,10 @@ export const selectIsSignedIn = ({ currentUser: { signedIn } }: RootState) =>
 export const selectCurrentUser = {
 	accessToken: ({ currentUser: { accessToken } }: RootState) => accessToken,
 	phoneNumber: ({ currentUser: { phoneNumber } }: RootState) => phoneNumber,
+	username: ({ currentUser: { profile } }: RootState) => profile?.username,
+	currentStreak: ({ currentUser: { profile } }: RootState) =>
+		profile?.currentStreak,
+	maxStreak: ({ currentUser: { profile } }: RootState) => profile?.maxStreak,
 }
 
 export const selectWeeks = ({ weeklyChallenges }: RootState) => weeklyChallenges
@@ -100,63 +104,4 @@ export const selectPuzzle =
 	({ puzzles }: RootState) =>
 		puzzles[id]
 
-export const selectStreaks = createSelector(
-	[selectWeeks, selectPacks],
-	(weeks, packs) => {
-		if (weeks.length === 0 || Object.keys(packs).length === 0) {
-			return null
-		}
-		let foundStartDay: Date = null as any
-		let currentWeekIndex: number = null as any
-		for (const index in weeks) {
-			const {
-				startDate: { year, month, day },
-			} = weeks[index]
-			const startDay = new Date(Date.UTC(year, month - 1, day))
-			const endDay = addDays(startDay, 7)
-			if (startDay <= today && endDay > today) {
-				foundStartDay = startDay
-				currentWeekIndex = parseInt(index)
-				break
-			}
-		}
-		const initialOffset = dateDiffInDays(today, foundStartDay)
-		let offset = initialOffset
-
-		let week = weeks[currentWeekIndex]
-		let streak = 0
-		for (let weekIndex = currentWeekIndex; weekIndex >= 0; weekIndex--) {
-			week = weeks[weekIndex]
-			const { status, packs: packsForWeek } = week
-			if (
-				weekIndex !== currentWeekIndex &&
-				status !== WeekStatus.complete
-			) {
-				break
-			}
-			let allComplete = true
-			while (offset >= 0) {
-				const { status } = packs[packsForWeek[offset].pack]
-				if (status === PackStatus.complete) {
-					streak++
-				} else {
-					if (
-						!(
-							weekIndex === currentWeekIndex &&
-							offset === initialOffset
-						)
-					) {
-						allComplete = false
-						break
-					}
-				}
-				offset--
-			}
-			if (!allComplete) {
-				break
-			}
-			offset = week.packs.length - 1
-		}
-		return streak
-	}
-)
+export const selectLeaderboard = ({ leaderboard }: RootState) => leaderboard

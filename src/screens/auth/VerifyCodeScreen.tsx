@@ -14,7 +14,7 @@ import { AuthScreenProps } from "./AuthScreen"
 import { Input } from "react-native-elements"
 import { RootParamList } from "../../navigation"
 import { StackNavigationProp } from "@react-navigation/stack"
-import Theme from "../../style/theme"
+import Theme from "../../style/Theme"
 import _ from "lodash"
 import { signedIn } from "../../store/currentUser"
 import { supabase } from "../../api/supabase"
@@ -158,12 +158,12 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 			borderWidth: 1,
 			borderStyle: "solid",
 			borderRadius: 5,
-			borderColor: "lightgray",
+			borderColor: theme.colors.primary.main,
 			padding: 10,
 		},
 		digit: {
 			fontSize: 30,
-			color: "gray",
+			color: theme.colors.primary.main,
 			textAlign: "center",
 		},
 		digitSpacer: {
@@ -173,6 +173,7 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 			marginTop: 50,
 		},
 		buttonText: {
-			fontSize: 15,
+			fontSize: 20,
+			color: theme.colors.primary.light,
 		},
 	})

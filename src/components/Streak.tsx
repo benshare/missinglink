@@ -1,20 +1,23 @@
 import { Animated, Easing, StyleSheet, Text } from "react-native"
 
 import { FontAwesome5 } from "@expo/vector-icons"
-import Theme from "../style/theme"
-import { selectStreaks } from "../store"
+import Theme from "../style/Theme"
 import useColorScheme from "../hooks/useColorScheme"
 import { useEffect } from "react"
-import { useSelector } from "react-redux"
 
-export default function Streak() {
+export default function Streak({
+	streak,
+	pulse,
+}: {
+	streak: number | null
+	pulse?: boolean
+}) {
 	const theme = useColorScheme()
 	const style = styles(Theme[theme])
 
-	const streak = useSelector(selectStreaks)
-	const opacity = new Animated.Value(0.5)
+	const opacity = new Animated.Value(pulse ? 0.5 : 1)
 
-	const pulse = () => {
+	const setPulse = () => {
 		Animated.sequence([
 			Animated.timing(opacity, {
 				toValue: 1,
@@ -23,22 +26,24 @@ export default function Streak() {
 				useNativeDriver: false,
 			}),
 			Animated.timing(opacity, {
-				toValue: 0.5,
+				toValue: 0.2,
 				duration: 1000,
 				easing: Easing.linear,
 				useNativeDriver: false,
 			}),
 		]).start(() => {
-			pulse()
+			setPulse()
 		})
 	}
 	useEffect(() => {
-		pulse()
+		if (pulse) {
+			setPulse()
+		}
 	}, [])
 
 	return Boolean(streak) ? (
 		<Animated.View style={[style.streakWrapper, { opacity }]}>
-			<FontAwesome5 name="fire" size={22} color="red" />
+			<FontAwesome5 name="fire" size={25} color="red" />
 			<Text style={style.streakNumber}>{streak}</Text>
 		</Animated.View>
 	) : undefined
@@ -51,7 +56,7 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 		},
 		streakNumber: {
 			marginLeft: 5,
-			color: "red",
-			fontSize: 22,
+			color: theme.colors.highlight.red,
+			fontSize: 25,
 		},
 	})
