@@ -4,11 +4,11 @@ import AccountScreen from "./account/AccountScreen"
 import AllPuzzlesScreen from "./allPuzzles/AllPuzzlesScreen"
 import LeaderboardScreen from "./leaderboard/LeaderboardScreen"
 import Logo from "../../components/Logo"
+import PackScreen from "./today/pack/PackScreen"
 import { StackScreenProps } from "@react-navigation/stack"
 import Theme from "../../style/Theme"
-import WeekScreen from "./week/WeekScreen"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { selectCurrentWeek } from "../../store"
+import { selectCurrentPack } from "../../store"
 import useColorScheme from "../../hooks/useColorScheme"
 import { useEffect } from "react"
 import { useInitialLoad } from "../../api/initialLoad"
@@ -17,7 +17,7 @@ import useSubscribeToUpdates from "../../api/subscriptions"
 
 export type LoggedInScreenParamList = {
 	Home: undefined
-	WeekScreen: { id: number }
+	PackScreen: { id: number }
 	AllPuzzlesScreen: undefined
 	LeaderboardScreen: undefined
 	AccountScreen: undefined
@@ -31,7 +31,7 @@ function Home({ navigation }: LoggedInScreenProps<"Home">) {
 	const theme = useColorScheme()
 	const style = styles(Theme[theme])
 
-	const currentId = useSelector(selectCurrentWeek)
+	const currentPackId = useSelector(selectCurrentPack)
 
 	return (
 		<View style={style.wrapper}>
@@ -40,7 +40,7 @@ function Home({ navigation }: LoggedInScreenProps<"Home">) {
 			<TouchableOpacity
 				style={style.button}
 				onPress={() =>
-					navigation.push("WeekScreen", { id: currentId! })
+					navigation.push("PackScreen", { id: currentPackId! })
 				}
 			>
 				<Text style={style.buttonText}>Play</Text>
@@ -84,7 +84,7 @@ export default function LoggedInScreen() {
 			}}
 		>
 			<Stack.Screen name="Home" component={Home} />
-			<Stack.Screen name="WeekScreen" component={WeekScreen} />
+			<Stack.Screen name="PackScreen" component={PackScreen} />
 			<Stack.Screen
 				name="AllPuzzlesScreen"
 				component={AllPuzzlesScreen}

@@ -1,10 +1,11 @@
 import { FlatList, StyleSheet } from "react-native"
 
+import { AllPuzzlesScreenProps } from "./AllPuzzlesScreen"
 import CurrentUserStreak from "../../../components/CurrentUserStreak"
 import Header from "../../../components/Header"
-import { LoggedInScreenProps } from "../LoggedInScreen"
-import PackPreview from "./PackPreview"
-import PackScreen from "./pack/PackScreen"
+import { LoggedInScreenParamList } from "../LoggedInScreen"
+import PackPreview from "../today/PackPreview"
+import PackScreen from "../today/pack/PackScreen"
 import { StackScreenProps } from "@react-navigation/stack"
 import Theme from "../../../style/Theme"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
@@ -14,8 +15,7 @@ import { useSelector } from "react-redux"
 
 export type WeekParamList = {
 	Week: { id: number }
-	PackScreen: { id: number }
-}
+} & Pick<LoggedInScreenParamList, "PackScreen">
 
 const Stack = createNativeStackNavigator<WeekParamList>()
 export type WeekScreenProps<Screen extends keyof WeekParamList> =
@@ -53,7 +53,7 @@ function Week({ route }: WeekScreenProps<"Week">) {
 
 export default function WeekScreen({
 	route,
-}: LoggedInScreenProps<"WeekScreen">) {
+}: AllPuzzlesScreenProps<"WeekScreen">) {
 	const { id } = route.params
 	return (
 		<Stack.Navigator

@@ -1,8 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity } from "react-native"
 import { WeekStatus, WeeklyChallenge } from "../../../types/puzzle"
 
+import { AllPuzzlesParamList } from "./AllPuzzlesScreen"
 import { FontAwesome } from "@expo/vector-icons"
-import { LoggedInScreenParamList } from "../LoggedInScreen"
 import { StackNavigationProp } from "@react-navigation/stack"
 import Theme from "../../../style/Theme"
 import useColorScheme from "../../../hooks/useColorScheme"
@@ -12,8 +12,7 @@ export default function WeekPreview({ id, title, status }: WeeklyChallenge) {
 	const theme = Theme[useColorScheme()]
 	const style = styles(theme)
 
-	const navigation =
-		useNavigation<StackNavigationProp<LoggedInScreenParamList>>()
+	const navigation = useNavigation<StackNavigationProp<AllPuzzlesParamList>>()
 
 	return (
 		<TouchableOpacity
