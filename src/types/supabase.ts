@@ -73,21 +73,30 @@ export interface Database {
 			}
 			profiles: {
 				Row: {
+					avatar_url: string | null
 					current_streak: number
+					full_name: string | null
 					id: string
 					max_streak: number
+					streak_includes_today: boolean
 					username: string | null
 				}
 				Insert: {
+					avatar_url?: string | null
 					current_streak?: number
+					full_name?: string | null
 					id: string
 					max_streak?: number
+					streak_includes_today?: boolean
 					username?: string | null
 				}
 				Update: {
+					avatar_url?: string | null
 					current_streak?: number
+					full_name?: string | null
 					id?: string
 					max_streak?: number
+					streak_includes_today?: boolean
 					username?: string | null
 				}
 				Relationships: [
@@ -196,6 +205,10 @@ export interface Database {
 			get_weekly_challenges: {
 				Args: Record<PropertyKey, never>
 				Returns: Database["public"]["CompositeTypes"]["week_return_type"][]
+			}
+			streak_update: {
+				Args: Record<PropertyKey, never>
+				Returns: undefined
 			}
 		}
 		Enums: {

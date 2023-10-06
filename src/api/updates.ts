@@ -51,14 +51,12 @@ namespace Updates {
 					const newStreak = currentStreak! + 1
 					await supabase
 						.from("profiles")
-						.update(
-							newStreak > maxStreak!
-								? {
-										current_streak: newStreak,
-										max_streak: newStreak,
-								  }
-								: { current_streak: newStreak }
-						)
+						.update({
+							current_streak: newStreak,
+							max_streak:
+								newStreak > maxStreak! ? newStreak : undefined,
+							streak_includes_today: true,
+						})
 						.eq("id", user!.id)
 				}
 			}
