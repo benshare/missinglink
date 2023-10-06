@@ -37,7 +37,7 @@ function Week({ route }: WeekScreenProps<"Week">) {
 					<Header
 						title={title}
 						backIcon
-						RightElement={CurrentUserStreak}
+						RightElement={() => <CurrentUserStreak />}
 					/>
 				}
 				data={packs}

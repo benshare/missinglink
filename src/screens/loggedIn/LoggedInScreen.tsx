@@ -2,11 +2,13 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 
 import AccountScreen from "./account/AccountScreen"
 import AllPuzzlesScreen from "./allPuzzles/AllPuzzlesScreen"
+import CurrentUserStreak from "../../components/CurrentUserStreak"
 import FloatersView from "../../components/FloatersView"
 import LeaderboardScreen from "./leaderboard/LeaderboardScreen"
 import Logo from "../../components/Logo"
 import PackScreen from "./today/pack/PackScreen"
 import { StackScreenProps } from "@react-navigation/stack"
+import Streak from "../../components/Streak"
 import Theme from "../../style/Theme"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { selectCurrentPack } from "../../store"
@@ -29,13 +31,22 @@ export type LoggedInScreenProps<Screen extends keyof LoggedInScreenParamList> =
 	StackScreenProps<LoggedInScreenParamList, Screen>
 
 function Home({ navigation }: LoggedInScreenProps<"Home">) {
-	const theme = useColorScheme()
-	const style = styles(Theme[theme])
+	const theme = Theme[useColorScheme()]
+	const style = styles(theme)
 
 	const currentPackId = useSelector(selectCurrentPack)
 
 	return (
 		<FloatersView style={style.wrapper}>
+			<View
+				style={{
+					position: "absolute",
+					top: 70,
+					right: 40,
+				}}
+			>
+				<CurrentUserStreak size={30} />
+			</View>
 			<Logo />
 			<View style={{ height: 20 }} />
 			<TouchableOpacity

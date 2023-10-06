@@ -1,35 +1,35 @@
 {
-  "cli": {
-    "version": ">= 3.7.2"
-  },
-  "build": {
-    "development": {
-      "developmentClient": true,
-      "distribution": "internal",
-      "ios": {
-        "resourceClass": "m-medium"
-      },
-      "channel": "development"
-    },
-    "preview": {
-      "distribution": "internal",
-      "ios": {
-        "resourceClass": "m-medium"
-      },
-      "channel": "preview"
-    },
-    "production": {
-      "ios": {
-        "resourceClass": "m-medium"
-      },
-      "channel": "production"
-    }
-  },
-  "submit": {
-    "production": {
-      "ios": {
-        "ascAppId": "1534499723"
-      }
-    }
-  }
+	"cli": {
+		"version": ">= 3.7.2"
+	},
+	"build": {
+		"development": {
+			"developmentClient": true,
+			"distribution": "internal",
+			"ios": {
+				"resourceClass": "m-medium"
+			},
+			"channel": "development"
+		},
+		"preview": {
+			"distribution": "internal",
+			"ios": {
+				"resourceClass": "m-medium"
+			},
+			"channel": "preview"
+		},
+		"production": {
+			"ios": {
+				"resourceClass": "m-medium"
+			},
+			"channel": "production"
+		}
+	},
+	"submit": {
+		"production": {
+			"ios": {
+				"ascAppId": "1534499723"
+			}
+		}
+	}
 }

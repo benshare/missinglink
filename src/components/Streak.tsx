@@ -8,9 +8,11 @@ import { useEffect } from "react"
 export default function Streak({
 	streak,
 	pulse,
+	size = 25,
 }: {
 	streak: number | null
 	pulse?: boolean
+	size?: number
 }) {
 	const theme = useColorScheme()
 	const style = styles(Theme[theme])
@@ -43,8 +45,10 @@ export default function Streak({
 
 	return Boolean(streak) ? (
 		<Animated.View style={[style.streakWrapper, { opacity }]}>
-			<FontAwesome5 name="fire" size={25} color="red" />
-			<Text style={style.streakNumber}>{streak}</Text>
+			<FontAwesome5 name="fire" size={size} color="red" />
+			<Text style={[style.streakNumber, { fontSize: size }]}>
+				{streak}
+			</Text>
 		</Animated.View>
 	) : undefined
 }
@@ -57,6 +61,5 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 		streakNumber: {
 			marginLeft: 5,
 			color: theme.colors.highlight.red,
-			fontSize: 25,
 		},
 	})

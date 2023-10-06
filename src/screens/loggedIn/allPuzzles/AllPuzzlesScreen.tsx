@@ -33,7 +33,7 @@ function AllPuzzles() {
 					<Header
 						title="All puzzles"
 						backIcon
-						RightElement={CurrentUserStreak}
+						RightElement={() => <CurrentUserStreak />}
 					/>
 				}
 				data={weeks}
