@@ -5,10 +5,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 export enum LocalStoreKey {
 	userToken = "userToken",
 	phoneNumber = "phoneNumber",
+	updateMessage = "updateMessage",
 }
 const IS_SECURE: { [key in LocalStoreKey]: boolean } = {
 	[LocalStoreKey.userToken]: true,
 	[LocalStoreKey.phoneNumber]: false,
+	[LocalStoreKey.updateMessage]: false,
 }
 export class LocalStoreService {
 	static async getKey<T = string>(key: LocalStoreKey) {

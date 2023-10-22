@@ -35,7 +35,8 @@
 			},
 			"eas": {
 				"projectId": "fbce50f4-f4e3-4544-895f-099cbf8a7654"
-			}
+			},
+			"releaseNotes": "Puzzles can now accept multiple solutions"
 		},
 		"runtimeVersion": {
 			"policy": "appVersion"

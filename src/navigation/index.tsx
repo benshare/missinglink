@@ -1,16 +1,18 @@
 import * as SplashScreen from "expo-splash-screen"
 
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native"
+import { LocalStoreKey, LocalStoreService } from "../localStore"
 import { StackScreenProps, createStackNavigator } from "@react-navigation/stack"
+import { useCallback, useEffect, useState } from "react"
 
 import AuthScreen from "../screens/auth/AuthScreen"
 import LoggedInScreen from "../screens/loggedIn/LoggedInScreen"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import Theme from "../style/Theme"
+import UpdateMessage from "../components/UpdateMessage"
 import checkForUpdates from "../api/checkForUpdates"
 import { selectIsSignedIn } from "../store"
 import useCachedResources from "../hooks/useCachedResources"
-import { useCallback } from "react"
 import useColorScheme from "../hooks/useColorScheme"
 import { useSelector } from "react-redux"
 
@@ -44,8 +46,31 @@ function RootScreen() {
 
 export default function Navigation() {
 	const theme = useColorScheme()
-	const appIsReady = useCachedResources()
-	checkForUpdates()
+	const resourcesLoaded = useCachedResources()
+	const [updateLoaded, setUpdateLoaded] = useState(false)
+	const appIsReady = resourcesLoaded && updateLoaded
+
+	const [updateMessage, setUpdateMessage] = useState<string>()
+	const [showUpdateMessage, setShowUpdateMessage] = useState(false)
+
+	useEffect(() => {
+		async function getUpdate() {
+			const isUpdate = await checkForUpdates()
+			if (isUpdate) {
+				return
+			}
+			const message = await LocalStoreService.getKey(
+				LocalStoreKey.updateMessage
+			)
+			if (message) {
+				await LocalStoreService.clearKey(LocalStoreKey.updateMessage)
+				setUpdateMessage(message)
+				setShowUpdateMessage(true)
+			}
+			setUpdateLoaded(true)
+		}
+		getUpdate()
+	}, [])
 
 	// TODO: Add linking
 
@@ -75,7 +100,15 @@ export default function Navigation() {
 					}, 200)
 				}
 			>
-				<RootScreen />
+				<>
+					<RootScreen />
+					{showUpdateMessage && (
+						<UpdateMessage
+							message={updateMessage!}
+							onClose={() => setShowUpdateMessage(false)}
+						/>
+					)}
+				</>
 			</NavigationContainer>
 		</SafeAreaProvider>
 	)
