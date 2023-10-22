@@ -8,6 +8,7 @@ import {
 	TouchableWithoutFeedback,
 } from "react-native"
 import {
+	selectCurrentUser,
 	selectIsLastPackForWeek,
 	selectPack,
 	selectWeek,
@@ -15,6 +16,7 @@ import {
 import { useRef, useState } from "react"
 
 import FloatersView from "../../../../components/FloatersView"
+import { FontAwesome } from "@expo/vector-icons"
 import Header from "../../../../components/Header"
 import { LoggedInScreenProps } from "../../LoggedInScreen"
 import Puzzle from "./puzzle/Puzzle"
@@ -27,13 +29,14 @@ export default function PackScreen({
 	navigation,
 	route,
 }: LoggedInScreenProps<"PackScreen">) {
-	const theme = useColorScheme()
-	const style = styles(Theme[theme])
+	const theme = Theme[useColorScheme()]
+	const style = styles(theme)
 
 	const { id } = route.params
 	const { puzzles, weekId } = useSelector(selectPack(id))
 	const isLastPack = useSelector(selectIsLastPackForWeek(id))
 	const { status: weekStatus } = useSelector(selectWeek(weekId))
+	const hints = useSelector(selectCurrentUser.hints)
 
 	const puzzleComplete = Updates.usePuzzleComplete()
 
@@ -63,6 +66,7 @@ export default function PackScreen({
 	)
 
 	const inputRef = useRef<TextInput>(null)
+	const inputState = useState(false)
 
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -110,7 +114,23 @@ export default function PackScreen({
 							}
 						}}
 						inputRef={inputRef}
+						inputState={inputState}
 					/>
+					{!inputState[0] && (
+						<TouchableOpacity
+							style={[
+								style.hints,
+								hints === 0 && { opacity: 0.4 },
+							]}
+						>
+							<Text style={style.hintsText}>{hints}</Text>
+							<FontAwesome
+								name="lightbulb-o"
+								size={40}
+								color={theme.colors.highlight.yellow}
+							/>
+						</TouchableOpacity>
+					)}
 				</FloatersView>
 			</KeyboardAvoidingView>
 		</TouchableWithoutFeedback>
@@ -129,5 +149,22 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 		next: {
 			fontSize: 20,
 			color: theme.colors.primary.light,
+		},
+		hints: {
+			backgroundColor: "white",
+			borderRadius: 100,
+			width: "auto",
+			padding: 20,
+			aspectRatio: 1,
+			alignSelf: "flex-end",
+			justifyContent: "center",
+			alignItems: "flex-end",
+			marginBottom: 50,
+			flexDirection: "row",
+		},
+		hintsText: {
+			fontSize: 25,
+			color: theme.colors.highlight.yellow,
+			marginRight: 8,
 		},
 	})

@@ -7,6 +7,7 @@ export type ActionPayload = {
 		username: string | null
 		current_streak: number
 		max_streak: number
+		hints: number
 	}
 }
 export type CurrentUserState = {
@@ -18,6 +19,7 @@ export type CurrentUserState = {
 		username: string | null
 		currentStreak: number
 		maxStreak: number
+		hints: number
 	}
 }
 
@@ -41,12 +43,13 @@ export const currentUserSlice = createSlice({
 					username,
 					current_streak: currentStreak,
 					max_streak: maxStreak,
+					hints,
 				},
 			}: PayloadAction<ActionPayload["profileLoaded"]>
 		) => {
 			return {
 				...store,
-				profile: { userId, username, currentStreak, maxStreak },
+				profile: { userId, username, currentStreak, maxStreak, hints },
 			}
 		},
 	},

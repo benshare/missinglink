@@ -67,6 +67,7 @@ export const selectCurrentUser = {
 	currentStreak: ({ currentUser: { profile } }: RootState) =>
 		profile?.currentStreak,
 	maxStreak: ({ currentUser: { profile } }: RootState) => profile?.maxStreak,
+	hints: ({ currentUser: { profile } }: RootState) => profile?.hints,
 }
 
 export const selectWeeks = ({ weeklyChallenges }: RootState) => weeklyChallenges

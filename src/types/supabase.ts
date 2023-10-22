@@ -76,6 +76,7 @@ export interface Database {
 					avatar_url: string | null
 					current_streak: number
 					full_name: string | null
+					hints: number
 					id: string
 					max_streak: number
 					streak_includes_today: boolean
@@ -85,6 +86,7 @@ export interface Database {
 					avatar_url?: string | null
 					current_streak?: number
 					full_name?: string | null
+					hints?: number
 					id: string
 					max_streak?: number
 					streak_includes_today?: boolean
@@ -94,6 +96,7 @@ export interface Database {
 					avatar_url?: string | null
 					current_streak?: number
 					full_name?: string | null
+					hints?: number
 					id?: string
 					max_streak?: number
 					streak_includes_today?: boolean

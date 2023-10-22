@@ -12,11 +12,13 @@ export default function Puzzle({
 	alreadyComplete,
 	onCorrect,
 	inputRef,
+	inputState: [inputFocused, setInputFocused],
 }: {
 	id: number
 	alreadyComplete: boolean
 	onCorrect: () => void
 	inputRef: Ref<TextInput>
+	inputState: [boolean, React.Dispatch<React.SetStateAction<boolean>>]
 }) {
 	const theme = useColorScheme()
 	const style = styles(Theme[theme])
@@ -30,7 +32,6 @@ export default function Puzzle({
 		(solution) => guess.toLowerCase() === solution.toLowerCase()
 	)
 
-	const [inputFocused, setInputFocused] = useState(false)
 	// TODO: not sure why this is needed
 	useEffect(() => {
 		setGuess(initialText)
@@ -46,8 +47,8 @@ export default function Puzzle({
 							marginBottom: "10%",
 					  }
 					: {
-							marginTop: "40%",
-							marginBottom: "40%",
+							marginTop: "30%",
+							marginBottom: "30%",
 					  },
 			]}
 		>
