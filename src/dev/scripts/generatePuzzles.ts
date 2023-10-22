@@ -26,24 +26,40 @@ const pairs = text
 console.log("Generating pair map")
 const map = generatePairMap(pairs)
 
-console.log("Generating puzzles")
-let idx = 0
-const puzzles: PuzzleData["standard"][] = []
+console.log("Generating solution sets")
+const solutions: { [key in string]: { [key in string]: Set<string> } } = {}
 for (const before in map) {
-	if (idx % 10 === 9) {
-		console.log(`${idx + 1} / ${Object.keys(map).length}`)
-	}
 	for (const solution of map[before]) {
 		if (!(solution in map)) {
 			continue
 		}
 		for (const after of map[solution]) {
-			puzzles.push({ before, after, solution })
+			if (!(before in solutions)) {
+				solutions[before] = { [after]: new Set([solution]) }
+				continue
+			}
+			if (!(after in solutions[before])) {
+				solutions[before][after] = new Set([solution])
+				continue
+			}
+			solutions[before][after].add(solution)
 		}
 	}
-	idx++
 }
+console.log(solutions)
+
+console.log("Converting to puzzles")
+const puzzles: PuzzleData["standard"][] = []
+for (const before in solutions) {
+	for (const after in solutions[before]) {
+		puzzles.push({
+			before,
+			after,
+			solutions: Array.from(solutions[before][after]),
+		})
+	}
+}
+
 const stringified = JSON.stringify(puzzles)
 fs.writeFileSync(filenames.allPuzzles(type), stringified)
-fs.writeFileSync(filenames.newPuzzles(type), stringified)
 fs.writeFileSync(filenames.usedPuzzles(type), JSON.stringify([]))

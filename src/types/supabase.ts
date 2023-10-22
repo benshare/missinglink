@@ -115,7 +115,7 @@ export interface Database {
 					created_at: string
 					id: number
 					pack_id: number
-					solution: string
+					solutions: string[]
 					title: string | null
 					type: string
 				}
@@ -125,7 +125,7 @@ export interface Database {
 					created_at?: string
 					id?: number
 					pack_id: number
-					solution: string
+					solutions: string[]
 					title?: string | null
 					type?: string
 				}
@@ -135,7 +135,7 @@ export interface Database {
 					created_at?: string
 					id?: number
 					pack_id?: number
-					solution?: string
+					solutions?: string[]
 					title?: string | null
 					type?: string
 				}

@@ -193,7 +193,7 @@ export function useInitialLoad() {
 		dispatch(batchAddPacks(packs))
 
 		const puzzles: PuzzlesState = puzzlesData.reduce(
-			(beforeStep, { id, title, type, before, after, solution }) => ({
+			(beforeStep, { id, title, type, before, after, solutions }) => ({
 				...beforeStep,
 				[id]: {
 					id,
@@ -202,7 +202,7 @@ export function useInitialLoad() {
 					data: {
 						before,
 						after,
-						solution,
+						solutions,
 					},
 				},
 			}),

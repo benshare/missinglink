@@ -22,11 +22,13 @@ export default function Puzzle({
 	const style = styles(Theme[theme])
 
 	const { data } = useSelector(selectPuzzle(id))
-	const { before, after, solution } = data as PuzzleData[PuzzleType.standard]
+	const { before, after, solutions } = data as PuzzleData[PuzzleType.standard]
 
-	const initialText = alreadyComplete ? solution : ""
+	const initialText = alreadyComplete ? solutions[0] : ""
 	const [guess, setGuess] = useState(initialText)
-	const isCorrect = guess.toLowerCase() === solution.toLowerCase()
+	const isCorrect = solutions.some(
+		(solution) => guess.toLowerCase() === solution.toLowerCase()
+	)
 
 	const [inputFocused, setInputFocused] = useState(false)
 	// TODO: not sure why this is needed
@@ -56,7 +58,13 @@ export default function Puzzle({
 				value={guess.toLocaleUpperCase()}
 				onChangeText={(newValue) => {
 					setGuess(newValue)
-					if (newValue.toLowerCase() === solution.toLowerCase()) {
+					if (
+						solutions.some(
+							(solution) =>
+								newValue.toLowerCase() ===
+								solution.toLowerCase()
+						)
+					) {
 						onCorrect()
 					}
 				}}

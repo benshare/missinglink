@@ -5,7 +5,7 @@ export type PuzzleData = {
 	[PuzzleType.standard]: {
 		before: string
 		after: string
-		solution: string
+		solutions: string[]
 	}
 }
 export type Puzzle<T extends PuzzleType> = {
