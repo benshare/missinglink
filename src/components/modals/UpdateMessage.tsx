@@ -1,8 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 
 import { FontAwesome } from "@expo/vector-icons"
-import Theme from "../style/Theme"
-import useColorScheme from "../hooks/useColorScheme"
+import Theme from "../../style/Theme"
+import useColorScheme from "../../hooks/useColorScheme"
 
 export default function UpdateMessage({
 	message,
@@ -71,7 +71,7 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 			fontSize: 35,
 			fontWeight: "600",
 			color: theme.colors.primary.main,
-			marginBottom: 80,
+			marginBottom: 50,
 		},
 		message: {
 			fontSize: 25,

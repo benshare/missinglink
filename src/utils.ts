@@ -39,3 +39,7 @@ export function setIntervalLimited(
 		setTimeout(() => effect(i), i * interval)
 	}
 }
+
+export function delay(milliseconds: number) {
+	return new Promise((resolve) => setTimeout(resolve, milliseconds))
+}

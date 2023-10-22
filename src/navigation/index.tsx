@@ -9,7 +9,8 @@ import AuthScreen from "../screens/auth/AuthScreen"
 import LoggedInScreen from "../screens/loggedIn/LoggedInScreen"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import Theme from "../style/Theme"
-import UpdateMessage from "../components/UpdateMessage"
+import UpdateMessage from "../components/modals/UpdateMessage"
+import UpdateRequired from "../components/modals/UpdateRequired"
 import checkForUpdates from "../api/checkForUpdates"
 import { selectIsSignedIn } from "../store"
 import useCachedResources from "../hooks/useCachedResources"
@@ -50,12 +51,15 @@ export default function Navigation() {
 	const [updateLoaded, setUpdateLoaded] = useState(false)
 	const appIsReady = resourcesLoaded && updateLoaded
 
+	const [showUpdateRequired, setShowUpdateRequired] = useState(false)
 	const [updateMessage, setUpdateMessage] = useState<string>()
 	const [showUpdateMessage, setShowUpdateMessage] = useState(false)
 
 	useEffect(() => {
 		async function getUpdate() {
-			const isUpdate = await checkForUpdates()
+			const isUpdate = await checkForUpdates(() =>
+				setShowUpdateRequired(true)
+			)
 			if (isUpdate) {
 				return
 			}
@@ -102,6 +106,7 @@ export default function Navigation() {
 			>
 				<>
 					<RootScreen />
+					{showUpdateRequired && <UpdateRequired />}
 					{showUpdateMessage && (
 						<UpdateMessage
 							message={updateMessage!}

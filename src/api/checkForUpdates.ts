@@ -2,7 +2,9 @@ import * as Updates from "expo-updates"
 
 import { LocalStoreKey, LocalStoreService } from "../localStore"
 
-export default async function checkForUpdates() {
+import { delay } from "../utils"
+
+export default async function checkForUpdates(showUpdateRequired: () => void) {
 	if (__DEV__) {
 		return
 	}
@@ -10,6 +12,8 @@ export default async function checkForUpdates() {
 	try {
 		const update = await Updates.checkForUpdateAsync()
 		if (update.isAvailable) {
+			await Updates.fetchUpdateAsync()
+			showUpdateRequired()
 			const releaseNotes = (update.manifest?.extra as any).releaseNotes
 			if (releaseNotes) {
 				await LocalStoreService.setKey(
@@ -17,7 +21,7 @@ export default async function checkForUpdates() {
 					releaseNotes
 				)
 			}
-			await Updates.fetchUpdateAsync()
+			await delay(2000)
 			await Updates.reloadAsync()
 			return true
 		}
