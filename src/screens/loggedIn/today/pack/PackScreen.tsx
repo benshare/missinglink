@@ -11,6 +11,7 @@ import {
 	selectCurrentUser,
 	selectIsLastPackForWeek,
 	selectPack,
+	selectPuzzle,
 	selectWeek,
 } from "../../../../store"
 import { useRef, useState } from "react"
@@ -54,6 +55,8 @@ export default function PackScreen({
 
 	const [index, setIndex] = useState(nextIncompleteIndex(0))
 	const currentPuzzle = puzzles[index]
+	const { hint } = useSelector(selectPuzzle(currentPuzzle.id))
+	const hintUsed = Updates.useHintUsed(currentPuzzle.id)
 
 	const goToNextPuzzle = () => setIndex((index + 1) % puzzles.length)
 	const goToNextIncompletePuzzle = () =>
@@ -82,13 +85,17 @@ export default function PackScreen({
 						alreadyComplete={puzzles[index].complete}
 						onCorrect={() => {
 							Keyboard.dismiss()
-							puzzleComplete(
-								id,
-								index,
-								previousPuzzlesComplete,
-								isLastPack,
-								weekId,
-								weekStatus
+							setTimeout(
+								() =>
+									puzzleComplete(
+										id,
+										index,
+										previousPuzzlesComplete,
+										isLastPack,
+										weekId,
+										weekStatus
+									),
+								1000
 							)
 							const packComplete =
 								previousPuzzlesComplete.reduce(
@@ -120,8 +127,14 @@ export default function PackScreen({
 						<TouchableOpacity
 							style={[
 								style.hints,
-								hints === 0 && { opacity: 0.4 },
+								(hint ||
+									hints === 0 ||
+									currentPuzzle.complete) && { opacity: 0.4 },
 							]}
+							onPress={hintUsed}
+							disabled={
+								hint || hints === 0 || currentPuzzle.complete
+							}
 						>
 							<Text style={style.hintsText}>{hints}</Text>
 							<FontAwesome
@@ -161,6 +174,10 @@ const styles = (theme: typeof Theme.light & typeof Theme.dark) =>
 			alignItems: "flex-end",
 			marginBottom: 50,
 			flexDirection: "row",
+			shadowColor: "black",
+			shadowOpacity: 0.5,
+			shadowRadius: 1,
+			shadowOffset: { width: 0, height: 0 },
 		},
 		hintsText: {
 			fontSize: 25,

@@ -9,6 +9,34 @@ export type Json =
 export interface Database {
 	public: {
 		Tables: {
+			hints: {
+				Row: {
+					puzzle_id: number
+					user_id: string
+				}
+				Insert: {
+					puzzle_id: number
+					user_id?: string
+				}
+				Update: {
+					puzzle_id?: number
+					user_id?: string
+				}
+				Relationships: [
+					{
+						foreignKeyName: "hints_puzzle_id_fkey"
+						columns: ["puzzle_id"]
+						referencedRelation: "puzzles"
+						referencedColumns: ["id"]
+					},
+					{
+						foreignKeyName: "hints_user_id_fkey"
+						columns: ["user_id"]
+						referencedRelation: "profiles"
+						referencedColumns: ["id"]
+					}
+				]
+			}
 			pack_progress: {
 				Row: {
 					pack_id: number

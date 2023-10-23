@@ -43,3 +43,11 @@ export function setIntervalLimited(
 export function delay(milliseconds: number) {
 	return new Promise((resolve) => setTimeout(resolve, milliseconds))
 }
+
+export function getHintIndex(word: string) {
+	let hash = 0
+	for (let i = 0; i < word.length; i++) {
+		hash = (hash << 5) - hash + word.charCodeAt(i)
+	}
+	return ((hash % word.length) + word.length) % word.length
+}

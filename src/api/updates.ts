@@ -9,6 +9,7 @@ namespace Updates {
 		const currentStreak = useSelector(selectCurrentUser.currentStreak)
 		const maxStreak = useSelector(selectCurrentUser.maxStreak)
 		const currentPackId = useSelector(selectCurrentPack)
+		const hints = useSelector(selectCurrentUser.hints)
 
 		return async (
 			packId: number,
@@ -40,6 +41,10 @@ namespace Updates {
 			})
 
 			if (newStatus === PackStatus.complete) {
+				await supabase
+					.from("profiles")
+					.update({ hints: hints! + 1 })
+					.eq("id", user!.id)
 				if (isLastPack) {
 					await supabase.from("weeks_completed").upsert({
 						week_id: weekId,
@@ -68,6 +73,23 @@ namespace Updates {
 			data: { user },
 		} = await supabase.auth.getUser()
 		await supabase.from("profiles").update({ username }).eq("id", user!.id)
+	}
+
+	export function useHintUsed(puzzleId: number) {
+		const hints = useSelector(selectCurrentUser.hints)
+
+		return async () => {
+			const {
+				data: { user },
+			} = await supabase.auth.getUser()
+			await Promise.all([
+				supabase.from("hints").insert([{ puzzle_id: puzzleId }]),
+				supabase
+					.from("profiles")
+					.update({ hints: hints! - 1 })
+					.eq("id", user!.id),
+			])
+		}
 	}
 }
 

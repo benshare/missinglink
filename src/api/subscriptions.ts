@@ -15,6 +15,7 @@ import {
 	weekComplete,
 } from "../store/weeklyChallenges"
 
+import { gotHint } from "../store/puzzles"
 import { supabase } from "./supabase"
 import { useDispatch } from "react-redux"
 
@@ -81,6 +82,27 @@ export default function useSubscribeToUpdates() {
 						dispatch(userUpdated(profile))
 						break
 					case "INSERT":
+					case "DELETE":
+						break
+				}
+			}
+		)
+		.subscribe()
+
+	supabase
+		.channel("hints_updates_channel")
+		.on(
+			"postgres_changes",
+			{ event: "*", schema: "public", table: "hints" },
+			({ eventType, new: newValue }) => {
+				const { puzzle_id: puzzleId } = newValue as {
+					puzzle_id: number
+				}
+				switch (eventType) {
+					case "INSERT":
+						dispatch(gotHint(puzzleId))
+						break
+					case "UPDATE":
 					case "DELETE":
 						break
 				}

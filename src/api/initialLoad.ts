@@ -45,6 +45,10 @@ export function useInitialLoad() {
 			.from("puzzles")
 			.select("*")
 
+		const { data: hintsData, error: hintsError } = await supabase
+			.from("hints")
+			.select("puzzle_id")
+
 		// TODO: these two fetches are a bit redundant, although
 		// in the future their would be private profile data
 		const { data: currentUserData, error: currentUserError } =
@@ -74,7 +78,8 @@ export function useInitialLoad() {
 			packsError ||
 			puzzlesError ||
 			currentUserError ||
-			profilesError
+			profilesError ||
+			hintsError
 		) {
 			console.error(
 				packsError?.message ?? puzzlesError?.message ?? profilesError
@@ -192,6 +197,7 @@ export function useInitialLoad() {
 		}
 		dispatch(batchAddPacks(packs))
 
+		const hintIds = hintsData.map(({ puzzle_id }) => puzzle_id)
 		const puzzles: PuzzlesState = puzzlesData.reduce(
 			(beforeStep, { id, title, type, before, after, solutions }) => ({
 				...beforeStep,
@@ -204,6 +210,7 @@ export function useInitialLoad() {
 						after,
 						solutions,
 					},
+					hint: hintIds.includes(id),
 				},
 			}),
 			{}
