@@ -19,10 +19,12 @@ namespace Updates {
 			weekId: number,
 			weekStatus: WeekStatus
 		) => {
+			console.log({ weekId, packId, puzzleIndex })
 			const {
 				data: { user },
 			} = await supabase.auth.getUser()
 
+			// const newComplete = [true, false, false, false, false]
 			const newComplete = previousComplete
 				.slice(0, puzzleIndex)
 				.concat(true)
@@ -33,6 +35,7 @@ namespace Updates {
 			)
 				? PackStatus.complete
 				: PackStatus.inProgress
+			console.log({ newComplete, newStatus })
 
 			await supabase.from("pack_progress").upsert({
 				pack_id: packId,
@@ -41,6 +44,7 @@ namespace Updates {
 			})
 
 			if (newStatus === PackStatus.complete) {
+				console.log("in complete")
 				await supabase
 					.from("profiles")
 					.update({ hints: hints! + 1 })

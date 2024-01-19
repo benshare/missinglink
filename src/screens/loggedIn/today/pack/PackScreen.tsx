@@ -85,17 +85,13 @@ export default function PackScreen({
 						alreadyComplete={puzzles[index].complete}
 						onCorrect={() => {
 							Keyboard.dismiss()
-							setTimeout(
-								() =>
-									puzzleComplete(
-										id,
-										index,
-										previousPuzzlesComplete,
-										isLastPack,
-										weekId,
-										weekStatus
-									),
-								1000
+							puzzleComplete(
+								id,
+								index,
+								previousPuzzlesComplete,
+								isLastPack,
+								weekId,
+								weekStatus
 							)
 							const packComplete =
 								previousPuzzlesComplete.reduce(

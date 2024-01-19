@@ -120,7 +120,7 @@ export default function Puzzle({
 					<View style={{ flexDirection: "row" }}>
 						{[...hintSolution].map((char, index) => (
 							<View
-								id={`hint-letter${index}`}
+								key={`hint-letter${index}`}
 								style={[
 									style.hintLetter,
 									{

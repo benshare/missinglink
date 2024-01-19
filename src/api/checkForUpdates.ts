@@ -12,8 +12,8 @@ export default async function checkForUpdates(showUpdateRequired: () => void) {
 	try {
 		const update = await Updates.checkForUpdateAsync()
 		if (update.isAvailable) {
-			await Updates.fetchUpdateAsync()
 			showUpdateRequired()
+			await Updates.fetchUpdateAsync()
 			const releaseNotes = (update.manifest?.extra as any).releaseNotes
 			if (releaseNotes) {
 				await LocalStoreService.setKey(

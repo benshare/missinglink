@@ -25,6 +25,7 @@ export function useInitialLoad() {
 
 		let { data: weeklyChallengeData, error: weeksError } =
 			await supabase.rpc("get_weekly_challenges")
+		console.log(weeklyChallengeData ? weeklyChallengeData[3] : "")
 
 		const weeksToFetch = Array.from(
 			new Set(weeklyChallengeData?.map(({ id }) => id))
