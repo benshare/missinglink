@@ -1,18 +1,18 @@
-import * as SplashScreen from "expo-splash-screen"
+import * as SplashScreen from 'expo-splash-screen'
 
-import { DefaultTheme, NavigationContainer } from "@react-navigation/native"
-import { StackScreenProps, createStackNavigator } from "@react-navigation/stack"
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native'
+import { StackScreenProps, createStackNavigator } from '@react-navigation/stack'
 
-import AuthScreen from "../screens/auth/AuthScreen"
-import LoggedInScreen from "../screens/loggedIn/LoggedInScreen"
-import { SafeAreaProvider } from "react-native-safe-area-context"
-import Theme from "../style/Theme"
-import checkForUpdates from "../api/checkForUpdates"
-import { selectIsSignedIn } from "../store"
-import useCachedResources from "../hooks/useCachedResources"
-import { useCallback } from "react"
-import useColorScheme from "../hooks/useColorScheme"
-import { useSelector } from "react-redux"
+import AuthScreen from '../screens/auth/AuthScreen'
+import LoggedInScreen from '../screens/loggedIn/LoggedInScreen'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import Theme from '../style/Theme'
+import checkForUpdates from '../api/checkForUpdates'
+import { selectIsSignedIn } from '../store'
+import useCachedResources from '../hooks/useCachedResources'
+import { useCallback } from 'react'
+import useColorScheme from '../hooks/useColorScheme'
+import { useSelector } from 'react-redux'
 
 export type RootParamList = {
 	AuthScreen: undefined
@@ -31,7 +31,7 @@ function RootScreen() {
 				animationEnabled: false,
 				headerShown: false,
 			}}
-			initialRouteName={signedIn ? "LoggedInScreen" : "AuthScreen"}
+			initialRouteName={signedIn ? 'LoggedInScreen' : 'AuthScreen'}
 		>
 			<RootStack.Screen name="AuthScreen" component={AuthScreen} />
 			<RootStack.Screen

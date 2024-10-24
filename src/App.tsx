@@ -1,15 +1,15 @@
-import * as SplashScreen from "expo-splash-screen"
+import * as SplashScreen from 'expo-splash-screen'
 
-import { QueryClient, QueryClientProvider } from "react-query"
+import { QueryClient, QueryClientProvider } from 'react-query'
 
-import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
-import { GestureHandlerRootView } from "react-native-gesture-handler"
-import Navigation from "./navigation"
-import { PortalProvider } from "@gorhom/portal"
-import { Provider } from "react-redux"
-import { RecoilRoot } from "recoil"
-import { StatusBar } from "expo-status-bar"
-import { store } from "./store"
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import Navigation from './navigation'
+import { PortalProvider } from '@gorhom/portal'
+import { Provider } from 'react-redux'
+import { RecoilRoot } from 'recoil'
+import { StatusBar } from 'expo-status-bar'
+import { store } from './store'
 
 export const queryClient = new QueryClient()
 
